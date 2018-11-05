@@ -1,0 +1,12 @@
+.idea
+assets
+config
+doc
+forms
+scripts
+src
+Meterman.iml
+Meterman.jfdproj
+meterman.install4j
+meterman-ant-build.*
+README.txt
