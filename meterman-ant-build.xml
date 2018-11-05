@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="meterman" default="all">
+  
+  
+  <property file="meterman-ant-build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="256m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.beanshell.classpath">
+    <pathelement location="${basedir}/lib/bsh-2.1.0-SNAPSHOT.jar"/>
+  </path>
+  
+  <path id="library.commons-lang3.classpath">
+    <pathelement location="${basedir}/lib/commons-lang3-3.4.jar"/>
+  </path>
+  
+  <path id="library.jdom.classpath">
+    <pathelement location="${basedir}/lib/jaxen-1.1.6.jar"/>
+    <pathelement location="${basedir}/lib/jdom-2.0.6.jar"/>
+  </path>
+  
+  <path id="library.jfd-loader.classpath">
+    <pathelement location="${basedir}/lib/jfd-loader.jar"/>
+  </path>
+  
+  <path id="library.jgoodies-forms.classpath">
+    <pathelement location="${basedir}/lib/jgoodies-common-1.8.1.jar"/>
+    <pathelement location="${basedir}/lib/jgoodies-forms-1.7.2.jar"/>
+  </path>
+  
+  <path id="library.minimal-json.classpath">
+    <pathelement location="${basedir}/lib/minimal-json-0.9.5.jar"/>
+  </path>
+  
+  <path id="library.tinysound.classpath">
+    <pathelement location="${basedir}/lib/jorbis-0.0.17.jar"/>
+    <pathelement location="${basedir}/lib/tinysound-1.1.1-local.jar"/>
+    <pathelement location="${basedir}/lib/tritonus_share.jar"/>
+    <pathelement location="${basedir}/lib/vorbisspi1.0.3.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module meterman -->
+  
+  <dirname property="module.meterman.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.meterman" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="meterman.output.dir" value="${module.meterman.basedir}/build/production/meterman"/>
+  <property name="meterman.testoutput.dir" value="${module.meterman.basedir}/build/test/meterman"/>
+  
+  <path id="meterman.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="meterman.module.production.classpath">
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.jfd-loader.classpath"/>
+    <path refid="library.jgoodies-forms.classpath"/>
+    <path refid="library.tinysound.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+  </path>
+  
+  <path id="meterman.runtime.production.module.classpath">
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.jfd-loader.classpath"/>
+    <path refid="library.jgoodies-forms.classpath"/>
+    <path refid="library.tinysound.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+  </path>
+  
+  <path id="meterman.module.classpath">
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.jfd-loader.classpath"/>
+    <path refid="library.jgoodies-forms.classpath"/>
+    <path refid="library.tinysound.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+  </path>
+  
+  <path id="meterman.runtime.module.classpath">
+    <pathelement location="${meterman.testoutput.dir}"/>
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.jfd-loader.classpath"/>
+    <path refid="library.jgoodies-forms.classpath"/>
+    <path refid="library.tinysound.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.meterman">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.meterman">
+    <patternset refid="excluded.from.module.meterman"/>
+  </patternset>
+  
+  <path id="meterman.module.sourcepath">
+    <dirset dir="${module.meterman.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.meterman" depends="compile.module.meterman.production,compile.module.meterman.tests" description="Compile module meterman"/>
+  
+  <target name="compile.module.meterman.production" description="Compile module meterman; production classes">
+    <mkdir dir="${meterman.output.dir}"/>
+    <javac destdir="${meterman.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.meterman}"/>
+      <bootclasspath refid="meterman.module.bootclasspath"/>
+      <classpath refid="meterman.module.production.classpath"/>
+      <src refid="meterman.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.meterman"/>
+    </javac>
+    
+    <copy todir="${meterman.output.dir}">
+      <fileset dir="${module.meterman.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.meterman.tests" depends="compile.module.meterman.production" description="compile module meterman; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.meterman" description="cleanup module">
+    <delete dir="${meterman.output.dir}"/>
+    <delete dir="${meterman.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.meterman" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.meterman" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
