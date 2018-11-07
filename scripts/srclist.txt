@@ -6,7 +6,7 @@ forms
 scripts
 src
 meterman.iml
-meterman.jfdproj
+Meterman.jfdproj
 meterman.install4j
 meterman-ant-build.*
 README.txt
