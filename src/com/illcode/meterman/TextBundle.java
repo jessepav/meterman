@@ -23,7 +23,7 @@ import static com.illcode.meterman.Utils.logger;
  * A TextBundle is a container for named text passages, also supporting variable subtitution.
  * <p/>
  * Here is an example bundle illustrating the file format:
- * <pre>
+ * <pre>{@code
  [intro]
 
  This is a "text bundle" (handled by the TextBundle class). It's an easy
@@ -52,7 +52,7 @@ import static com.illcode.meterman.Utils.logger;
 
  A one-line passage.
 
- * </pre>
+ * }</pre>
  */
 public final class TextBundle
 {
