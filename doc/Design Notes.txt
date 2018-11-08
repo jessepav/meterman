@@ -1,3 +1,51 @@
             Meterman Design Notes
             ---------------------
 
+Some big picture code notes:
+
+- References (say, room to room exits, or the location of items) will be stored as unique
+  string identifiers (ex. "turnip-room") rather than actual Java object references. There
+  will be a mapper class that will return the Java Room or Entity that corresponds to a
+  given ID. This avoids having a tangled object graph, which makes it easier to
+  instantiate and serialize the game world.
+  
+  The ID corresponds to a Java class, rather than to any name displayed to the user, so
+  two Entity instances could have different names while sharing the same class.
+  
+  In the event that the ID isn't found as a map key, then a default error object will be
+  returned, that has a description like "A misty void gapes where you expected to find the
+  <missing ID>, revealing an error in the world's programmers."
+
+- There will be one big GameState object that contains the whole game world graph. This
+  will be serialized and deserialized (using kryo) to implement save/restore (and possibly
+  even undo) functionality. Given that kryo can round-trip 1000000+ objects in a second,
+  and my game world will have less than 1000 objects, using it for undo should be feasible.
+
+- Upon starting a new game, the entire game world will be instantiated. Rooms and entities
+  will be constructed, all of their init() methods called, and entities will be placed in
+  rooms based on the room ID given in a configuration file.
+
+- Every Room and Entity will have a no-arg constructor that doesn't actually initialize
+  the game state, so that they can be deserialized properly. Initial game state will be
+  set in the init() method.
+
+
+And now world model notes:
+
+- Rooms and Entities and the Player will be distinct types. There are no containers or
+  supporters or vehicles as special attributes -- enough hook methods will be provided
+  so that, say, a car entity can twiddle with the game world enough to follow the player
+  around and make it look like he's in a car. Doors will be handled by the Room, if
+  a key or such is needed to open one.
+
+- The GameState object will have a String->String map so that objects can communicate
+  state to one another without directly reaching into other objects.
+
+What I'll do here is read through the attributes and properties appendices in the DM4
+and make a list of the functionality I'd like to support in my world model (and thus
+in the Room and Entity interfaces):
+
+
+
+------------------------------------------------------------
+:maxLineLen=90:noTabs=true:
