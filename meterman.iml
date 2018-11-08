@@ -16,6 +16,7 @@
     <orderEntry type="library" name="tinysound" level="project" />
     <orderEntry type="library" name="minimal-json" level="project" />
     <orderEntry type="library" name="commons-codec" level="project" />
+    <orderEntry type="library" name="kryo" level="project" />
   </component>
 </module>
 
