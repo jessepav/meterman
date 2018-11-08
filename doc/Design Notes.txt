@@ -29,6 +29,8 @@ Some big picture code notes:
   the game state, so that they can be deserialized properly. Initial game state will be
   set in the init() method.
 
+- The UI will be in a separate package, abstracted from the Swing/AWT API, so that I can
+  switch to a different UI--like libGDX or GWT--in the future.
 
 And now world model notes:
 
@@ -41,9 +43,13 @@ And now world model notes:
 - The GameState object will have a String->String map so that objects can communicate
   state to one another without directly reaching into other objects.
 
+- We'll have a series of Listener interfaces (PlayerMovingListener,
+  ObjectSelectedListener, etc.) that objects can implement to register themselves to
+  receive events when the corresponding game world events occur.
+
 What I'll do here is read through the attributes and properties appendices in the DM4
-and make a list of the functionality I'd like to support in my world model (and thus
-in the Room and Entity interfaces):
+and make a list of the functionality I'd like to support in my world model (and how
+it applies to the GameManager, and Room and Entity interfaces):
 
 
 
