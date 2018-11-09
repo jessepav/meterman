@@ -253,7 +253,7 @@ new FormModel {
 						"gridY": 1
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-						"$columnSpecs": "default, relgap, default, labelcompgap, default, labelcompgap, default"
+						"$columnSpecs": "default, relgap, max(default;49dlu), labelcompgap, max(default;49dlu), labelcompgap, max(default;49dlu)"
 						"$rowSpecs": "default, linegap, default, linegap, default"
 					} ) {
 						name: "actionButtonPanel"
@@ -335,8 +335,8 @@ new FormModel {
 							"gridY": 5
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "actionButton9"
-							"text": "Action Button"
+							name: "waitButton"
+							"text": "Wait"
 							"background": #Color3
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
