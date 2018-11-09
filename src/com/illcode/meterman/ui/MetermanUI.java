@@ -5,6 +5,7 @@ import com.illcode.meterman.GameManager;
 import com.illcode.meterman.Room;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * An interface describing the functionality present in all UI implementations.
@@ -13,20 +14,16 @@ import java.awt.image.BufferedImage;
  */
 public interface MetermanUI
 {
-    /** Constant indicating the left status bar label */
-    public static final int LEFT_LABEL = 0;
-
-    /** Constant indicating the center status bar label */
-    public static final int CENTER_LABEL = 1;
-
-    /** Constant indicating the right status bar label */
-    public static final int RIGHT_LABEL = 2;
-
     /**
      * Initializes the UI, binding it to a given {@link GameManager}.
      * @param manager game manager to bind to the UI
      */
     void init(GameManager manager);
+
+    /**
+     * Disposes of any resources used by the UI, and hides the interface.
+     */
+    void dispose();
 
     /**
      * Sets the image displayed in the main UI frame.
@@ -103,18 +100,12 @@ public interface MetermanUI
     void clearExits();
 
     /**
-     * Adds a Room to the exit button list. If the "Exits" label is hidden,
-     * this will show it. There are a maximum of 12 exit buttons.
-     * @param r room to add to the button list
+     * Sets a given exit button to a Room, or hides it.
+     * @param buttonPos one of the constants indicating a button position (ex. {@link UIConstants#N_BUTTON})
+     * @param r room to add to the button list; if null, the given button will be hidden. If all buttons
+     *          are hidden, the "Exits" label will be hidden as well.
      */
-    void addExit(Room r);
-
-    /**
-     * Removes a Room from the exit button list. If no exits remain, the "Exits"
-     * label will be hidden.
-     * @param r room to remove from the button list
-     */
-    void removeExit(Room r);
+    void setExitButton(int buttonPos, Room r);
 
     /**
      * Clears the action button list and hides the "Actions" label.
@@ -138,10 +129,36 @@ public interface MetermanUI
 
     /**
      * Sets one of the three status bar labels.
-     * @param labelPosition one of {@link #LEFT_LABEL}, {@link #CENTER_LABEL}, {@link #RIGHT_LABEL}
+     * @param labelPosition one of {@link UIConstants#LEFT_LABEL},
+     *           {@link UIConstants#CENTER_LABEL}, {@link UIConstants#RIGHT_LABEL}
      * @param label the text to show for the given label
      */
     void setStatusLabel(int labelPosition, String label);
 
-    // TODO: methods handling the TextDialog, PromptDialog, and ListDialog
+    /**
+     * Displays a modal dialog showing a passage of text.
+     * @param header header surmounted above the text passage
+     * @param text text passage (line-breaks kept intact)
+     * @param buttonLabel label of the button to dismiss dialog
+     */
+    void showTextDialog(String header, String text, String buttonLabel);
+
+    /**
+     * Displays a modal dialog showing a passage of text and a field for the user to
+     * enter a line of text.
+     * @param header header surmounted above the text passage
+     * @param text text passage (line-breaks kept intact)
+     * @param prompt prompt displayed in front of the field
+     * @return the text entered by the user
+     */
+    String showPromptDialog(String header, String text, String prompt);
+
+    /**
+     * Shows a dialog allowing the user to select one of a list of items.
+     * @param header header surmounted above the text passage
+     * @param text text passage (line-breaks kept intact)
+     * @param items items from which the user can select one
+     * @return the item selected, or null if no item selected.
+     */
+    <T> T showListDialog(String header, String text, List<T> items);
 }

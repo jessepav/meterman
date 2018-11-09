@@ -47,6 +47,11 @@ And now world model notes:
   ObjectSelectedListener, etc.) that objects can implement to register themselves to
   receive events when the corresponding game world events occur.
 
+- An Entity will have a getDisplayName() method that will return a String representing
+  how it should be named in the UI. This can include modifiers like "(worn)" or
+  "(equipped)", which the Entity will determine by querying the Player object. The
+  Entity itself maintains no state about being worn, equipped, or such.
+
 What I'll do here is read through the attributes and properties appendices in the DM4
 and make a list of the functionality I'd like to support in my world model (and how
 it applies to the GameManager, and Room and Entity interfaces):

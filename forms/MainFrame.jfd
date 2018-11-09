@@ -132,8 +132,8 @@ new FormModel {
 					name: "buttonPanel"
 					"background": sfield java.awt.Color darkGray
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-						"$columnSpecs": "default, relgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default"
-						"$rowSpecs": "default, linegap, default, linegap, default"
+						"$columnSpecs": "default, relgap, max(default;40dlu), labelcompgap, max(default;40dlu), labelcompgap, max(default;40dlu), labelcompgap, max(default;40dlu)"
+						"$rowSpecs": "max(default;15dlu), linegap, max(default;15dlu), linegap, max(default;15dlu)"
 					} ) {
 						name: "exitButtonPanel"
 						"opaque": false
@@ -146,7 +146,7 @@ new FormModel {
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton1"
-							"text": "Exit Button"
+							"text": "NW Button"
 							"background": &Color3 new java.awt.Color( 204, 204, 204, 255 )
 							"border": &CompoundBorder0 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -154,7 +154,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton2"
-							"text": "Exit Button"
+							"text": "N Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -162,7 +162,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton3"
-							"text": "Exit Button"
+							"text": "NE Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -170,7 +170,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton4"
-							"text": "Exit Button"
+							"text": "X1 Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -178,7 +178,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton5"
-							"text": "Exit Button"
+							"text": "W Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -187,7 +187,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton6"
-							"text": "Exit Button"
+							"text": "Mid Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -196,7 +196,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton7"
-							"text": "Exit Button"
+							"text": "E Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -205,7 +205,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton8"
-							"text": "Exit Button"
+							"text": "X2 Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -214,7 +214,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton9"
-							"text": "Exit Button"
+							"text": "SW Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -223,7 +223,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton10"
-							"text": "Exit Button"
+							"text": "S Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -232,7 +232,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton11"
-							"text": "Exit Button"
+							"text": "SE Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -241,7 +241,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton12"
-							"text": "Exit Button"
+							"text": "X3 Button"
 							"background": #Color3
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {

@@ -1,6 +1,7 @@
 package com.illcode.meterman;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -166,4 +167,9 @@ public final class GuiUtils
         }
         return qualityRenderingHints;
     }
+
+    public static void repaintImmediately(JComponent component) {
+        component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
+    }
+
 }
