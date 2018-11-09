@@ -45,7 +45,13 @@ And now world model notes:
 
 - We'll have a series of Listener interfaces (PlayerMovingListener,
   ObjectSelectedListener, etc.) that objects can implement to register themselves to
-  receive events when the corresponding game world events occur.
+  receive events when the corresponding game world events occur. A special
+  BeforeActionListener can be registered to be notified before an action is passed
+  to the selected object, and potentially interrupt the action. The parallel is
+  AfterActionListener, which is called after the object processes the action.
+
+  Basically, all the Inform6 properties like "react_before", "after", "daemon" etc.
+  will be handled by objects registering themselves as listeners with the GameManager.
 
 - An Entity will have a getDisplayName() method that will return a String representing
   how it should be dhown in the UI. This can include modifiers like "(worn)" or
@@ -58,6 +64,32 @@ And now world model notes:
 What I'll do here is read through the attributes and properties appendices in the DM4
 and make a list of the functionality I'd like to support in my world model (and how
 it applies to the GameManager, and Room and Entity interfaces):
+
+--Entity--
+
+concealed: present in a room but not displayed in the entity list
+
+takeable: the player can take it
+
+getActions: returns a list of string actions to show in the UI
+
+action: responds to an action button pressed in the UI
+
+display name: short name to display in lists
+
+description: full text to display in the selected entity text area
+
+enterScope: called when the entity enters scope (i.e. when it comes to be in the same
+            room as the player).
+
+exitScope: called when the entity exits scope
+
+--Room--
+
+visited: the player has visited the room (and thus its name can be displayed in the exit
+         list of adjacent rooms.
+
+exits: a map from direction_constant -> room ID (or null)
 
 
 
