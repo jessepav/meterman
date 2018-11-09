@@ -48,9 +48,12 @@ And now world model notes:
   receive events when the corresponding game world events occur.
 
 - An Entity will have a getDisplayName() method that will return a String representing
-  how it should be named in the UI. This can include modifiers like "(worn)" or
+  how it should be dhown in the UI. This can include modifiers like "(worn)" or
   "(equipped)", which the Entity will determine by querying the Player object. The
   Entity itself maintains no state about being worn, equipped, or such.
+
+- Rooms have a getExitName() method that returns a short version of the room name to
+  be shown in the exit button area in the UI.
 
 What I'll do here is read through the attributes and properties appendices in the DM4
 and make a list of the functionality I'd like to support in my world model (and how
