@@ -10,11 +10,19 @@ new FormModel {
 			"resizable": false
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 				"$columnSpecs": "center:default"
-				"$rowSpecs": "default, pargap, default"
+				"$rowSpecs": "default, relgap, default, pargap, default"
 			} ) {
 				name: "panel1"
 				"border": new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 106, 112, 149, 255 ), 12, false ), sfield com.jgoodies.forms.factories.Borders DLU7_BORDER )
 				"background": &Color0 new java.awt.Color( 234, 234, 234, 255 )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "headerLabel"
+					"text": "Header Label"
+					"font": new java.awt.Font( "Serif", 0, 18 )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 1
+					"gridY": 1
+				} )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
 					name: "textArea"
 					"editable": false
@@ -22,7 +30,9 @@ new FormModel {
 					"text": "The product of a year and a half of writing, the book\ndraws on Melville's experience at sea, on his reading\nin whaling literature, and on literary inspirations\nsuch as Shakespeare and the Bible. The white whale is\nmodeled on the notoriously hard to catch actual\nalbino whale Mocha Dick, and the ending is based on\nthe sinking of the whaler Essex by a whale. The\ndetailed and realistic descriptions of whale hunting\nand of extracting whale oil, as well as life aboard\nship among a culturally diverse crew, are mixed with\nexploration of class and social status, good and\nevil, and the existence of God. In addition to\nnarrative prose, Melville uses styles and literary\ndevices ranging from songs, poetry, and catalogs to\nShakespearean stage directions, soliloquies, and\nasides."
 					"font": new java.awt.Font( "SansSerif", 0, 14 )
 					"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
-				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 3
+				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "pageButton"
 					"text": "More..."
@@ -31,7 +41,7 @@ new FormModel {
 					"font": new java.awt.Font( "Dialog", 1, 13 )
 					"focusPainted": false
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-					"gridY": 3
+					"gridY": 5
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
