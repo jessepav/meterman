@@ -28,6 +28,8 @@ public final class TinySoundManager implements SoundManager
     private final SoundMessage SHUTDOWN_MESSAGE;
     private AtomicInteger pendingLoads;   // keeps track of pending music loads
 
+    private boolean musicEnabled, soundEnabled;
+
     public TinySoundManager() {
         queue = new ArrayBlockingQueue<>(10);
         pendingLoads = new AtomicInteger(0);
@@ -78,6 +80,10 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
+    public void setMusicEnabled(boolean enabled) {
+        musicEnabled = enabled;
+    }
+
     /**
      * Loads music from a file
      * @param name the name by which the music will be referred by this SoundManager
@@ -97,6 +103,8 @@ public final class TinySoundManager implements SoundManager
      * @param name name of the Music, as specified in {@link #loadMusic}
      */
     public void playMusic(String name, boolean loop) {
+        if (!musicEnabled)
+            return;
         try {
             queue.put(new SoundMessage(SoundMessage.PLAY_MUSIC, name, loop));
         } catch (InterruptedException e) {
@@ -134,6 +142,10 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
+    public void setSoundEnabled(boolean enabled) {
+        soundEnabled = enabled;
+    }
+
     /**
      * Unloads Music previously loaded by this SoundManager
      * @param name the name under which the audio was loaded
@@ -167,6 +179,8 @@ public final class TinySoundManager implements SoundManager
      * @param name name of the sound, as specified in {@link #loadSound}
      */
     public void playSound(String name) {
+        if (!soundEnabled)
+            return;
         if (pendingLoads.get() != 0)   // sound won't play quickly, so don't play it at all
             return;
         try {

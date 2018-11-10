@@ -25,6 +25,7 @@ public class RiverboatGame implements Game
 
     public WorldState getInitialWorldState() {
         WorldState worldState = new WorldState();
+        worldState.gameName = NAME;
         setupWorldState(worldState);
         return worldState;
     }

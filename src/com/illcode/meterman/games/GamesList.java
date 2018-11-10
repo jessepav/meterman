@@ -13,7 +13,7 @@ public class GamesList
 
     public static final String[] games = {RIVERBOAT_NAME};
 
-    public Game getGame(String gameName) {
+    public static Game getGame(String gameName) {
         switch (gameName) {
         case RIVERBOAT_NAME:
             return new RiverboatGame();

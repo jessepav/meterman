@@ -1,5 +1,7 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.games.GamesList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,9 @@ import java.util.Map;
  */
 public class WorldState
 {
+    /** The name of the game, as found in {@link GamesList}*/
+    public String gameName;
+
     /** The Player character */
     public Player player;
 

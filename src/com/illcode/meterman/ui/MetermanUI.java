@@ -2,6 +2,7 @@ package com.illcode.meterman.ui;
 
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.GameManager;
+import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
 
 import java.awt.image.BufferedImage;
@@ -15,15 +16,29 @@ import java.util.List;
 public interface MetermanUI
 {
     /**
-     * Initializes the UI, binding it to a given {@link GameManager}.
-     * @param manager game manager to bind to the UI
+     * Initializes the UI.
      */
-    void init(GameManager manager);
+    void init();
 
     /**
-     * Disposes of any resources used by the UI, and hides the interface.
+     * Hides the interface and disposes of any resources used by the UI.
      */
     void dispose();
+
+    /**
+     * Set the visibility of the UI
+     * @param visible true if the UI should be visible
+     */
+    void setVisible(boolean visible);
+
+    /**
+     * Run the UI event loop, if applicable.
+     * @return true if the main thread should call {@link Meterman#shutdown()} after run()
+     *      returns; false if the UI will call shutdown() itself when the UI is closed (as in
+     *      the case for Swing/AWT interfaces, where event dispatch is performed on a separate
+     *      non-daemon thread).
+     */
+    boolean run();
 
     /**
      * Sets the frame title (or equivalent), to show the game name, etc.

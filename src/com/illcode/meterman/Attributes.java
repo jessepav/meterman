@@ -32,5 +32,5 @@ public final class Attributes
     //
 
     /** Indicates if a room has been visited before */
-    public static final int VISITED = 1000;
+    public static final int VISITED = 0;
 }

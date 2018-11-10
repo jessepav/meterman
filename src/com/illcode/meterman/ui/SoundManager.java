@@ -12,6 +12,8 @@ public interface SoundManager
 
     void setGlobalVolume(double volume);
 
+    void setMusicEnabled(boolean enabled);
+
     void loadMusic(String name, File f);
 
     void playMusic(String name, boolean loop);
@@ -21,6 +23,8 @@ public interface SoundManager
     void pauseAllMusic();
 
     void resumeAllMusic();
+
+    void setSoundEnabled(boolean enabled);
 
     void unloadMusic(String name);
 

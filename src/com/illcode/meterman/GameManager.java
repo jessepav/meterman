@@ -1,5 +1,6 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.games.GamesList;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.SoundManager;
 
@@ -11,6 +12,9 @@ public final class GameManager
     /** The game we're currently playing */
     private Game game;
 
+    /** The ClassMapper used by the {@link #game} */
+    private ClassMapper classMapper;
+
     /** The current state of the world */
     private WorldState worldState;
 
@@ -19,20 +23,29 @@ public final class GameManager
     private List<Room> rooms;
     private Map<String,Object> data;
 
-    /** The ClassMapper used by the {@link #game} */
-    private ClassMapper classMapper;
+    public GameManager() {
+    }
 
-    /** The UI bound to this GameManager */
-    public MetermanUI ui;
+    public void init() {
 
-    /** The sound manager bound to this GameManager */
-    public SoundManager sound;
+    }
 
-    public GameManager(Game game, MetermanUI ui, SoundManager sound) {
+    public void dispose() {
+
+    }
+
+    public void newGame(Game game) {
         this.game = game;
-        this.ui = ui;
-        this.sound = sound;
         worldState = game.getInitialWorldState();
+        classMapper = game.getClassMapper();
+        player = worldState.player;
+        rooms = worldState.rooms;
+        data = worldState.data;
+    }
+
+    public void loadGame(WorldState worldState) {
+        this.worldState = worldState;
+        game = GamesList.getGame(worldState.gameName);
         classMapper = game.getClassMapper();
         player = worldState.player;
         rooms = worldState.rooms;

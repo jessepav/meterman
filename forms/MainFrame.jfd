@@ -417,6 +417,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "newMenuItem"
 						"text": "New Game"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 78, 130, false )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator2"
@@ -424,21 +425,25 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "saveMenuItem"
 						"text": "Save Game"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 83, 130, false )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "saveAsMenuItem"
 						"text": "Save Game As..."
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 83, 195, false )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "loadMenuItem"
 						"text": "Load Game"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 76, 130, false )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator1"
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "exitMenuItem"
-						"text": "Exit"
+						name: "quitMenuItem"
+						"text": "Quit"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 81, 130, false )
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {

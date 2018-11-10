@@ -1,5 +1,10 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.ui.MetermanUI;
+import com.illcode.meterman.ui.SoundManager;
+import com.illcode.meterman.ui.swingui.SwingUI;
+import com.illcode.meterman.ui.swingui.TinySoundManager;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +21,15 @@ public final class Meterman
     static Path prefsPath, savesPath;
     static Properties prefs;
 
+    /** The GameManager running the current game */
+    public static GameManager manager;
+
+    /** The MetermanUI displaying the current game */
+    public static MetermanUI ui;
+
+    /** The SoundManager operating in the current game */
+    public static SoundManager sound;
+
     public static void main(String[] args) throws IOException {
         prefsPath = Paths.get("config/meterman.properties");
         if (!loadPrefs(prefsPath)) {
@@ -28,6 +42,23 @@ public final class Meterman
         savesPath = Paths.get(Utils.pref("saves-path", "saves"));
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
+
+        manager = new GameManager();
+        switch (Utils.pref("ui", "swing")) {
+        case "swing":
+            ui = new SwingUI();
+            sound = new TinySoundManager();
+            break;
+        default:
+            logger.severe("Invalid ui set in config!");
+            return;
+        }
+        manager.init();
+        ui.init();
+        sound.init();
+
+        if (ui.run())
+            shutdown();
     }
 
     private static boolean loadPrefs(Path path) {
@@ -55,5 +86,8 @@ public final class Meterman
     public static void shutdown() {
         logger.info("Meterman shutting down...");
         savePrefs(prefsPath);
+        sound.dispose();
+        ui.dispose();
+        manager.dispose();
     }
 }
