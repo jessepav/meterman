@@ -25,10 +25,33 @@ new FormModel {
 				} ) {
 					name: "textPanel"
 					"background": sfield java.awt.Color darkGray
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "roomNameLabel"
-						"text": "(room name)"
-						"foreground": &Color0 new java.awt.Color( 231, 231, 231, 255 )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "left:default, unrelgap, 26dlu, glue, 26dlu"
+						"$rowSpecs": "default"
+					} ) {
+						name: "panel1"
+						"opaque": false
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "roomNameLabel"
+							"text": "(room name)"
+							"foreground": &Color0 new java.awt.Color( 231, 231, 231, 255 )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "lookButton"
+							"text": "Look"
+							"background": &Color1 new java.awt.Color( 204, 204, 204, 255 )
+							"border": &CompoundBorder0 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "waitButton"
+							"text": "Wait"
+							"background": #Color1
+							"border": &CompoundBorder1 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 5
+						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane1"
@@ -38,7 +61,7 @@ new FormModel {
 							name: "mainTextArea"
 							"columns": 35
 							"rows": 14
-							"background": &Color1 new java.awt.Color( 220, 220, 220, 255 )
+							"background": &Color2 new java.awt.Color( 220, 220, 220, 255 )
 							"lineWrap": true
 							"wrapStyleWord": true
 							"editable": false
@@ -63,7 +86,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JTextArea" ) {
 							name: "objectTextArea"
 							"rows": 4
-							"background": #Color1
+							"background": #Color2
 							"lineWrap": true
 							"wrapStyleWord": true
 							"editable": false
@@ -97,7 +120,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JList" ) {
 							name: "roomList"
 							"prototypeCellValue": "01234567890123456789"
-							"background": #Color1
+							"background": #Color2
 							"selectionMode": 0
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -116,7 +139,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JList" ) {
 							name: "inventoryList"
 							"prototypeCellValue": "Abraded Alligator Clips"
-							"background": #Color1
+							"background": #Color2
 							"selectionMode": 0
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -141,21 +164,21 @@ new FormModel {
 							name: "exitLabel"
 							"text": "Exits:"
 							"horizontalAlignment": 4
-							"foreground": &Color2 new java.awt.Color( 231, 231, 231, 255 )
+							"foreground": &Color3 new java.awt.Color( 231, 231, 231, 255 )
 							"verticalAlignment": 1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton1"
 							"text": "NW Button"
-							"background": &Color3 new java.awt.Color( 204, 204, 204, 255 )
-							"border": &CompoundBorder0 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+							"background": #Color1
+							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton2"
 							"text": "N Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
@@ -163,7 +186,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton3"
 							"text": "NE Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
@@ -171,7 +194,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton4"
 							"text": "X1 Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
@@ -179,7 +202,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton5"
 							"text": "W Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 3
@@ -188,7 +211,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton6"
 							"text": "Mid Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
@@ -197,7 +220,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton7"
 							"text": "E Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
@@ -206,7 +229,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton8"
 							"text": "X2 Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
@@ -215,7 +238,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton9"
 							"text": "SW Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 5
@@ -224,7 +247,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton10"
 							"text": "S Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
@@ -233,7 +256,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton11"
 							"text": "SE Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
@@ -242,7 +265,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton12"
 							"text": "X3 Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder0
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
@@ -262,21 +285,21 @@ new FormModel {
 							name: "actionLabel"
 							"text": "Actions:"
 							"horizontalAlignment": 4
-							"foreground": #Color2
+							"foreground": #Color3
 							"verticalAlignment": 1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton1"
 							"text": "Action Button"
-							"background": #Color3
-							"border": &CompoundBorder1 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+							"background": #Color1
+							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton2"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
@@ -284,7 +307,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton3"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
@@ -292,7 +315,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton4"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 3
@@ -301,7 +324,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton5"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
@@ -310,7 +333,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton6"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
@@ -319,7 +342,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton7"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 5
@@ -328,16 +351,16 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "actionButton8"
 							"text": "Action Button"
-							"background": #Color3
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 							"gridY": 5
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "waitButton"
-							"text": "Wait"
-							"background": #Color3
+							name: "actionButton9"
+							"text": "Action Button"
+							"background": #Color1
 							"border": #CompoundBorder1
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7

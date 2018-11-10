@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 import static com.illcode.meterman.Utils.logger;
 
-public class Meterman
+public final class Meterman
 {
     static Path prefsPath, savesPath;
     static Properties prefs;

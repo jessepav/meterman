@@ -10,11 +10,32 @@ public interface Entity
     /** Returns the ID of this entity, as used in the class-mapper */
     String getId();
 
-    /** If true, the entity will not be displayed in the room entities list. */
-    boolean isConcealed();
+    /** Return the name of this entity */
+    String getName();
 
-    /** If true, the entity can be taken (i.e. transferred to the player inventory) and dropped */
-    boolean isTakeable();
+    /**
+     * Returns the name of the entity that should be displayed in the room or inventory list. This
+     * includes any modifiers, like "(worn)", or "(equipped)".
+     */
+    String getListName();
+
+    /**
+     * Returns the description that should be shown in the entity text area when
+     * this Entity is selected.
+     */
+    String getDescription();
+
+    /** Returns true if {@code attribute} is set */
+    boolean checkAttribute(int attribute);
+
+    /** Clear an attribute */
+    void clearAttribute(int attribute);
+
+    /** Set an attribute */
+    void setAttribute(int attribute);
+
+    /** Clear all attributes */
+    void clearAllAttributes();
 
     /**
      * Called when the entity enters scope. This can occur when:
@@ -54,7 +75,7 @@ public interface Entity
 
     /**
      * Returns a list of actions to be shown in the UI. For takeable entities, a maximum
-     * of 7 actions will be recognized; for non-takeable entities, 8 actions are possible.
+     * of 8 actions will be recognized; for non-takeable entities, 9 actions are possible.
      */
     List<String> getActions();
 
@@ -63,16 +84,4 @@ public interface Entity
      * @param action action name
      */
     void processAction(String action);
-
-    /**
-     * Returns the name of the entity that should be displayed in the room or inventory list. This
-     * includes any modifiers, like "(worn)", or "(equipped)".
-     */
-    String getDisplayName();
-
-    /**
-     * Returns the description that should be shown in the entity text area when
-     * this Entity is selected.
-     */
-    String getDescription();
 }

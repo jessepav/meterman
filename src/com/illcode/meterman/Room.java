@@ -9,11 +9,26 @@ public interface Room
     /** Returns the ID of this room, as used in the class-mapper */
     String getId();
 
-    /** Return true if the room has been visited already */
-    void isVisited();
+    /** Returns true if {@code attribute} is set */
+    boolean checkAttribute(int attribute);
 
-    /** Sets the visited state of the room */
-    void setVisited(boolean visited);
+    /** Clear an attribute */
+    void clearAttribute(int attribute);
+
+    /** Set an attribute */
+    void setAttribute(int attribute);
+
+    /** Clear all attributes */
+    void clearAllAttributes();
+
+    /** Returns the full name of the room */
+    String getName();
+
+    /** Returns a potentially shorter version of the name, to be used in Exit buttons */
+    String getExitName();
+
+    /** Returns the text to be displayed when the player enters the room or clicks "Look" */
+    String getDescription();
 
     /**
      * Return the exit room associated with a given position
