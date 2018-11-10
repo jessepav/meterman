@@ -1,9 +1,11 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.event.GameActionListener;
+import com.illcode.meterman.event.PlayerMovementListener;
+import com.illcode.meterman.event.TurnListener;
 import com.illcode.meterman.games.GamesList;
-import com.illcode.meterman.ui.MetermanUI;
-import com.illcode.meterman.ui.SoundManager;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,15 +25,30 @@ public final class GameManager
     private List<Room> rooms;
     private Map<String,Object> data;
 
+    // Our listener lists
+    List<GameActionListener> gameActionListeners;
+    List<PlayerMovementListener> playerMovementListeners;
+    List<TurnListener> turnListeners;
+
     public GameManager() {
     }
 
     public void init() {
-
+        gameActionListeners = new LinkedList<>();
+        playerMovementListeners = new LinkedList<>();
+        turnListeners = new LinkedList<>();
     }
 
     public void dispose() {
-
+        game = null;
+        classMapper = null;
+        worldState = null;
+        player = null;
+        rooms = null;
+        data = null;
+        gameActionListeners = null;
+        playerMovementListeners = null;
+        turnListeners = null;
     }
 
     public void newGame(Game game) {
@@ -53,13 +70,22 @@ public final class GameManager
     }
 
     /**
+     * Moves the player to a destination room. All appropriate listeners will be notified, and
+     * one of them may cancel this move.
+     * @param r the room to which the player should move.
+     */
+    public void movePlayer(Room r) {
+
+    }
+
+    /**
      * Moves an entity to a room. The entity can currently reside in a room, in player inventory,
      * or nowhere. This method calls {@link Entity#enterScope()} and {@link Entity#exitingScope()}
      * as needed.
      * @param e entity to move
-     * @param to destination room, or null if the entity should be removed from the game world
+     * @param r destination room, or null if the entity should be removed from the game world
      */
-    public void moveEntity(Entity e, Room to) {
+    public void moveEntity(Entity e, Room r) {
 
     }
 
@@ -130,5 +156,13 @@ public final class GameManager
             }
         }
         return false;
+    }
+
+    /**
+     * Called by the UI to indicate that the user selected an entity in the lists.
+     * @param e entity selected, or null if no entity selected
+     */
+    public void entitySelected(Entity e) {
+
     }
 }

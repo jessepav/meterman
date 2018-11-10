@@ -60,6 +60,12 @@ public interface MetermanUI
     void setFrameImage(BufferedImage image);
 
     /**
+     * Sets the entity image that will be drawn inset in the frame image.
+     * @param image image to display
+     */
+    void setEntityImage(BufferedImage image);
+
+    /**
      * Sets the room name displayed in the UI
      * @param name room name
      */

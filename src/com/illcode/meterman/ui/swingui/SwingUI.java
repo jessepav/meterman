@@ -37,6 +37,10 @@ public class SwingUI implements MetermanUI
 
     }
 
+    public void setEntityImage(BufferedImage image) {
+
+    }
+
     public void setRoomName(String name) {
 
     }

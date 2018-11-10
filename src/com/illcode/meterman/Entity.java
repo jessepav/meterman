@@ -74,8 +74,7 @@ public interface Entity
     void setRoom();
 
     /**
-     * Returns a list of actions to be shown in the UI. For takeable entities, a maximum
-     * of 8 actions will be recognized; for non-takeable entities, 9 actions are possible.
+     * Returns a list of actions to be shown in the UI.
      */
     List<String> getActions();
 

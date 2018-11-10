@@ -22,7 +22,7 @@ public final class Meterman
     static Properties prefs;
 
     /** The GameManager running the current game */
-    public static GameManager manager;
+    public static GameManager gm;
 
     /** The MetermanUI displaying the current game */
     public static MetermanUI ui;
@@ -43,7 +43,7 @@ public final class Meterman
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
 
-        manager = new GameManager();
+        gm = new GameManager();
         switch (Utils.pref("ui", "swing")) {
         case "swing":
             ui = new SwingUI();
@@ -53,10 +53,11 @@ public final class Meterman
             logger.severe("Invalid ui set in config!");
             return;
         }
-        manager.init();
+        gm.init();
         ui.init();
         sound.init();
 
+        ui.setVisible(true);
         if (ui.run())
             shutdown();
     }
@@ -88,6 +89,6 @@ public final class Meterman
         savePrefs(prefsPath);
         sound.dispose();
         ui.dispose();
-        manager.dispose();
+        gm.dispose();
     }
 }
