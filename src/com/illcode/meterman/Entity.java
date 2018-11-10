@@ -10,6 +10,18 @@ public interface Entity
     /** Returns the ID of this entity, as used in the class-mapper */
     String getId();
 
+    /** Returns true if {@code attribute} is set */
+    boolean checkAttribute(int attribute);
+
+    /** Clear an attribute */
+    void clearAttribute(int attribute);
+
+    /** Set an attribute */
+    void setAttribute(int attribute);
+
+    /** Clear all attributes */
+    void clearAllAttributes();
+
     /** Return the name of this entity */
     String getName();
 
@@ -24,18 +36,6 @@ public interface Entity
      * this Entity is selected.
      */
     String getDescription();
-
-    /** Returns true if {@code attribute} is set */
-    boolean checkAttribute(int attribute);
-
-    /** Clear an attribute */
-    void clearAttribute(int attribute);
-
-    /** Set an attribute */
-    void setAttribute(int attribute);
-
-    /** Clear all attributes */
-    void clearAllAttributes();
 
     /**
      * Called when the entity enters scope. This can occur when:

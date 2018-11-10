@@ -1,6 +1,7 @@
-package com.illcode.meterman.ui;
+package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Utils;
+import com.illcode.meterman.ui.SoundManager;
 import kuusisto.tinysound.Music;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
