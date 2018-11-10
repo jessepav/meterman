@@ -60,6 +60,11 @@ And now world model notes:
 
 - Rooms have a getExitName() method that returns a short version of the room name to
   be shown in the exit button area in the UI.
+  
+- To allow multiple games to exist in one codebase, the configuration file will specify
+  the game name -- then a special initialization routine will map the game name to a
+  game class and transfer control to it. So we can have multiple games without introducing
+  too much abstraction.
 
 What I'll do here is read through the attributes and properties appendices in the DM4
 and make a list of the functionality I'd like to support in my world model (and how
