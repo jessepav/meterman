@@ -26,6 +26,19 @@ public interface MetermanUI
     void dispose();
 
     /**
+     * Sets the frame title (or equivalent), to show the game name, etc.
+     * @param title title string
+     */
+    void setTitle(String title);
+
+    /**
+     * Opens a web browser to the given URL, if applicable. If the UI doesn't
+     * support this, or the URL is malformed, nothing will happen.
+     * @param url URL to open
+     */
+    void openURL(String url);
+
+    /**
      * Sets the image displayed in the main UI frame.
      * @param image image to display
      */

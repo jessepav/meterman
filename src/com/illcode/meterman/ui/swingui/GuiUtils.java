@@ -1,4 +1,4 @@
-package com.illcode.meterman;
+package com.illcode.meterman.ui.swingui;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -96,7 +96,7 @@ public final class GuiUtils
                 }
                 bi.setRGB(0, 0, w, h, rgb, 0, w);
             }
-            image = GuiUtils.createBitmaskImage(w, h);
+            image = createBitmaskImage(w, h);
             Graphics g = image.getGraphics();
             g.drawImage(bi, 0, 0, null);
             g.dispose();
@@ -171,5 +171,4 @@ public final class GuiUtils
     public static void repaintImmediately(JComponent component) {
         component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
     }
-
 }
