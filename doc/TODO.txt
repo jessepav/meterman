@@ -1,0 +1,5 @@
+- Wire up the UI
+
+- Implement the world modification logic in GameManager
+
+- *Then* continue writing helper classes for entities and rooms
