@@ -162,14 +162,6 @@ public final class GameManager
         return false;
     }
 
-    /**
-     * Called by the UI to indicate that the user selected an entity in the lists.
-     * @param e entity selected, or null if no entity selected
-     */
-    public void entitySelected(Entity e) {
-
-    }
-
     /** @see ClassMapper#getRoom(String)  */
     public Room getRoom(String id) {
         return classMapper.getRoom(id);
@@ -180,4 +172,36 @@ public final class GameManager
         return classMapper.createEntity(id);
     }
 
+    /** Called by the UI when the user clicks "Look" */
+    public void lookAction() {
+
+    }
+
+    /** Called by the UI when the user clicks "Wait" */
+    public void waitAction() {
+
+    }
+
+    /** Called by the UI when the user clicks an exit button */
+    public void exitSelected(int direction) {
+
+    }
+
+    /** Called by the UI when the user clicks an action button (or selects an action
+     *  from the combo box when there are many actions) */
+    public void entityActionSelected(String action) {
+
+    }
+
+    public void aboutMenuClicked() {
+
+    }
+
+    /**
+     * Called by the UI to indicate that the user selected an entity in the lists.
+     * @param e entity selected, or null if no entity selected
+     */
+    public void entitySelected(Entity e) {
+
+    }
 }

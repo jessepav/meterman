@@ -21,6 +21,9 @@ public class BaseRoom implements Room
     public List<Entity> entities;
 
     public BaseRoom() {
+    }
+
+    public void init() {
         id = "(id)";
         name = "(name)";
         exitName = "(exit name)";

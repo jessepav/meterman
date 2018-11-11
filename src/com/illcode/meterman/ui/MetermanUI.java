@@ -1,9 +1,7 @@
 package com.illcode.meterman.ui;
 
 import com.illcode.meterman.Entity;
-import com.illcode.meterman.GameManager;
 import com.illcode.meterman.Meterman;
-import com.illcode.meterman.Room;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -129,34 +127,31 @@ public interface MetermanUI
     void removeInventoryEntity(Entity e);
 
     /**
-     * Clears the exit button list, and hides the "Exits" label.
+     * Clears the exit button list.
      */
     void clearExits();
 
     /**
      * Sets a given exit button to a Room, or hides it.
      * @param buttonPos one of the constants indicating a button position (ex. {@link UIConstants#N_BUTTON})
-     * @param r room to add to the button list; if null, the given button will be hidden. If all buttons
-     *          are hidden, the "Exits" label will be hidden as well.
+     * @param label label to use for the specified exit button; if null, the given button will be hidden.
      */
-    void setExitButton(int buttonPos, Room r);
+    void setExitLabel(int buttonPos, String label);
 
     /**
-     * Clears the action button list and hides the "Actions" label.
+     * Clears the action button group.
      */
     void clearActions();
 
     /**
-     * Add an action to the action button list. If the "Actions" label is hidden,
-     * it will be displayed. If an action with the same label is already shown,
+     * Add an action to the action button list. If an action with the same label is already shown,
      * this method will return without any effect.
      * @param actionLabel action to add
      */
     void addAction(String actionLabel);
 
     /**
-     * Removes an action from the action button list. If no actions remain, the
-     * "Actions" label will be hidden
+     * Removes an action from the action button list.
      * @param actionLabel action to remove
      */
     void removeAction(String actionLabel);

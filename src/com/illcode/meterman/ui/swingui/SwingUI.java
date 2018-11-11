@@ -1,24 +1,40 @@
 package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Entity;
-import com.illcode.meterman.Room;
 import com.illcode.meterman.ui.MetermanUI;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwingUI implements MetermanUI
 {
-    public void init() {
+    private MainFrame mainFrame;
+    private TextDialog textDialog;
+    private PromptDialog promptDialog;
+    private ListDialog listDialog;
 
+    private BufferedImage frameImage, entityImage;
+    private List<Entity> roomEntities, inventoryEntities;
+
+    public void init() {
+        roomEntities = new ArrayList<>();
+        inventoryEntities = new ArrayList<>();
     }
 
     public void dispose() {
-
+        if (frameImage != null) {
+            frameImage.flush();
+            frameImage = null;
+        }
+        if (entityImage != null) {
+            entityImage.flush();
+            entityImage = null;
+        }
     }
 
     public void setVisible(boolean visible) {
-
+        mainFrame.setVisible(visible);
     }
 
     public boolean run() {
@@ -89,7 +105,7 @@ public class SwingUI implements MetermanUI
 
     }
 
-    public void setExitButton(int buttonPos, Room r) {
+    public void setExitLabel(int buttonPos, String label) {
 
     }
 

@@ -16,6 +16,9 @@ public class BaseEntity implements Entity
     public String roomId;
 
     public BaseEntity() {
+    }
+
+    public void init() {
         id = "(id)";
         name = "(name)";
         listName = "(list name)";

@@ -7,6 +7,9 @@ import java.util.List;
  */
 public interface Entity
 {
+    /** Initialize the entity to its default state. This is not called when restoring a game. */
+    void init();
+
     /** Returns the ID of this entity, as used in the class-mapper */
     String getId();
 
