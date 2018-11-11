@@ -42,6 +42,11 @@ public interface Room
      */
     Room getExit(int direction);
 
+   /**
+     * Called when the player has entered the room.
+     */
+    void roomEntered();
+
     /**
      * Called when the player attempts an exit in the given direction. This method is useful
      * for blocking a player's exit (for reasons of a locked door, being stuck in a web, etc.)
@@ -54,16 +59,8 @@ public interface Room
 
     /**
      * Returns a list of the entities found in this room.
+     * <p/>
+     * Note: this list must be mutable, as it may be used directly in modifying the room's contents.
      */
     List<Entity> getRoomEntities();
-
-    /**
-     * Called when the player has entered the room.
-     */
-    void roomEntered();
-
-    /**
-     * Called as the player is exiting the room (but is still there)
-     */
-    void roomExiting();
 }
