@@ -20,4 +20,7 @@ public class UIConstants
                             X1_BUTTON = 3,
                             X2_BUTTON = 7,
                             X3_BUTTON = 11;
+
+    /** The number of exit buttons in the UI */
+    public static final int NUM_EXIT_BUTTONS = 12;
 }

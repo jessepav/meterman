@@ -62,16 +62,17 @@ public interface Entity
     void exitingScope();
 
     /**
-     * Returns the room where this entity is found. If the entity is held in player inventory,
-     * this returns the current player room.
-     * @return the room, or null if not in a room or inventory
+     * Returns the room ID where this entity is found. If the entity is held in player inventory,
+     * this returns the current player room ID.
+     * @return the room ID, or null if not in a room or inventory
      */
-    Room getRoom();
+    String getRoomId();
 
     /**
      * Sets the room where this entity resides, or null if it doesn't reside anywhere.
+     * @param id
      */
-    void setRoom();
+    void setRoomId(String id);
 
     /**
      * Returns a list of extra actions to be shown in the UI, in addition to those shown

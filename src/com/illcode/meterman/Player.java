@@ -10,7 +10,7 @@ import java.util.List;
 public class Player
 {
     /** The room in which the player is currently */
-    public Room currentRoom;
+    public String currentRoomId;
 
     /** A list of all entities in the player's inventory */
     public List<Entity> inventory;
@@ -25,7 +25,7 @@ public class Player
     }
 
     public void init() {
-        currentRoom = null;
+        currentRoomId = null;
         inventory = new LinkedList<>();
         worn = new LinkedList<>();
         equipped = new LinkedList<>();

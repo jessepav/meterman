@@ -8,6 +8,12 @@ import java.util.List;
  */
 public final class Attributes
 {
+    /**
+     * The number of attributes reserved by the game engine. Thus, any game-specific
+     * attributes should start at {@code RESERVED_ATTRIBUTES}.
+     */
+    public static final int RESERVED_ATTRIBUTES = 32;
+
     //
     // Entity attributes
     //
