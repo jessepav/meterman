@@ -69,6 +69,10 @@ public final class GameManager
         data = worldState.data;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     /**
      * Moves the player to a destination room. All appropriate listeners will be notified, and
      * one of them may cancel this move.
@@ -165,4 +169,15 @@ public final class GameManager
     public void entitySelected(Entity e) {
 
     }
+
+    /** @see ClassMapper#getRoom(String)  */
+    public Room getRoom(String id) {
+        return classMapper.getRoom(id);
+    }
+
+    /** @see ClassMapper#createEntity(String)  */
+    public Entity createEntity(String id) {
+        return classMapper.createEntity(id);
+    }
+
 }
