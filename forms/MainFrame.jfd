@@ -357,11 +357,17 @@ new FormModel {
 							"gridX": 5
 							"gridY": 5
 						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "actionButton9"
-							"text": "Action Button"
-							"background": #Color1
-							"border": #CompoundBorder1
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "moreActionCombo"
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: "More..."
+								addElement( "More..." )
+								addElement( "Ala" )
+								addElement( "baster" )
+								addElement( "potion" )
+								addElement( "banana" )
+								addElement( "juice" )
+							}
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 5

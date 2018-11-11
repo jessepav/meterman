@@ -10,16 +10,16 @@ import java.util.List;
 public class Player
 {
     /** The room in which the player is currently */
-    Room currentRoom;
+    public Room currentRoom;
 
     /** A list of all entities in the player's inventory */
-    List<Entity> inventory;
+    public List<Entity> inventory;
 
     /** A list of entities worn by the player (subset of {@link #inventory}) */
-    List<Entity> worn;
+    public List<Entity> worn;
 
     /** A list of entities equipped by the player (subset of {@link #inventory}) */
-    List<Entity> equipped;
+    public List<Entity> equipped;
 
     public Player() {
     }

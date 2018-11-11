@@ -74,9 +74,10 @@ public interface Entity
     void setRoom();
 
     /**
-     * Returns a list of actions to be shown in the UI.
+     * Returns a list of extra actions to be shown in the UI, in addition to those shown
+     * by the engine based on the entity's attributes.
      */
-    List<String> getActions();
+    List<String> getExtraActions();
 
     /**
      * The player invoked an action on this entity from the UI

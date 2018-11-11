@@ -1,5 +1,8 @@
 package com.illcode.meterman;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * The attribute constants used with the Entity and Room attribute methods
  */
@@ -33,4 +36,5 @@ public final class Attributes
 
     /** Indicates if a room has been visited before */
     public static final int VISITED = 0;
+
 }
