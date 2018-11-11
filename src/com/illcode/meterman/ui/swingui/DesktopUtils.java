@@ -10,12 +10,12 @@ public class DesktopUtils
 {
     private static Desktop desktop;
 
-    public static void browseURI(String uri) throws IOException {
+    public static void browseURI(String uri) {
         if (!ensureDesktop())
             return;
         try {
             desktop.browse(new URI(uri));
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException|IOException e) {
             return;  // don't do anything - in this program, browsing is not critical
         }
     }
