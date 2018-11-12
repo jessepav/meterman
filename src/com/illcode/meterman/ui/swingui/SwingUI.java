@@ -45,11 +45,11 @@ public class SwingUI implements MetermanUI
     }
 
     public void setFrameImage(BufferedImage image) {
-
+        mainFrame.setFrameImage(image);
     }
 
     public void setEntityImage(BufferedImage image) {
-
+        mainFrame.setEntityImage(image);
     }
 
     public void setRoomName(String name) {
@@ -65,11 +65,11 @@ public class SwingUI implements MetermanUI
     }
 
     public void setObjectName(String name) {
-
+        mainFrame.objectNameLabel.setText(name);
     }
 
     public void setObjectText(String text) {
-
+        mainFrame.objectTextArea.setText(text);
     }
 
     public void clearRoomEntities() {

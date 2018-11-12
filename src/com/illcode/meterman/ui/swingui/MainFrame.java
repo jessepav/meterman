@@ -28,7 +28,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, quitMenuItem, aboutMenuItem;
     JCheckBoxMenuItem musicCheckBoxMenuItem, soundCheckBoxMenuItem;
     JPanel imagePanel;
-    JLabel roomNameLabel;
+    JLabel roomNameLabel, objectNameLabel;
     JButton lookButton, waitButton;
     JTextArea mainTextArea, objectTextArea;
     JList<String> roomList, inventoryList;
@@ -60,6 +60,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             soundCheckBoxMenuItem = cr.getCheckBoxMenuItem("soundCheckBoxMenuItem");
             imagePanel = cr.getPanel("imagePanel");
             roomNameLabel = cr.getLabel("roomNameLabel");
+            objectNameLabel = cr.getLabel("objectNameLabel");
             lookButton = cr.getButton("lookButton");
             waitButton = cr.getButton("waitButton");
             mainTextArea = cr.getTextArea("mainTextArea");
@@ -80,6 +81,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             FrameImage fi = new FrameImage();
             imagePanel.add(fi);
 
+            frame.getRootPane().setDoubleBuffered(true);
+
             roomListModel = new DefaultListModel<>();
             inventoryListModel = new DefaultListModel<>();
             roomList.setModel(roomListModel);
@@ -92,9 +95,9 @@ class MainFrame implements ActionListener, ListSelectionListener
                 b.addActionListener(this);
             for (JButton b : actionButtons)
                 b.addActionListener(this);
-
             roomList.addListSelectionListener(this);
             inventoryList.addListSelectionListener(this);
+            moreActionCombo.addActionListener(this);
 
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
@@ -110,6 +113,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             entityImage.flush();
             entityImage = null;
         }
+        setVisible(false);
+        frame.dispose();
     }
 
     void setFrameImage(BufferedImage image) {
@@ -138,6 +143,12 @@ class MainFrame implements ActionListener, ListSelectionListener
             Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
         } else if (source == soundCheckBoxMenuItem) {
             Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
+        } else if (source == quitMenuItem) {
+            Meterman.shutdown();
+        } else if (source == moreActionCombo) {
+            int idx = moreActionCombo.getSelectedIndex();
+            if (idx > 0)
+                Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
         }
     }
 
