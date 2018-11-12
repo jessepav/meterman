@@ -175,10 +175,16 @@ class MainFrame implements ActionListener, ListSelectionListener
             }
             if (entityImage != null) {
                 int cw = getWidth();
+                int ch = getHeight();
                 int iw = entityImage.getWidth();
                 int ih = entityImage.getHeight();
-                g2d.setColor(Color.BLUE);
-                // TODO: paint a frame and then the entityImage
+
+                final int margin = cw * 9 / 10;
+                cw -= 2*margin;
+                float ratio = (float) cw / iw;
+                ih = (int) (ih * ratio);
+                g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
+                g2d.drawImage(entityImage, margin, ch / 2 - ih / 3, cw, ih, null);
             }
         }
     }
