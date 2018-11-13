@@ -31,7 +31,7 @@ public interface Entity
 
     /**
      * Returns the name of the entity that should be displayed in the room or inventory list. This
-     * includes any modifiers, like "(worn)", or "(equipped)".
+     * may include any modifiers, like "(worn)", or "(equipped)".
      */
     String getListName();
 
