@@ -37,6 +37,9 @@ new FormModel {
 						"background": new java.awt.Color( 245, 245, 245, 255 )
 						"selectionMode": 0
 						"prototypeCellValue": "0123456789012345678901234"
+						auxiliary() {
+							"JavaCodeGenerator.typeParameters": "String"
+						}
 					} )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 1

@@ -188,22 +188,22 @@ class MainFrame implements ActionListener, ListSelectionListener
             Meterman.gm.lookAction();
         } else if (source == waitButton) {
             Meterman.gm.waitAction();
-        } else if (source == aboutMenuItem) {
-            Meterman.gm.aboutMenuClicked();
         } else if ((buttonIdx = ArrayUtils.indexOf(exitButtons, source)) != -1) {
             Meterman.gm.exitSelected(buttonIdx);
         } else if ((buttonIdx = ArrayUtils.indexOf(actionButtons, source)) != -1) {
             Meterman.gm.entityActionSelected(actionButtons[buttonIdx].getText());
+        } else if (source == moreActionCombo) {
+            int idx = moreActionCombo.getSelectedIndex();
+            if (idx > 0)   // index 0 is "More..."
+                Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
         } else if (source == musicCheckBoxMenuItem) {
             Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
         } else if (source == soundCheckBoxMenuItem) {
             Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
         } else if (source == quitMenuItem) {
             Meterman.shutdown();
-        } else if (source == moreActionCombo) {
-            int idx = moreActionCombo.getSelectedIndex();
-            if (idx > 0)   // index 0 is "More..."
-                Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
+        } else if (source == aboutMenuItem) {
+            Meterman.gm.aboutMenuClicked();
         }
     }
 

@@ -179,9 +179,10 @@ public interface MetermanUI
      * @param header header surmounted above the text passage
      * @param text text passage (line-breaks kept intact)
      * @param prompt prompt displayed in front of the field
+     * @param initialText
      * @return the text entered by the user
      */
-    String showPromptDialog(String header, String text, String prompt);
+    String showPromptDialog(String header, String text, String prompt, String initialText);
 
     /**
      * Shows a dialog allowing the user to select one of a list of items.

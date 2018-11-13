@@ -22,9 +22,15 @@ public class SwingUI implements MetermanUI
         roomEntities = new ArrayList<>();
         inventoryEntities = new ArrayList<>();
         mainFrame = new MainFrame(this);
+        textDialog = new TextDialog(mainFrame.frame);
+        promptDialog = new PromptDialog(mainFrame.frame);
+        listDialog = new ListDialog(mainFrame.frame);
     }
 
     public void dispose() {
+        listDialog.dispose();
+        promptDialog.dispose();
+        textDialog.dispose();
         mainFrame.dispose();
     }
 
@@ -143,15 +149,15 @@ public class SwingUI implements MetermanUI
     }
 
     public void showTextDialog(String header, String text, String buttonLabel) {
-
+        textDialog.show(header, text, buttonLabel);
     }
 
-    public String showPromptDialog(String header, String text, String prompt) {
-        return null;
+    public String showPromptDialog(String header, String text, String prompt, String initialText) {
+        return promptDialog.show(header, text, prompt, initialText);
     }
 
     public <T> T showListDialog(String header, String text, List<T> items) {
-        return null;
+        return listDialog.showListDialog(header, text, items);
     }
 
     /** Called by MainFrame when an entity is selected from the room list. We translate
