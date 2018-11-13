@@ -109,23 +109,23 @@ public class SwingUI implements MetermanUI
     }
 
     public void clearExits() {
-
+        mainFrame.clearExits();
     }
 
     public void setExitLabel(int buttonPos, String label) {
-
+        mainFrame.setExitLabel(buttonPos, label);
     }
 
     public void clearActions() {
-
+        mainFrame.clearActions();
     }
 
     public void addAction(String actionLabel) {
-
+        mainFrame.addAction(actionLabel);
     }
 
     public void removeAction(String actionLabel) {
-
+        mainFrame.removeAction(actionLabel);
     }
 
     public void setStatusLabel(int labelPosition, String label) {

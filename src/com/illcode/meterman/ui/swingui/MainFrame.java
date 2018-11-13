@@ -9,10 +9,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -22,6 +24,9 @@ import static com.illcode.meterman.Utils.logger;
 
 class MainFrame implements ActionListener, ListSelectionListener
 {
+    static final int NUM_EXIT_BUTTONS = 12;
+    static final int NUM_ACTION_BUTTONS = 8;
+
     private SwingUI ui;
 
     JFrame frame;
@@ -39,6 +44,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     DefaultListModel<String> roomListModel, inventoryListModel;
 
     private BufferedImage frameImage, entityImage;
+    private List<String> actions;
 
     private boolean suppressValueChanged;
 
@@ -67,11 +73,11 @@ class MainFrame implements ActionListener, ListSelectionListener
             objectTextArea = cr.getTextArea("objectTextArea");
             roomList = cr.getList("roomList");
             inventoryList = cr.getList("inventoryList");
-            exitButtons = new JButton[12];
-            for (int i = 0; i < exitButtons.length; i++)
+            exitButtons = new JButton[NUM_EXIT_BUTTONS];
+            for (int i = 0; i < NUM_EXIT_BUTTONS; i++)
                 exitButtons[i] = cr.getButton("exitButton" + (i+1));
-            actionButtons = new JButton[8];
-            for (int i = 0; i < actionButtons.length; i++)
+            actionButtons = new JButton[NUM_ACTION_BUTTONS];
+            for (int i = 0; i < NUM_ACTION_BUTTONS; i++)
                 actionButtons[i] = cr.getButton("actionButton" + (i+1));
             moreActionCombo = cr.getComboBox("moreActionCombo");
             leftStatusLabel = cr.getLabel("leftStatusLabel");
@@ -98,7 +104,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             roomList.addListSelectionListener(this);
             inventoryList.addListSelectionListener(this);
             moreActionCombo.addActionListener(this);
-
+            actions = new ArrayList<>(16);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
         }
@@ -125,6 +131,55 @@ class MainFrame implements ActionListener, ListSelectionListener
         entityImage = image;
     }
 
+    void setVisible(boolean visible) {
+        frame.setVisible(visible);
+    }
+
+    public void clearExits() {
+        for (JButton b : exitButtons)
+            b.setVisible(false);
+    }
+
+    public void setExitLabel(int buttonPos, String label) {
+        JButton b = exitButtons[buttonPos];
+        if (label == null) {
+            b.setVisible(false);
+        } else {
+            b.setVisible(true);
+            b.setText(label);
+        }
+    }
+
+    public void clearActions() {
+        actions.clear();
+        for (JButton b : actionButtons)
+            b.setVisible(false);
+        moreActionCombo.setVisible(false);
+        moreActionCombo.removeAllItems();
+        moreActionCombo.addItem("More...");
+    }
+
+    public void addAction(String actionLabel) {
+        actions.add(actionLabel);
+        int n = actions.size();
+        if (n <= NUM_ACTION_BUTTONS) {
+            JButton b = actionButtons[n - 1];
+            b.setText(actionLabel);
+            b.setVisible(true);
+        } else {
+            moreActionCombo.setVisible(true);
+            moreActionCombo.addItem(actionLabel);
+        }
+    }
+
+    public void removeAction(String actionLabel) {
+        if (actions.remove(actionLabel)) {
+            clearActions();
+            for (String a : actions)
+                addAction(a);
+        }
+    }
+
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         int buttonIdx;
@@ -147,7 +202,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             Meterman.shutdown();
         } else if (source == moreActionCombo) {
             int idx = moreActionCombo.getSelectedIndex();
-            if (idx > 0)
+            if (idx > 0)   // index 0 is "More..."
                 Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
         }
     }
@@ -169,10 +224,6 @@ class MainFrame implements ActionListener, ListSelectionListener
         }
     }
 
-    void setVisible(boolean visible) {
-        frame.setVisible(visible);
-    }
-
     private class FrameImage extends JComponent {
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
@@ -181,21 +232,24 @@ class MainFrame implements ActionListener, ListSelectionListener
                 int iw = frameImage.getWidth();
                 int ih = frameImage.getHeight();
                 float ratio = (float) cw / iw;
+                RenderingHints oldHints = g2d.getRenderingHints();
                 g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
                 g2d.drawImage(frameImage, 0, 0, cw, (int) (ih * ratio), null);
+                g2d.setRenderingHints(oldHints);
             }
             if (entityImage != null) {
                 int cw = getWidth();
                 int ch = getHeight();
                 int iw = entityImage.getWidth();
                 int ih = entityImage.getHeight();
-
-                final int margin = cw * 9 / 10;
+                final int margin = cw / 10;
                 cw -= 2*margin;
                 float ratio = (float) cw / iw;
                 ih = (int) (ih * ratio);
+                RenderingHints oldHints = g2d.getRenderingHints();
                 g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
                 g2d.drawImage(entityImage, margin, ch / 2 - ih / 3, cw, ih, null);
+                g2d.setRenderingHints(oldHints);
             }
         }
     }
