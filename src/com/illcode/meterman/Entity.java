@@ -11,8 +11,8 @@ public interface Entity
     /** Initialize the entity to its default state. This is not called when restoring a game. */
     void init();
 
-    /** Returns the ID of this entity, as used in the class-mapper */
-    String getId();
+    /** Return the name of this entity */
+    String getName();
 
     /** Returns true if {@code attribute} is set */
     boolean checkAttribute(int attribute);
@@ -25,9 +25,6 @@ public interface Entity
 
     /** Clear all attributes */
     void clearAllAttributes();
-
-    /** Return the name of this entity */
-    String getName();
 
     /**
      * Returns the name of the entity that should be displayed in the room or inventory list. This
@@ -72,17 +69,17 @@ public interface Entity
     void dropped();
 
     /**
-     * Returns the room ID where this entity is found. If the entity is held in player inventory,
-     * this returns the current player room ID.
-     * @return the room ID, or null if not in a room or inventory
+     * Returns the room  where this entity is found. If the entity is held in player inventory,
+     * this returns the current player room.
+     * @return the room, or null if not in a room or inventory
      */
-    String getRoomId();
+    Room getRoom();
 
     /**
      * Sets the room where this entity resides, or null if it doesn't reside anywhere.
-     * @param id
+     * @param room
      */
-    void setRoomId(String id);
+    void setRoom(Room room);
 
     /**
      * Returns a list of extra actions to be shown in the UI.
@@ -100,5 +97,5 @@ public interface Entity
     /**
      * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.
      */
-    Map<String,Object> getData();
+    Map<String,Object> getProperties();
 }

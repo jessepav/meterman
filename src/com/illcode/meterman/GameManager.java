@@ -15,9 +15,6 @@ public final class GameManager
     /** The game we're currently playing */
     private Game game;
 
-    /** The ClassMapper used by the {@link #game} */
-    private ClassMapper classMapper;
-
     /** The current state of the world */
     private WorldState worldState;
 
@@ -44,7 +41,6 @@ public final class GameManager
 
     public void dispose() {
         game = null;
-        classMapper = null;
         worldState = null;
         player = null;
         rooms = null;
@@ -58,7 +54,6 @@ public final class GameManager
     public void newGame(Game game) {
         this.game = game;
         worldState = game.getInitialWorldState();
-        classMapper = game.getClassMapper();
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
@@ -67,7 +62,6 @@ public final class GameManager
     public void loadGame(WorldState worldState) {
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
-        classMapper = game.getClassMapper();
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
@@ -78,16 +72,20 @@ public final class GameManager
     }
 
     public Room getCurrentRoom() {
-        return classMapper.getRoom(player.currentRoomId);
+        return player.currentRoom;
+    }
+
+    public List<Room> getAllRooms() {
+        return rooms;
     }
 
     /**
      * Moves the player to a destination room. All appropriate listeners will be notified, and
      * one of them may cancel this move.
-     * @param roomId the ID of the room to which the player should move.
+     * @param room the room to which the player should move.
      */
-    public void movePlayer(String roomId) {
-        if (roomId.equals(player.currentRoomId)) // we're already there
+    public void movePlayer(Room room) {
+        if (room == player.currentRoom) // we're already there
             return;
     }
 
@@ -165,16 +163,6 @@ public final class GameManager
             }
         }
         return false;
-    }
-
-    /** @see ClassMapper#getRoom(String)  */
-    public Room getRoom(String id) {
-        return classMapper.getRoom(id);
-    }
-
-    /** @see ClassMapper#createEntity(String)  */
-    public Entity createEntity(String id) {
-        return classMapper.createEntity(id);
     }
 
     /** Called by the UI when the user clicks "Look" */

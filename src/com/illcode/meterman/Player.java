@@ -1,6 +1,5 @@
 package com.illcode.meterman;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public class Player
 {
     /** The room in which the player is currently */
-    public String currentRoomId;
+    public Room currentRoom;
 
     /** A list of all entities in the player's inventory */
     public List<Entity> inventory;
@@ -25,7 +24,7 @@ public class Player
     }
 
     public void init() {
-        currentRoomId = null;
+        currentRoom = null;
         inventory = new LinkedList<>();
         worn = new LinkedList<>();
         equipped = new LinkedList<>();

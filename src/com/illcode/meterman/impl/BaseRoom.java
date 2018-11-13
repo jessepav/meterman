@@ -9,33 +9,27 @@ import java.util.*;
 
 public class BaseRoom implements Room
 {
-    public String id;
     public String name;
     public String exitName;
     public String description;
     public BitSet attributes;
-    public String[] exitIds;
+    public Room[] exits;
     public String[] exitLabels;
     public List<Entity> entities;
-    public Map<String,Object> data;
+    public Map<String,Object> properties;
 
     public BaseRoom() {
     }
 
     public void init() {
-        id = "(id)";
         name = "(name)";
         exitName = "(exit name)";
         description = "(description)";
         attributes = new BitSet(64);
-        exitIds = new String[UIConstants.NUM_EXIT_BUTTONS];
+        exits = new Room[UIConstants.NUM_EXIT_BUTTONS];
         exitLabels = new String[UIConstants.NUM_EXIT_BUTTONS];
         entities = new LinkedList<>();
-        data = new HashMap<>();
-    }
-
-    public String getId() {
-        return id;
+        properties = new HashMap<>();
     }
 
     public boolean checkAttribute(int attribute) {
@@ -66,15 +60,15 @@ public class BaseRoom implements Room
         return description;
     }
 
-    public String getExitId(int direction) {
-        return exitIds[direction];
+    public Room getExit(int direction) {
+        return exits[direction];
     }
 
     public String getExitLabel(int direction) {
         if (exitLabels[direction] != null)
             return exitLabels[direction];
-        else if (exitIds[direction] != null)
-            return Meterman.gm.getRoom(exitIds[direction]).getExitName();
+        else if (exits[direction] != null)
+            return exits[direction].getExitName();
         return null;
     }
 
@@ -94,7 +88,7 @@ public class BaseRoom implements Room
         // empty
     }
 
-    public Map<String,Object> getData() {
-        return data;
+    public Map<String,Object> getProperties() {
+        return properties;
     }
 }

@@ -1,34 +1,28 @@
 package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
+import com.illcode.meterman.Room;
 
 import java.util.*;
 
 public class BaseEntity implements Entity
 {
-    public String id;
     public String name;
     public String listName;
     public String description;
     public BitSet attributes;
-    public String roomId;
-    public Map<String,Object> data;
+    public Room room;
+    public Map<String,Object> properties;
 
     public BaseEntity() {
     }
 
     public void init() {
-        id = "(id)";
         name = "(name)";
         listName = "(list name)";
         description = "(description)";
         attributes = new BitSet(64);
-        roomId = "(room ID)";
-        data = new HashMap<>();
-    }
-
-    public String getId() {
-        return id;
+        properties = new HashMap<>();
     }
 
     public boolean checkAttribute(int attribute) {
@@ -75,12 +69,12 @@ public class BaseEntity implements Entity
         // empty
     }
 
-    public String getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(String id) {
-        roomId = id;
+    public void setRoom(Room room) {
+        room = room;
     }
 
     public List<String> getActions() {
@@ -91,7 +85,7 @@ public class BaseEntity implements Entity
         return false;
     }
 
-    public Map<String,Object> getData() {
-        return data;
+    public Map<String,Object> getProperties() {
+        return properties;
     }
 }

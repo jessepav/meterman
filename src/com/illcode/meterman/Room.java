@@ -11,9 +11,6 @@ public interface Room
     /** Initialize the room to its default state. This is not called when restoring a game. */
     void init();
 
-    /** Returns the ID of this room, as used in the class-mapper */
-    String getId();
-
     /** Returns true if {@code attribute} is set */
     boolean checkAttribute(int attribute);
 
@@ -37,21 +34,21 @@ public interface Room
     String getDescription();
 
     /**
-     * Return the room ID associated with a given exit direction. This method is used in the world model
+     * Return the room associated with a given exit direction. This method is used in the world model
      * to get the actual room to which an exit leads.
      * @param direction one of the button constants in {@link UIConstants}, ex {@link UIConstants#NW_BUTTON}
-     * @return the room ID that is found when exiting this room in the given direction, or null if no
-     *         room is in that direction or is blocked by an obstacle.
+     * @return the room that is found when exiting this room in the given direction, or null if no
+     *         exit is possible in that direction.
      * @see #getExitLabel(int)
      */
-    String getExitId(int direction);
+    Room getExit(int direction);
 
     /**
      * Return the text that should be shown on the UI button for a given direction.
      * @param direction one of the button constants in {@link UIConstants}
      * @return the text that should be shown on the respective UI button, or null if the button should
      *         be hidden
-     * @see #getExitId(int)
+     * @see #getExit(int)
      */
     String getExitLabel(int direction);
 
@@ -81,7 +78,7 @@ public interface Room
     void roomExiting();
 
     /**
-     * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.
+     * Returns a modifiable Map that can be used to store properties useful for custom processing.
      */
-    Map<String,Object> getData();
+    Map<String,Object> getProperties();
 }

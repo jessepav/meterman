@@ -11,9 +11,6 @@ public interface Game
     /** Called when the user selects "About..." in the UI  */
     void about();
 
-    /** The ClassMapper used to instantiate entities and rooms used in this game */
-    ClassMapper getClassMapper();
-
     /** The world state at the start of the game */
     WorldState getInitialWorldState();
 }
