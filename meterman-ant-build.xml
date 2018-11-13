@@ -63,6 +63,10 @@
     <pathelement location="${basedir}/lib/bsh-2.1.0-SNAPSHOT.jar"/>
   </path>
   
+  <path id="library.commons-codec.classpath">
+    <pathelement location="${basedir}/lib/commons-codec-1.11.jar"/>
+  </path>
+  
   <path id="library.commons-lang3.classpath">
     <pathelement location="${basedir}/lib/commons-lang3-3.4.jar"/>
   </path>
@@ -79,6 +83,13 @@
   <path id="library.jgoodies-forms.classpath">
     <pathelement location="${basedir}/lib/jgoodies-common-1.8.1.jar"/>
     <pathelement location="${basedir}/lib/jgoodies-forms-1.7.2.jar"/>
+  </path>
+  
+  <path id="library.kryo.classpath">
+    <pathelement location="${basedir}/lib/kryo-4.0.2.jar"/>
+    <pathelement location="${basedir}/lib/minlog-1.3.0.jar"/>
+    <pathelement location="${basedir}/lib/objenesis-2.1.jar"/>
+    <pathelement location="${basedir}/lib/reflectasm-1.10.1-shaded.jar"/>
   </path>
   
   <path id="library.minimal-json.classpath">
@@ -118,6 +129,8 @@
     <path refid="library.jgoodies-forms.classpath"/>
     <path refid="library.tinysound.classpath"/>
     <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+    <path refid="library.kryo.classpath"/>
   </path>
   
   <path id="meterman.runtime.production.module.classpath">
@@ -129,6 +142,8 @@
     <path refid="library.jgoodies-forms.classpath"/>
     <path refid="library.tinysound.classpath"/>
     <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+    <path refid="library.kryo.classpath"/>
   </path>
   
   <path id="meterman.module.classpath">
@@ -140,6 +155,8 @@
     <path refid="library.jgoodies-forms.classpath"/>
     <path refid="library.tinysound.classpath"/>
     <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+    <path refid="library.kryo.classpath"/>
   </path>
   
   <path id="meterman.runtime.module.classpath">
@@ -152,6 +169,8 @@
     <path refid="library.jgoodies-forms.classpath"/>
     <path refid="library.tinysound.classpath"/>
     <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+    <path refid="library.kryo.classpath"/>
   </path>
   
   
@@ -166,6 +185,7 @@
   <path id="meterman.module.sourcepath">
     <dirset dir="${module.meterman.basedir}">
       <include name="src"/>
+      <include name="forms"/>
     </dirset>
   </path>
   
@@ -184,6 +204,12 @@
     
     <copy todir="${meterman.output.dir}">
       <fileset dir="${module.meterman.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+    <copy todir="${meterman.output.dir}/com/illcode/meterman/ui/swingui">
+      <fileset dir="${module.meterman.basedir}/forms">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
