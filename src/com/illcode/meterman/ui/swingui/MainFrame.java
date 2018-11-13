@@ -1,6 +1,7 @@
 package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.games.GamesList;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
 import com.jformdesigner.runtime.FormLoader;
@@ -11,7 +12,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.awt.RenderingHints;
@@ -44,6 +49,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     DefaultListModel<String> roomListModel, inventoryListModel;
 
     private BufferedImage frameImage, entityImage;
+    private BufferedImage defaultFrameImage;
     private List<String> actions;
 
     private boolean suppressValueChanged;
@@ -88,6 +94,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             imagePanel.add(fi);
 
             frame.getRootPane().setDoubleBuffered(true);
+            frame.addWindowListener(new FrameWindowListener());
 
             roomListModel = new DefaultListModel<>();
             inventoryListModel = new DefaultListModel<>();
@@ -105,6 +112,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             inventoryList.addListSelectionListener(this);
             moreActionCombo.addActionListener(this);
             actions = new ArrayList<>(16);
+            
+            defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"), -1);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
         }
@@ -201,10 +210,18 @@ class MainFrame implements ActionListener, ListSelectionListener
         } else if (source == soundCheckBoxMenuItem) {
             Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
         } else if (source == quitMenuItem) {
-            Meterman.shutdown();
+            close();
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
+        } else if (source == newMenuItem) {
+            String game = ui.showListDialog("New Game", "Select the Game", Arrays.asList(GamesList.games), true);
+            if (game == null)
+                return;
         }
+    }
+
+    private void close() {
+        Meterman.shutdown();
     }
 
     public void valueChanged(ListSelectionEvent e) {
@@ -227,14 +244,15 @@ class MainFrame implements ActionListener, ListSelectionListener
     private class FrameImage extends JComponent {
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            if (frameImage != null) {
+            BufferedImage img = frameImage != null ? frameImage : defaultFrameImage;
+            if (img != null) {
                 int cw = getWidth();
-                int iw = frameImage.getWidth();
-                int ih = frameImage.getHeight();
+                int iw = img.getWidth();
+                int ih = img.getHeight();
                 float ratio = (float) cw / iw;
                 RenderingHints oldHints = g2d.getRenderingHints();
                 g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
-                g2d.drawImage(frameImage, 0, 0, cw, (int) (ih * ratio), null);
+                g2d.drawImage(img, 0, 0, cw, (int) (ih * ratio), null);
                 g2d.setRenderingHints(oldHints);
             }
             if (entityImage != null) {
@@ -251,6 +269,13 @@ class MainFrame implements ActionListener, ListSelectionListener
                 g2d.drawImage(entityImage, margin, ch / 2 - ih / 3, cw, ih, null);
                 g2d.setRenderingHints(oldHints);
             }
+        }
+    }
+
+    private class FrameWindowListener extends WindowAdapter
+    {
+        public void windowClosing(WindowEvent e) {
+            close();
         }
     }
 }

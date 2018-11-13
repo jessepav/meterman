@@ -8,7 +8,7 @@ new FormModel {
 			"title": "Meterman"
 			"minimumSize": new java.awt.Dimension( 775, 610 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-				"$columnSpecs": "default, unrelgap, default:grow(0.6), unrelgap, default:grow(0.4)"
+				"$columnSpecs": "max(default;150px), unrelgap, default:grow(0.6), unrelgap, default:grow(0.4)"
 				"$rowSpecs": "fill:default:grow, 9dlu, max(default;53dlu), unrelgap, default"
 			} ) {
 				name: "mainPanel"
@@ -17,7 +17,6 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 					name: "imagePanel"
 					"background": sfield java.awt.Color darkGray
-					"preferredSize": new java.awt.Dimension( 150, 300 )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 					"$columnSpecs": "default:grow"
@@ -369,6 +368,7 @@ new FormModel {
 								selectedItem: "More..."
 								addElement( "More..." )
 							}
+							"requestFocusEnabled": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 5

@@ -27,7 +27,7 @@ class PromptDialog implements ActionListener
     PromptDialog(Window owner) {
         this.owner = owner;
         try {
-            FormModel formModel = FormLoader.load("com/illcode/meterman/ui/swingui/MainFrame.jfd");
+            FormModel formModel = FormLoader.load("com/illcode/meterman/ui/swingui/PromptDialog.jfd");
             FormCreator cr = new FormCreator(formModel);
 
             dialog = (JDialog) cr.createWindow(owner);

@@ -189,7 +189,9 @@ public interface MetermanUI
      * @param header header surmounted above the text passage
      * @param text text passage (line-breaks kept intact)
      * @param items items from which the user can select one
+     * @param showCancelButton if true, a cancel button will be shown; if clicked,
+     *          this method will return null
      * @return the item selected, or null if no item selected.
      */
-    <T> T showListDialog(String header, String text, List<T> items);
+    <T> T showListDialog(String header, String text, List<T> items, boolean showCancelButton);
 }

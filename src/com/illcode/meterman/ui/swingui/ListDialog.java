@@ -23,13 +23,13 @@ class ListDialog implements ActionListener
     JTextArea textArea;
     JList<String> list;
     DefaultListModel<String> listModel;
-    JButton okButton;
+    JButton okButton, cancelButton;
 
     @SuppressWarnings("unchecked")
     ListDialog(Window owner) {
         this.owner = owner;
         try {
-            FormModel formModel = FormLoader.load("com/illcode/meterman/ui/swingui/MainFrame.jfd");
+            FormModel formModel = FormLoader.load("com/illcode/meterman/ui/swingui/ListDialog.jfd");
             FormCreator cr = new FormCreator(formModel);
 
             dialog = (JDialog) cr.createWindow(owner);
@@ -37,22 +37,25 @@ class ListDialog implements ActionListener
             textArea = cr.getTextArea("textArea");
             list = cr.getList("list");
             okButton = cr.getButton("okButton");
+            cancelButton = cr.getButton("cancelButton");
 
             listModel = new DefaultListModel<>();
             list.setModel(listModel);
 
             okButton.addActionListener(this);
+            cancelButton.addActionListener(this);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "ListDialog()", ex);
         }
     }
 
-    public <T> T showListDialog(String header, String text, List<T> items) {
+    public <T> T showListDialog(String header, String text, List<T> items, boolean showCancelButton) {
         headerLabel.setText(header);
         textArea.setText(text);
         listModel.clear();
         for (T item : items)
             listModel.addElement(item.toString());
+        cancelButton.setVisible(showCancelButton);
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
         dialog.setVisible(true);  // blocks until hidden
@@ -65,8 +68,12 @@ class ListDialog implements ActionListener
 
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == okButton)
+        if (source == okButton) {
             dialog.setVisible(false);
+        } else if (source == cancelButton) {
+            list.clearSelection();
+            dialog.setVisible(false);
+        }
     }
 
     public void dispose() {

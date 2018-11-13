@@ -19,6 +19,8 @@ public class SwingUI implements MetermanUI
     private List<Entity> roomEntities, inventoryEntities;
 
     public void init() {
+        GuiUtils.initGraphics();
+
         roomEntities = new ArrayList<>();
         inventoryEntities = new ArrayList<>();
         mainFrame = new MainFrame(this);
@@ -156,8 +158,8 @@ public class SwingUI implements MetermanUI
         return promptDialog.show(header, text, prompt, initialText);
     }
 
-    public <T> T showListDialog(String header, String text, List<T> items) {
-        return listDialog.showListDialog(header, text, items);
+    public <T> T showListDialog(String header, String text, List<T> items, boolean showCancelButton) {
+        return listDialog.showListDialog(header, text, items, showCancelButton);
     }
 
     /** Called by MainFrame when an entity is selected from the room list. We translate
