@@ -24,7 +24,7 @@ public final class GameManager
     // Elements of worldState, here for easy access
     private Player player;
     private List<Room> rooms;
-    private Map<String,Object> data;
+    private Map<String,Object> worldData;
 
     // Our listener lists
     List<GameActionListener> gameActionListeners;
@@ -48,7 +48,7 @@ public final class GameManager
         worldState = null;
         player = null;
         rooms = null;
-        data = null;
+        worldData = null;
         gameActionListeners = null;
         playerMovementListeners = null;
         turnListeners = null;
@@ -61,7 +61,7 @@ public final class GameManager
         classMapper = game.getClassMapper();
         player = worldState.player;
         rooms = worldState.rooms;
-        data = worldState.data;
+        worldData = worldState.worldData;
     }
 
     public void loadGame(WorldState worldState) {
@@ -70,7 +70,7 @@ public final class GameManager
         classMapper = game.getClassMapper();
         player = worldState.player;
         rooms = worldState.rooms;
-        data = worldState.data;
+        worldData = worldState.worldData;
     }
 
     public Player getPlayer() {

@@ -21,5 +21,5 @@ public class WorldState
     public List<Room> rooms;
 
     /** Extra data that objects can use to maintain and communicate state */
-    public Map<String,Object> data;
+    public Map<String,Object> worldData;
 }

@@ -5,9 +5,7 @@ import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
 import com.illcode.meterman.ui.UIConstants;
 
-import java.util.BitSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BaseRoom implements Room
 {
@@ -19,6 +17,7 @@ public class BaseRoom implements Room
     public String[] exitIds;
     public String[] exitLabels;
     public List<Entity> entities;
+    public Map<String,Object> data;
 
     public BaseRoom() {
     }
@@ -32,6 +31,7 @@ public class BaseRoom implements Room
         exitIds = new String[UIConstants.NUM_EXIT_BUTTONS];
         exitLabels = new String[UIConstants.NUM_EXIT_BUTTONS];
         entities = new LinkedList<>();
+        data = new HashMap<>();
     }
 
     public String getId() {
@@ -92,5 +92,9 @@ public class BaseRoom implements Room
 
     public void roomExiting() {
         // empty
+    }
+
+    public Map<String,Object> getData() {
+        return data;
     }
 }

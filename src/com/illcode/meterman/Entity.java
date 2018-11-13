@@ -1,6 +1,7 @@
 package com.illcode.meterman;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A class representing a world entity (i.e. all objects except for Rooms and the player)
@@ -95,4 +96,9 @@ public interface Entity
      *              through the processing chain
      */
     boolean processAction(String action);
+
+    /**
+     * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.
+     */
+    Map<String,Object> getData();
 }

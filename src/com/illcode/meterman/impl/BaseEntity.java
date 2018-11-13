@@ -2,9 +2,7 @@ package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
 
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class BaseEntity implements Entity
 {
@@ -14,6 +12,7 @@ public class BaseEntity implements Entity
     public String description;
     public BitSet attributes;
     public String roomId;
+    public Map<String,Object> data;
 
     public BaseEntity() {
     }
@@ -25,6 +24,7 @@ public class BaseEntity implements Entity
         description = "(description)";
         attributes = new BitSet(64);
         roomId = "(room ID)";
+        data = new HashMap<>();
     }
 
     public String getId() {
@@ -89,5 +89,9 @@ public class BaseEntity implements Entity
 
     public boolean processAction(String action) {
         return false;
+    }
+
+    public Map<String,Object> getData() {
+        return data;
     }
 }

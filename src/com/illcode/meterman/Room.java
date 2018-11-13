@@ -4,6 +4,7 @@ import com.illcode.meterman.event.PlayerMovementListener;
 import com.illcode.meterman.ui.UIConstants;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Room
 {
@@ -78,4 +79,9 @@ public interface Room
      * Called as the player is exiting the room (but is still there)
      */
     void roomExiting();
+
+    /**
+     * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.
+     */
+    Map<String,Object> getData();
 }
