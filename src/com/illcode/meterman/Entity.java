@@ -68,6 +68,9 @@ public interface Entity
     /** Called when the entity is removed from the player inventory */
     void dropped();
 
+    /** Called when the entity is selected in the UI. This can be used to set an entity image. */
+    void selected();
+
     /**
      * Returns the room  where this entity is found. If the entity is held in player inventory,
      * this returns the current player room.
@@ -82,7 +85,7 @@ public interface Entity
     void setRoom(Room room);
 
     /**
-     * Returns a list of extra actions to be shown in the UI.
+     * Returns a list of extra actions to be shown in the UI. Never returns null.
      */
     List<String> getActions();
 

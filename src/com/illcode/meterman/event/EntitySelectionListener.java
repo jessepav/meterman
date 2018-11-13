@@ -14,8 +14,9 @@ public interface EntitySelectionListener
     /**
      * Called when an entity is selected.
      * @param e entity selected
-     * @return the list of actions that should be shown in the UI. This potentially modified
-     *         list is passed on to any other remaining {@code EntitySelectionListener}S.
+     * @param actions the mutable list of actions that should be shown in the UI,
+     *      which a listener may modify. It will be passed along to any other
+     *      registered {@code EntitySelectionListener}S before being displayed.
      */
-    List<String> entitySelected(Entity e);
+    void entitySelected(Entity e, List<String> actions);
 }

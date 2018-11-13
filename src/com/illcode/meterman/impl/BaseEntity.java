@@ -69,6 +69,10 @@ public class BaseEntity implements Entity
         // empty
     }
 
+    public void selected() {
+        // empty
+    }
+
     public Room getRoom() {
         return room;
     }

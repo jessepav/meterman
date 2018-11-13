@@ -11,8 +11,8 @@ public interface GameActionListener
      * Called before an action is sent to the selected entity
      * @param action action name
      * @param entity selected entity, or null if this is a global action, like "Wait"
-     * @return true to block the entity (and any other GameActionListener) from
-     *         processing the action; false to allow further processing
+     * @return true to indicate that this listener processed the action, and to prevent the entity
+     *         (and any other GameActionListener) from processing the action; false to allow further processing
      */
     boolean beforeAction(String action, Entity entity);
 

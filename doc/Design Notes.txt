@@ -3,19 +3,34 @@
 
 Some big picture code notes:
 
-- References (say, room to room exits, or the location of items) will be stored as unique
-  string identifiers (ex. "turnip-room") rather than actual Java object references. There
-  will be a mapper class that will return the Java Room or Entity that corresponds to a
-  given ID. This avoids having a tangled object graph, which makes it easier to
-  instantiate and serialize the game world.
-  
-  The ID corresponds to a Java class, rather than to any name displayed to the user, so
-  two Entity instances could have different names while sharing the same class.
-  
-  In the event that the ID isn't found as a map key, then a default error object will be
-  returned, that has a description like "A misty void gapes where you expected to find the
-  <missing ID>, revealing an error in the world's programmers."
+- This was the note as I originally wrote it:
 
+      ┌─────────────────────────────────────────────────────────────────────────┐
+      │ References (say, room to room exits, or the location of items) will be  │
+      │ stored as unique string identifiers (ex. "turnip-room") rather than     │
+      │ actual Java object references. There will be a mapper class that will   │
+      │ return the Java Room or Entity that corresponds to a given ID. This     │
+      │ avoids having a tangled object graph, which makes it easier to          │
+      │ instantiate and serialize the game world.                               │
+      │                                                                         │
+      │ The ID corresponds to a Java class, rather than to any name displayed   │
+      │ to the user, so two Entity instances could have different names while   │
+      │ sharing the same class.                                                 │
+      │                                                                         │
+      │ In the event that the ID isn't found as a map key, then a default error │
+      │ object will be returned, that has a description like "A misty void      │
+      │ gapes where you expected to find the <missing ID>, revealing an error   │
+      │ in the world's programmers."                                            │
+      └─────────────────────────────────────────────────────────────────────────┘
+      
+  but I decided to remove the whole ClassMapper infrastructure, because it was too much
+  complexity for no benefit. Just as in Treehouse, I decided after starting to have my
+  world vivified in code, not by JSON or XML files, and so being able to specify rooms
+  and entities by name wasn't important anymore. Designing an elegant API to create
+  Rooms and Entities and wire them together will be more flexible, and if I want to be
+  able to use the API without recompiling, I can use BeanShell scripts. Kryo can serialize
+  object graphs with circular references without a problem.
+  
 - There will be one big GameState object that contains the whole game world graph. This
   will be serialized and deserialized (using kryo) to implement save/restore (and possibly
   even undo) functionality. Given that kryo can round-trip 1000000+ objects in a second,

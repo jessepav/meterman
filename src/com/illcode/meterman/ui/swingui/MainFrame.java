@@ -17,7 +17,6 @@ import java.awt.event.WindowEvent;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -45,6 +44,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     JButton[] exitButtons, actionButtons;
     JComboBox<String> moreActionCombo;
     JLabel leftStatusLabel, centerStatusLabel, rightStatusLabel;
+    FrameImageComponent imageComponent;
 
     DefaultListModel<String> roomListModel, inventoryListModel;
 
@@ -90,8 +90,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             centerStatusLabel = cr.getLabel("centerStatusLabel");
             rightStatusLabel = cr.getLabel("rightStatusLabel");
 
-            FrameImage fi = new FrameImage();
-            imagePanel.add(fi);
+            imageComponent = new FrameImageComponent();
+            imagePanel.add(imageComponent);
 
             frame.getRootPane().setDoubleBuffered(true);
             frame.addWindowListener(new FrameWindowListener());
@@ -133,11 +133,17 @@ class MainFrame implements ActionListener, ListSelectionListener
     }
 
     void setFrameImage(BufferedImage image) {
-        frameImage = image;
+        if (image != frameImage) {
+            frameImage = image;
+            imageComponent.repaint();
+        }
     }
 
     void setEntityImage(BufferedImage image) {
-        entityImage = image;
+        if (image != entityImage) {
+            entityImage = image;
+            imageComponent.repaint();
+        }
     }
 
     void setVisible(boolean visible) {
@@ -241,7 +247,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         }
     }
 
-    private class FrameImage extends JComponent {
+    private class FrameImageComponent extends JComponent {
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             BufferedImage img = frameImage != null ? frameImage : defaultFrameImage;
