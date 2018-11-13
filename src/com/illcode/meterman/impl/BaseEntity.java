@@ -67,6 +67,14 @@ public class BaseEntity implements Entity
         // empty
     }
 
+    public void taken() {
+        // empty
+    }
+
+    public void dropped() {
+        // empty
+    }
+
     public String getRoomId() {
         return roomId;
     }
@@ -75,11 +83,11 @@ public class BaseEntity implements Entity
         roomId = id;
     }
 
-    public List<String> getExtraActions() {
+    public List<String> getActions() {
         return Collections.emptyList();
     }
 
-    public void processAction(String action) {
-        // empty
+    public boolean processAction(String action) {
+        return false;
     }
 }

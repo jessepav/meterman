@@ -64,6 +64,12 @@ public interface Entity
      */
     void exitingScope();
 
+    /** Called when the entity is moved to the player inventory */
+    void taken();
+
+    /** Called when the entity is removed from the player inventory */
+    void dropped();
+
     /**
      * Returns the room ID where this entity is found. If the entity is held in player inventory,
      * this returns the current player room ID.
@@ -78,14 +84,15 @@ public interface Entity
     void setRoomId(String id);
 
     /**
-     * Returns a list of extra actions to be shown in the UI, in addition to those shown
-     * by the engine based on the entity's attributes.
+     * Returns a list of extra actions to be shown in the UI.
      */
-    List<String> getExtraActions();
+    List<String> getActions();
 
     /**
      * The player invoked an action on this entity from the UI
      * @param action action name
+     * @return true if the entity processed the action itself, false to continue
+     *              through the processing chain
      */
-    void processAction(String action);
+    boolean processAction(String action);
 }

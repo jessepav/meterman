@@ -30,6 +30,10 @@ public class RiverboatGame implements Game
         return worldState;
     }
 
+    public void about() {
+
+    }
+
     private void setupWorldState(WorldState worldState) {
         // Do stuff!
     }
