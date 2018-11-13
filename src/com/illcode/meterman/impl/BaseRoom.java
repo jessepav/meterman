@@ -80,11 +80,11 @@ public class BaseRoom implements Room
         return entities;
     }
 
-    public void roomEntered() {
+    public void entered() {
         // empty
     }
 
-    public void roomExiting() {
+    public void exiting() {
         // empty
     }
 

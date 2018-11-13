@@ -8,18 +8,11 @@ import com.illcode.meterman.Room;
 public interface PlayerMovementListener
 {
     /**
-     * Called before a player moves rooms.
-     * @param from the room the player is moving from (he's still in this room)
-     * @param to the room the player is moving to
-     * @return true if the player should be blocked from moving (and to prevent any other
-     *         PlayerMovementListener from being notified); false to allow further processing
+     * Called when a player moves rooms.
+     * @param from the room the player is moving, or has moved, from
+     * @param to the room the player is moving, or has moved, to
+     * @return true if the further processing of the player move command should be blocked;
+     * false to let processing continue as usual.
      */
-    boolean playerMoving(Room from, Room to);
-
-    /**
-     * Called after a player moves rooms
-     * @param from the room the player is moving from
-     * @param to the room the player is moving to (he's now in this room)
-     */
-    void playerMoved(Room from, Room to);
+    boolean playerMove(Room from, Room to);
 }

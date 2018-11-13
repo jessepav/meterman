@@ -70,12 +70,12 @@ public interface Room
     /**
      * Called when the player has entered the room.
      */
-    void roomEntered();
+    void entered();
 
     /**
      * Called as the player is exiting the room (but is still there)
      */
-    void roomExiting();
+    void exiting();
 
     /**
      * Returns a modifiable Map that can be used to store properties useful for custom processing.
