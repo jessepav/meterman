@@ -1,0 +1,7 @@
+Create a new package under the games package.
+
+Create a new Game implementation in that package.
+
+Choose a game name and add it to the GamesList class.
+
+Add a description to game-description-bundle.txt

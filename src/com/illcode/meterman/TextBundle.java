@@ -160,7 +160,7 @@ public final class TextBundle
         if (!passageMap.containsKey(name))
             return "";
         if (flowPattern == null)
-            flowPattern = Pattern.compile("[^\\n]\\n[^\\n]");
+            flowPattern = Pattern.compile("(?<!\\n)\\n(?!\\n)");
         return flowPattern.matcher(passageMap.get(name)).replaceAll(" ");
     }
 

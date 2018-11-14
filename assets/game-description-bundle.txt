@@ -8,7 +8,7 @@
 |                                     |
 +-------------------------------------+
 
-[Riverboat]
+[The Riverboat]
 
 +-------------------------------------+
 | A sample game distributed to show   |
@@ -17,4 +17,3 @@
 | help guide the implementation of    |
 | their own adventures.               |
 +-------------------------------------+
-

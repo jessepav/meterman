@@ -12,7 +12,7 @@ import java.nio.file.Paths;
  */
 public class GamesList
 {
-    private static final String RIVERBOAT_NAME = "Riverboat";
+    private static final String RIVERBOAT_NAME = "The Riverboat";
 
     public static final String[] games = {RIVERBOAT_NAME};
 
