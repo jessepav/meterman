@@ -1,7 +1,9 @@
 package com.illcode.meterman;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The player character
@@ -20,6 +22,9 @@ public class Player
     /** A list of entities equipped by the player (subset of {@link #inventory}) */
     public List<Entity> equipped;
 
+    /** A modifiable Map that can be used to store arbitrary data useful for custom processing. */
+    public Map<String,Object> properties;
+
     public Player() {
     }
 
@@ -28,5 +33,6 @@ public class Player
         inventory = new LinkedList<>();
         worn = new LinkedList<>();
         equipped = new LinkedList<>();
+        properties = new HashMap<>();
     }
 }
