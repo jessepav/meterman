@@ -25,6 +25,10 @@ public class RiverboatGame implements Game
 
     }
 
+    public void start(boolean newGame) {
+
+    }
+
     private void setupWorldState(WorldState worldState) {
         // Do stuff!
     }

@@ -60,6 +60,9 @@ public final class TextBundle
      *  @see #getPassageWrapped(String, int) */
     private static Pattern whiteSpacePattern;
 
+    /** @see #getPassageFlowed(String)  */
+    private static Pattern flowPattern;
+
     private Map<String, String> passageMap;
 
     private StrSubstitutor sub;
@@ -145,6 +148,20 @@ public final class TextBundle
         if (col > 0)
             text = WordUtils.wrap(text, col);
         return sub.replace(text);
+    }
+
+    /**
+     * Returns a passage with each paragraph flowed into one line, but paragraph
+     * breaks (two or more newlines in sequence) left intact.
+     * @param name passage heading name
+     * @return flowed passage text
+     */
+    public String getPassageFlowed(String name) {
+        if (!passageMap.containsKey(name))
+            return "";
+        if (flowPattern == null)
+            flowPattern = Pattern.compile("[^\\n]\\n[^\\n]");
+        return flowPattern.matcher(passageMap.get(name)).replaceAll(" ");
     }
 
     /**

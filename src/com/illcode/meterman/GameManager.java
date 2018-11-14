@@ -85,6 +85,7 @@ public final class GameManager
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
+        game.start(true);
     }
 
     /**
@@ -102,6 +103,7 @@ public final class GameManager
         refreshRoomUI(getCurrentRoom());
         refreshInventoryUI();
         entitySelected(null);
+        game.start(false);
     }
 
     public Player getPlayer() {
@@ -125,6 +127,8 @@ public final class GameManager
      * one of them may cancel this move.
      * @param toRoom the room to which the player should move.
      */
+    // Note that before even arriving here, the current room has a chance to block
+    // UI-initiated movement in exitSelected() by returning false from attemptExit()
     public void movePlayer(Room toRoom) {
         if (toRoom == player.currentRoom) // we're already there
             return;
@@ -137,11 +141,11 @@ public final class GameManager
         fromRoom.exiting();
         player.currentRoom = toRoom;
         toRoom.entered();
+        for (Entity e : player.inventory)
+            e.setRoom(toRoom);
         for (Entity e : toRoom.getRoomEntities())
             e.enterScope();
         fireAfterPlayerMovementEvent(fromRoom, toRoom);
-        for (Entity e : player.inventory)
-            e.setRoom(toRoom);
         entitySelected(null);
         lookAction();
         refreshRoomUI(toRoom);

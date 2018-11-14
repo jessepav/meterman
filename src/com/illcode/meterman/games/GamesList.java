@@ -1,7 +1,10 @@
 package com.illcode.meterman.games;
 
 import com.illcode.meterman.Game;
+import com.illcode.meterman.TextBundle;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
+
+import java.nio.file.Paths;
 
 /**
  * A class containing the names of all the games packaged with Meterman,
@@ -13,6 +16,8 @@ public class GamesList
 
     public static final String[] games = {RIVERBOAT_NAME};
 
+    private static TextBundle descriptionBundle;
+
     public static Game getGame(String gameName) {
         switch (gameName) {
         case RIVERBOAT_NAME:
@@ -20,5 +25,20 @@ public class GamesList
         default:
             return null;
         }
+    }
+
+    /**
+     * Return a description of a game.
+     * <p/>
+     * Game descriptions are found in the <tt>game-description-bundle.txt</tt> TextBundle
+     * in the assets directory.
+     * @param gameName game name, or <tt>"select-game"</tt> to retrieve text prompting the
+     *                 user to select a game.
+     * @return game description
+     */
+    public static String getGameDescription(String gameName) {
+        if (descriptionBundle == null)
+            descriptionBundle = TextBundle.loadBundle(Paths.get("assets/game-description-bundle.txt"));
+        return descriptionBundle.getPassage(gameName);
     }
 }

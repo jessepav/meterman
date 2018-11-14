@@ -25,7 +25,7 @@ new FormModel {
 					"editable": false
 					"background": #Color0
 					"text": "And here in the vale of dreams we found\nthat many types of flowers had magical\nproperties. Which of these flowers\nwould you like?"
-					"font": new java.awt.Font( "SansSerif", 0, 14 )
+					"font": new java.awt.Font( "Monospaced", 1, 14 )
 					"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridY": 3
@@ -70,7 +70,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 15, 5 )
-			"size": new java.awt.Dimension( 355, 275 )
+			"size": new java.awt.Dimension( 395, 285 )
 		} )
 	}
 }

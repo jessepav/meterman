@@ -13,4 +13,12 @@ public interface Game
 
     /** The world state at the start of the game */
     WorldState getInitialWorldState();
+
+    /**
+     * Called when the GameManager has set up the world model, either by calling
+     * {@link #getInitialWorldState()} or by restoring a saved {@code WorldState},
+     * and is ready to being the game.
+     * @param newGame true if this is a new game; false if the game has been loaded
+     */
+    void start(boolean newGame);
 }

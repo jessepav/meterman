@@ -11,10 +11,10 @@ import java.util.List;
 
 public class SwingUI implements MetermanUI
 {
-    private MainFrame mainFrame;
-    private TextDialog textDialog;
-    private PromptDialog promptDialog;
-    private ListDialog listDialog;
+    MainFrame mainFrame;
+    TextDialog textDialog;
+    PromptDialog promptDialog;
+    ListDialog listDialog;
 
     private List<Entity> roomEntities, inventoryEntities;
 

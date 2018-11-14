@@ -220,9 +220,12 @@ class MainFrame implements ActionListener, ListSelectionListener
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
         } else if (source == newMenuItem) {
-            String game = ui.showListDialog("New Game", "Select the Game", Arrays.asList(GamesList.games), true);
-            if (game == null)
-                return;
+            ui.listDialog.list.addListSelectionListener(this);
+            String gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
+                Arrays.asList(GamesList.games), true);
+            ui.listDialog.list.removeListSelectionListener(this);
+            if (gameName != null)
+                Meterman.gm.newGame(GamesList.getGame(gameName));
         }
     }
 
@@ -244,6 +247,11 @@ class MainFrame implements ActionListener, ListSelectionListener
             roomList.clearSelection();
             suppressValueChanged = false;
             ui.inventoryEntitySelected(inventoryList.getSelectedIndex());
+        } else if (source == ui.listDialog.list) {
+            String selectedGame = ui.listDialog.list.getSelectedValue();
+            if (selectedGame == null)
+                selectedGame = "select-game";
+            ui.listDialog.textArea.setText(GamesList.getGameDescription(selectedGame));
         }
     }
 
