@@ -352,7 +352,8 @@ public final class GameManager
                 ui.setExitLabel(pos, r.getExitLabel(pos));
             ui.clearRoomEntities();
             for (Entity e : r.getRoomEntities())
-                ui.addRoomEntity(e);
+                if (!e.checkAttribute(Attributes.CONCEALED))
+                    ui.addRoomEntity(e);
         }
     }
 
