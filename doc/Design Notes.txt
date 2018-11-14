@@ -24,7 +24,7 @@ Some big picture code notes:
       └─────────────────────────────────────────────────────────────────────────┘
       
   but I decided to remove the whole ClassMapper infrastructure, because it was too much
-  complexity for no benefit. Just as in Treehouse, I decided after starting to have my
+  complexity for no benefit. Just as in Treehouse, I decided--partway through--to have my
   world vivified in code, not by JSON or XML files, and so being able to specify rooms
   and entities by name wasn't important anymore. Designing an elegant API to create
   Rooms and Entities and wire them together will be more flexible, and if I want to be
@@ -46,70 +46,6 @@ Some big picture code notes:
 
 - The UI will be in a separate package, abstracted from the Swing/AWT API, so that I can
   switch to a different UI--like libGDX or GWT--in the future.
-
-And now world model notes:
-
-- Rooms and Entities and the Player will be distinct types. There are no containers or
-  supporters or vehicles as special attributes -- enough hook methods will be provided
-  so that, say, a car entity can twiddle with the game world enough to follow the player
-  around and make it look like he's in a car. Doors will be handled by the Room, if
-  a key or such is needed to open one.
-
-- The GameState object will have a String->String map so that objects can communicate
-  state to one another without directly reaching into other objects.
-
-- We'll have a series of Listener interfaces (PlayerMovingListener,
-  ObjectSelectedListener, etc.) that objects can implement to register themselves to
-  receive events when the corresponding game world events occur. A special
-  BeforeActionListener can be registered to be notified before an action is passed
-  to the selected object, and potentially interrupt the action. The parallel is
-  AfterActionListener, which is called after the object processes the action.
-
-  Basically, all the Inform6 properties like "react_before", "after", "daemon" etc.
-  will be handled by objects registering themselves as listeners with the GameManager.
-
-- An Entity will have a getDisplayName() method that will return a String representing
-  how it should be dhown in the UI. This can include modifiers like "(worn)" or
-  "(equipped)", which the Entity will determine by querying the Player object. The
-  Entity itself maintains no state about being worn, equipped, or such.
-
-- Rooms have a getExitName() method that returns a short version of the room name to
-  be shown in the exit button area in the UI.
-  
-- To allow multiple games to exist in one codebase, the configuration file will specify
-  the game name -- then a special initialization routine will map the game name to a
-  game class and transfer control to it. So we can have multiple games without introducing
-  too much abstraction.
-
-What I'll do here is read through the attributes and properties appendices in the DM4
-and make a list of the functionality I'd like to support in my world model (and how
-it applies to the GameManager, and Room and Entity interfaces):
-
---Entity--
-
-concealed: present in a room but not displayed in the entity list
-
-takeable: the player can take it
-
-getActions: returns a list of string actions to show in the UI
-
-action: responds to an action button pressed in the UI
-
-display name: short name to display in lists
-
-description: full text to display in the selected entity text area
-
-enterScope: called when the entity enters scope (i.e. when it comes to be in the same
-            room as the player).
-
-exitScope: called when the entity exits scope
-
---Room--
-
-visited: the player has visited the room (and thus its name can be displayed in the exit
-         list of adjacent rooms.
-
-exits: a map from direction_constant -> room ID (or null)
 
 
 

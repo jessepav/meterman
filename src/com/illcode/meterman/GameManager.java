@@ -73,6 +73,12 @@ public final class GameManager
         actions = null;
     }
 
+    /**
+     * Start a new game.
+     * Note that no listeners will be notified nor callbacks invoked at the start
+     * of the first turn when the game begins.
+     * @param game game to start
+     */
     public void newGame(Game game) {
         this.game = game;
         worldState = game.getInitialWorldState();
@@ -81,12 +87,21 @@ public final class GameManager
         worldData = worldState.worldData;
     }
 
+    /**
+     * Resume a game given a restored WorldState. While the world model graph will
+     * be as it was when the game was saved, the UI may be slightly different (no images,
+     * and definitely no scrollback in the main text area).
+     * @param worldState WorldState to restore
+     */
     public void loadGame(WorldState worldState) {
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
+        refreshRoomUI(getCurrentRoom());
+        refreshInventoryUI();
+        entitySelected(null);
     }
 
     public Player getPlayer() {
@@ -256,6 +271,7 @@ public final class GameManager
         sb.append("\n");
         ui.appendText(sb.toString());
         sb.setLength(0);
+        nextTurn();
     }
 
     /** Called by the UI when the user clicks "Wait" */
@@ -273,6 +289,7 @@ public final class GameManager
     public void exitSelected(int direction) {
         if (player.currentRoom.attemptExit(direction))
             movePlayer(getCurrentRoom().getExit(direction));
+        nextTurn();
     }
 
     /** Called by the UI when the user clicks an action button (or selects an action
@@ -282,6 +299,7 @@ public final class GameManager
             if (!selectedEntity.processAction(action))
                 fireDefaultActionEvent(action, selectedEntity);
         }
+        nextTurn();
     }
 
     /**
@@ -290,6 +308,7 @@ public final class GameManager
      */
     public void entitySelected(Entity e) {
         selectedEntity = e;
+        actions.clear();
         if (e == null) {
             ui.clearActions();
             ui.setObjectName("(nothing selected)");
@@ -297,7 +316,6 @@ public final class GameManager
             ui.setEntityImage(null);
         } else {
             e.selected();
-            actions.clear();
             actions.addAll(e.getActions());
             fireEntitySelectedEvent(e, actions);
             refreshEntityUI(e);
@@ -354,6 +372,7 @@ public final class GameManager
         }
     }
 
+    //region Event Listener methods
     /**
      * Adds a GameActionListener to be called before a game action is processed. If the listener's
      * {@link GameActionListener#processAction(String, Entity)} method returns true, further action
@@ -586,4 +605,5 @@ public final class GameManager
         for (EntitySelectionListener l : entitySelectionListeners)
             l.entitySelected(e, actions);
     }
+    //endregion
 }

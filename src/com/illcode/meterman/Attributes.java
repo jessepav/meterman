@@ -24,17 +24,11 @@ public final class Attributes
     /** If set, the entity can be taken (i.e. transferred to the player inventory) and dropped */
     public static final int TAKEABLE = 1;
 
-    /** The entity represents a door */
-    public static final int DOOR = 2;
-
-    /** The entity represents a key */
-    public static final int KEY = 3;
-
     /** The entity is wearable */
-    public static final int WEARABLE = 4;
+    public static final int WEARABLE = 2;
 
     /** The entity is equippable */
-    public static final int EQUIPPABLE = 5;
+    public static final int EQUIPPABLE = 3;
 
     //
     // Room attributes

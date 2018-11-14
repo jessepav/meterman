@@ -27,6 +27,10 @@ public class SwingUI implements MetermanUI
         textDialog = new TextDialog(mainFrame.frame);
         promptDialog = new PromptDialog(mainFrame.frame);
         listDialog = new ListDialog(mainFrame.frame);
+
+        setStatusLabel(UIConstants.LEFT_LABEL, "");
+        setStatusLabel(UIConstants.CENTER_LABEL, "");
+        setStatusLabel(UIConstants.RIGHT_LABEL, "");
     }
 
     public void dispose() {
