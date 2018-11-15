@@ -7,6 +7,8 @@ import com.illcode.meterman.event.TurnListener;
 import com.illcode.meterman.games.GamesList;
 import com.illcode.meterman.ui.UIConstants;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 import static com.illcode.meterman.Meterman.ui;
@@ -112,6 +114,10 @@ public final class GameManager
         refreshInventoryUI();
         entitySelected(null);
         game.start(false);
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public Player getPlayer() {
@@ -408,6 +414,18 @@ public final class GameManager
                 ui.addInventoryEntity(item);
         }
     }
+
+    /** Called by the UI when it's time to load a saved game*/
+    public void loadGameState(InputStream in) {
+        loadGame(Meterman.persistence.loadWorldState(in));
+    }
+
+    /** Called by the UI when it's time to save a game*/
+    public void saveGameState(OutputStream out) {
+        Meterman.persistence.saveWorldState(worldState, out);
+        ui.appendText("\n------- Game Saved -------\n");
+    }
+
 
     //region Event Listener methods
     /**

@@ -7,6 +7,12 @@ import com.esotericsoftware.kryo.io.Output;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Uses Kryo to serialize world state.
+ * <p/>
+ * Note that if any of the classes referenced in the state change, then saved
+ * data cannot be loaded.
+ */
 public final class KryoPersistence implements Persistence
 {
     private Kryo kryo;

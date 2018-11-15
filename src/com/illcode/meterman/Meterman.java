@@ -69,7 +69,6 @@ public final class Meterman
         sound.init();
         persistence.init();
 
-        ui.setVisible(true);
         if (ui.run())
             shutdown();
     }

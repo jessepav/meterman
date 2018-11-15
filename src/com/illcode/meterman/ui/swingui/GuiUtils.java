@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.logging.Level;
 
 public final class GuiUtils
 {
@@ -170,5 +171,33 @@ public final class GuiUtils
 
     public static void repaintImmediately(JComponent component) {
         component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
+    }
+
+    /**
+     * Returns a String representation of a font suitable to be parsed by {@link Font#decode(String)}.
+     * <p/>
+     * This is in the form of {@code "<fontname>-<style>-<pointsize>"}.
+     * @param font a font
+     * @return the string representation
+     */
+    static String fontString(Font font) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(font.getFamily()).append("-");
+        switch (font.getStyle()) {
+        case Font.PLAIN:
+            sb.append("PLAIN");
+            break;
+        case Font.ITALIC:
+            sb.append("ITALIC");
+            break;
+        case Font.BOLD:
+            sb.append("BOLD");
+            break;
+        case Font.BOLD + Font.ITALIC:
+            sb.append("BOLDITALIC");
+            break;
+        }
+        sb.append("-").append(font.getSize());
+        return sb.toString();
     }
 }

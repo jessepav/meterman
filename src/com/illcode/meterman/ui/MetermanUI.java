@@ -24,12 +24,6 @@ public interface MetermanUI
     void dispose();
 
     /**
-     * Set the visibility of the UI
-     * @param visible true if the UI should be visible
-     */
-    void setVisible(boolean visible);
-
-    /**
      * Run the UI event loop, if applicable.
      * @return true if the main thread should call {@link Meterman#shutdown()} after run()
      *      returns; false if the UI will call shutdown() itself when the UI is closed (as in

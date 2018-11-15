@@ -37,7 +37,7 @@ class TextDialog implements ActionListener
             pageButton = cr.getButton("pageButton");
 
             pageButton.addActionListener(this);
-
+            dialog.getRootPane().setDefaultButton(pageButton);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "TextDialog()", ex);
         }
@@ -49,6 +49,7 @@ class TextDialog implements ActionListener
         pageButton.setText(buttonLabel);
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
+        pageButton.requestFocusInWindow();
         dialog.setVisible(true);  // blocks until hidden
     }
 

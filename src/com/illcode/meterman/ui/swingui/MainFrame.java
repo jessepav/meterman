@@ -12,16 +12,17 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
 import static com.illcode.meterman.Utils.logger;
@@ -45,6 +46,9 @@ class MainFrame implements ActionListener, ListSelectionListener
     JComboBox<String> moreActionCombo;
     JLabel leftStatusLabel, centerStatusLabel, rightStatusLabel;
     FrameImageComponent imageComponent;
+
+    JFileChooser fc;
+    File lastSaveFile;
 
     DefaultListModel<String> roomListModel, inventoryListModel;
 
@@ -114,6 +118,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             actions = new ArrayList<>(16);
             
             defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"), -1);
+            fc = new JFileChooser();
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
         }
@@ -213,14 +218,6 @@ class MainFrame implements ActionListener, ListSelectionListener
             int idx = moreActionCombo.getSelectedIndex();
             if (idx > 0)   // index 0 is "More..."
                 Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
-        } else if (source == musicCheckBoxMenuItem) {
-            Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
-        } else if (source == soundCheckBoxMenuItem) {
-            Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
-        } else if (source == quitMenuItem) {
-            close();
-        } else if (source == aboutMenuItem) {
-            Meterman.gm.aboutMenuClicked();
         } else if (source == newMenuItem) {
             ui.listDialog.list.addListSelectionListener(this);
             String gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
@@ -228,6 +225,42 @@ class MainFrame implements ActionListener, ListSelectionListener
             ui.listDialog.list.removeListSelectionListener(this);
             if (gameName != null)
                 Meterman.gm.newGame(GamesList.getGame(gameName));
+        } else if (source == loadMenuItem) {
+            int r = fc.showOpenDialog(frame);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                File f = fc.getSelectedFile();
+                try (InputStream in = new FileInputStream(f)) {
+                    Meterman.gm.loadGameState(in);
+                } catch (Exception ex) {
+                    logger.log(Level.WARNING, "MainFrame loadMenuItem", ex);
+                    ui.showTextDialog("Load Error", ex.getMessage(), "OK");
+                }
+            }
+        } else if (source == saveMenuItem) {
+            if (lastSaveFile == null) {
+                saveAsMenuItem.doClick();
+                return;
+            }
+            try (OutputStream out = new FileOutputStream(lastSaveFile)) {
+                Meterman.gm.saveGameState(out);
+            } catch (Exception ex) {
+                logger.log(Level.WARNING, "MainFrame saveMenuItem", ex);
+                ui.showTextDialog("Save Error", ex.getMessage(), "OK");
+            }
+        } else if (source == saveAsMenuItem) {
+            int r = fc.showSaveDialog(frame);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                lastSaveFile = fc.getSelectedFile();
+                saveMenuItem.doClick();
+            }
+        } else if (source == quitMenuItem) {
+            close();
+        } else if (source == musicCheckBoxMenuItem) {
+            Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
+        } else if (source == soundCheckBoxMenuItem) {
+            Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
+        } else if (source == aboutMenuItem) {
+            Meterman.gm.aboutMenuClicked();
         }
     }
 
@@ -255,6 +288,34 @@ class MainFrame implements ActionListener, ListSelectionListener
                 selectedGame = "select-game";
             ui.listDialog.textArea.setText(GamesList.getGameDescription(selectedGame));
         }
+    }
+
+    public void startup() {
+        ui.clearActions();
+        ui.clearExits();
+        ui.clearText();
+        ui.setObjectName("(nothing selected)");
+        ui.setObjectText("");
+
+        initGame:  // make the user keep selecting choices until a game is
+        do {       // successfully started or loaded
+            String choice;
+            do {  // don't let the user avoid making a choice
+                choice = ui.showListDialog("Meterman", "Select an option",
+                    Arrays.asList("New Game", "Load Game", "Quit"), false);
+            } while (choice == null);
+            switch (choice) {
+            case "New Game":
+                newMenuItem.doClick();
+                break;
+            case "Load Game":
+                loadMenuItem.doClick();
+                break;
+            case "Quit":
+                close();
+                break initGame;
+            }
+        } while (Meterman.gm.getGame() == null);
     }
 
     private class FrameImageComponent extends JComponent {

@@ -6,6 +6,7 @@ import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class SwingUI implements MetermanUI
     ListDialog listDialog;
 
     private List<Entity> roomEntities, inventoryEntities;
+
+    private boolean realized;  // true once the UI has been made visible on the EDT
 
     public void init() {
         GuiUtils.initGraphics();
@@ -41,11 +44,14 @@ public class SwingUI implements MetermanUI
         mainFrame.dispose();
     }
 
-    public void setVisible(boolean visible) {
-        mainFrame.setVisible(visible);
-    }
-
     public boolean run() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                mainFrame.setVisible(true);
+                realized = true;
+                mainFrame.startup();
+            }
+        });
         return false;
     }
 

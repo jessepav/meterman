@@ -1,19 +1,19 @@
 [select-game]
 
 +-------------------------------------+
-|                                     |
-|               Select                |
-|                  a                  |
-|                Game                 |
-|                                     |
+
+                Select
+                   a
+                 Game
+
 +-------------------------------------+
 
 [The Riverboat]
 
 +-------------------------------------+
-| A sample game distributed to show   |
-| some features of the engine, and to |
-| give game authors example code to   |
-| help guide the implementation of    |
-| their own adventures.               |
+  A sample game distributed to show
+  some features of the engine, and to
+  give game authors example code to
+  help guide the implementation of
+  their own adventures.
 +-------------------------------------+
