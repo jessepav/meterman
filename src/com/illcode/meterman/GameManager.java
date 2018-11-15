@@ -130,10 +130,10 @@ public final class GameManager
     // Note that before even arriving here, the current room has a chance to block
     // UI-initiated movement in exitSelected() by returning false from attemptExit()
     public void movePlayer(Room toRoom) {
-        if (toRoom == player.currentRoom) // we're already there
+        if (toRoom == null || toRoom == player.currentRoom)
             return;
         Room fromRoom = player.currentRoom;
-        // Otherwise, here we go...
+        // Here we go...
         if (fireBeforePlayerMovementEvent(fromRoom, toRoom))
             return;  // we were blocked by a listener
         for (Entity e : fromRoom.getRoomEntities())
@@ -291,8 +291,7 @@ public final class GameManager
     
     /** Called by the UI when the user clicks an exit button */
     public void exitSelected(int direction) {
-        if (player.currentRoom.attemptExit(direction))
-            movePlayer(getCurrentRoom().getExit(direction));
+        movePlayer(getCurrentRoom().getExit(direction));
         nextTurn();
     }
 

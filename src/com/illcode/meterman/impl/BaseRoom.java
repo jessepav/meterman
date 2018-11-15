@@ -1,7 +1,6 @@
 package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
-import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
 import com.illcode.meterman.ui.UIConstants;
 
@@ -72,8 +71,12 @@ public class BaseRoom implements Room
         return null;
     }
 
-    public boolean attemptExit(int direction) {
-        return true;
+    public void setExit(int direction, Room room) {
+        exits[direction] = room;
+    }
+
+    public void setExitLabel(int direction, String label) {
+        exitLabels[direction] = label;
     }
 
     public List<Entity> getRoomEntities() {

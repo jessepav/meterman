@@ -44,6 +44,17 @@ public interface Room
     Room getExit(int direction);
 
     /**
+     * Sets the exit leading from this room in the given direction.
+     * <p/>
+     * This method exists in order to enable world-modification helper classes and listeners -- if
+     * a particular Room wants to ignore this method, it is free to do so.
+     * @param direction one of the button constants in {@link UIConstants}, ex {@link UIConstants#NW_BUTTON}
+     * @param room the room found in the given direction, or null if no room
+     * @see #getExit(int)
+     */
+    void setExit(int direction, Room room);
+
+    /**
      * Return the text that should be shown on the UI button for a given direction.
      * @param direction one of the button constants in {@link UIConstants}
      * @return the text that should be shown on the respective UI button, or null if the button should
@@ -53,14 +64,16 @@ public interface Room
     String getExitLabel(int direction);
 
     /**
-     * Called when the player attempts an exit in the given direction. This method is useful
-     * for blocking a player's exit (for reasons of a locked door, being stuck in a web, etc.)
-     * without having to register a {@link PlayerMovementListener}.
+     * Sets the exit label displayed in the UI for a given direction.
+     * <p/>
+     * This method exists in order to enable world-modification helper classes and listeners -- if
+     * a particular Room wants to ignore this method, it is free to do so.
      * @param direction one of the button constants in {@link UIConstants}, ex {@link UIConstants#NW_BUTTON}
-     *                  indicating the direction the player is attempting to move
-     * @return true if the player should be allowed to exit; false if not
+     * @param label the label that should be displayed in the UI for the given direction, or null
+     *              if the button should be hidden
+     * @see #getExitLabel(int)
      */
-    boolean attemptExit(int direction);
+    void setExitLabel(int direction, String label);
 
     /**
      * Returns a list of the entities found in this room.
