@@ -30,6 +30,9 @@ public final class Meterman
     /** The SoundManager operating in the current game */
     public static SoundManager sound;
 
+    /** Our persistence implementation */
+    public static Persistence persistence;
+
     public static void main(String[] args) throws IOException {
         prefsPath = Paths.get("config/meterman.properties");
         if (!loadPrefs(prefsPath)) {
@@ -53,9 +56,18 @@ public final class Meterman
             logger.severe("Invalid ui set in config!");
             return;
         }
+        switch (Utils.pref("persistence", "kryo")) {
+        case "kryo":
+            persistence = new KryoPersistence();
+            break;
+        default:
+            logger.severe("Invalid persistence set in config!");
+            return;
+        }
         gm.init();
         ui.init();
         sound.init();
+        persistence.init();
 
         ui.setVisible(true);
         if (ui.run())
@@ -86,9 +98,10 @@ public final class Meterman
     /** Called when the program is shutting down. */
     public static void shutdown() {
         logger.info("Meterman shutting down...");
-        savePrefs(prefsPath);
+        persistence.dispose();
         sound.dispose();
         ui.dispose();
         gm.dispose();
+        savePrefs(prefsPath);
     }
 }

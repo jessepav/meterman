@@ -5,6 +5,7 @@ import com.illcode.meterman.Meterman;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
+import javax.swing.JTextArea;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,9 @@ public class SwingUI implements MetermanUI
     }
 
     public void appendText(String text) {
-        mainFrame.mainTextArea.append(text);
+        JTextArea ta = mainFrame.mainTextArea;
+        ta.append(text);
+        ta.setCaretPosition(ta.getDocument().getLength()); // scroll to the bottom of the text area
     }
 
     public void setObjectName(String name) {

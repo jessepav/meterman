@@ -91,6 +91,7 @@ public final class GameManager
         rooms = worldState.rooms;
         worldData = worldState.worldData;
         game.start(true);
+        getCurrentRoom().entered();
         lookAction();
         getCurrentRoom().setAttribute(Attributes.VISITED);
     }
