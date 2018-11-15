@@ -80,7 +80,8 @@ public final class GameManager
     /**
      * Start a new game.
      * Note that no listeners will be notified nor callbacks invoked at the start
-     * of the first turn when the game begins.
+     * of the first turn when the game begins; however, after the first look action, turn listeners
+     * will be called.
      * @param game game to start
      */
     public void newGame(Game game) {
@@ -90,6 +91,8 @@ public final class GameManager
         rooms = worldState.rooms;
         worldData = worldState.worldData;
         game.start(true);
+        lookAction();
+        getCurrentRoom().setAttribute(Attributes.VISITED);
     }
 
     /**
@@ -152,6 +155,7 @@ public final class GameManager
         fireAfterPlayerMovementEvent(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
         lookAction();
+        toRoom.setAttribute(Attributes.VISITED);
         refreshRoomUI(toRoom);
     }
 
@@ -314,6 +318,7 @@ public final class GameManager
     /** Moves from one turn to the next */
     private void nextTurn() {
         fireTurnEvent();
+        worldState.numTurns++;
     }
     
     /** Called by the UI when the user clicks an exit button */
@@ -554,7 +559,7 @@ public final class GameManager
     }
 
     /**
-     * Adds a TurnListener to be notified when the next turn begins.
+     * Adds a TurnListener to be notified when the turn cycles to the next.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
      * listener will be notified before previously added listeners.
@@ -566,14 +571,14 @@ public final class GameManager
     }
 
     /**
-     * Removes a TurnListener from the turn-beginning notification list.
+     * Removes a TurnListener from the turn-cycle notification list.
      * @param l listener to remove
      */
     public void removeTurnListener(TurnListener l) {
         turnListeners.remove(l);
     }
 
-    /** Notifies registered {@code TurnListener}S that a turn is beginning */
+    /** Notifies registered {@code TurnListener}S that we have reached the cycle of turns */
     private void fireTurnEvent() {
         for (TurnListener l : turnListeners)
             l.turn();

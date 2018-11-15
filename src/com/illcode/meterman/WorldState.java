@@ -22,4 +22,7 @@ public class WorldState
 
     /** Extra data that objects can use to maintain and communicate state */
     public Map<String,Object> worldData;
+
+    /** The number of turns that have occurred in this world so far */
+    public int numTurns;
 }
