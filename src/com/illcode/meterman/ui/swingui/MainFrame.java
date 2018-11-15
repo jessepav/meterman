@@ -175,6 +175,8 @@ class MainFrame implements ActionListener, ListSelectionListener
     }
 
     public void addAction(String actionLabel) {
+        if (actions.contains(actionLabel))
+            return;
         actions.add(actionLabel);
         int n = actions.size();
         if (n <= NUM_ACTION_BUTTONS) {

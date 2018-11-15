@@ -128,6 +128,11 @@ public interface MetermanUI
     void removeInventoryEntity(Entity e);
 
     /**
+     * Clears any selection in the room and inventory entity lists.
+     */
+    void clearEntitySelection();
+
+    /**
      * Clears the exit button list.
      */
     void clearExits();

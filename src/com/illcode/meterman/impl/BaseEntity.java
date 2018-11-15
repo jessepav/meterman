@@ -53,6 +53,10 @@ public class BaseEntity implements Entity
         return description;
     }
 
+    public void lookInRoom() {
+        // empty
+    }
+
     public void enterScope() {
         // empty
     }

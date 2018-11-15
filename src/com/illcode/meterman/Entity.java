@@ -39,6 +39,13 @@ public interface Entity
     String getDescription();
 
     /**
+     * Called on each entity in a room when a look command is issued. While the implementation is free to do
+     * anything, generally it will call {@link GameManager#queueLookText(String, boolean)} to add text to
+     * the room description printed.
+     */
+    void lookInRoom();
+
+    /**
      * Called when the entity enters scope. This can occur when:
      * <ol>
      *     <li>The player moves into the room where this entity resides</li>

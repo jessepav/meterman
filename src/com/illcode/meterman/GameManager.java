@@ -29,12 +29,14 @@ public final class GameManager
     private LinkedList<GameActionListener> defaultGameActionListeners;
     private LinkedList<PlayerMovementListener> beforePlayerMovementListeners;
     private LinkedList<PlayerMovementListener> afterPlayerMovementListeners;
-    private LinkedList<TurnListener> beforeTurnListeners;
-    private LinkedList<TurnListener> afterTurnListeners;
+    private LinkedList<TurnListener> turnListeners;
     private LinkedList<EntitySelectionListener> entitySelectionListeners;
 
     // To be used in composing text before sending it off to the UI
-    private StringBuilder sb;
+    private StringBuilder textBuilder;
+
+    // See queueLookText()
+    private StringBuilder commonTextBuilder, paragraphBuilder;
 
     // Used for composing UI actions - reuse same list to avoid allocation
     private List<String> actions;
@@ -49,10 +51,11 @@ public final class GameManager
         defaultGameActionListeners = new LinkedList<>();
         beforePlayerMovementListeners = new LinkedList<>();
         afterPlayerMovementListeners = new LinkedList<>();
-        beforeTurnListeners = new LinkedList<>();
-        afterTurnListeners = new LinkedList<>();
+        turnListeners = new LinkedList<>();
         entitySelectionListeners = new LinkedList<>();
-        sb = new StringBuilder(2048);
+        textBuilder = new StringBuilder(2048);
+        commonTextBuilder = new StringBuilder(1024);
+        paragraphBuilder = new StringBuilder(1024);
         actions = new ArrayList<>(16);
     }
 
@@ -66,10 +69,11 @@ public final class GameManager
         defaultGameActionListeners = null;
         beforePlayerMovementListeners = null;
         afterPlayerMovementListeners = null;
-        beforeTurnListeners = null;
-        afterTurnListeners = null;
+        turnListeners = null;
         entitySelectionListeners = null;
-        sb = null;
+        textBuilder = null;
+        commonTextBuilder = null;
+        paragraphBuilder = null;
         actions = null;
     }
 
@@ -146,7 +150,7 @@ public final class GameManager
         for (Entity e : toRoom.getRoomEntities())
             e.enterScope();
         fireAfterPlayerMovementEvent(fromRoom, toRoom);
-        entitySelected(null);
+        ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
         lookAction();
         refreshRoomUI(toRoom);
     }
@@ -267,15 +271,39 @@ public final class GameManager
         game.about();
     }
 
-    /** Called by the UI when the user clicks "Look" */
+    /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookAction() {
-        sb.setLength(0);
-        sb.append("\n");
-        sb.append(getCurrentRoom().getDescription());
-        sb.append("\n");
-        ui.appendText(sb.toString());
-        sb.setLength(0);
+        textBuilder.setLength(0);
+        textBuilder.append("\n");
+        textBuilder.append(getCurrentRoom().getDescription());
+        textBuilder.append("\n");
+        for (Entity e : getCurrentRoom().getRoomEntities())
+            e.lookInRoom();
+        if (commonTextBuilder.length() != 0) {
+            textBuilder.append('\n');
+            textBuilder.append(commonTextBuilder);
+            commonTextBuilder.setLength(0);
+        }
+        if (paragraphBuilder.length() != 0) {
+            textBuilder.append(paragraphBuilder);
+            paragraphBuilder.setLength(0);
+        }
+        ui.appendText(textBuilder.toString());
+        textBuilder.setLength(0);
         nextTurn();
+    }
+
+    /**
+     * Adds text to be shown during the next look action.
+     * @param text text to show
+     * @param paragraph if true, the text will be shown in its own paragraph; if false, it will
+     *          be shown along with any other text that didn't request a separate paragraph
+     */
+    public void queueLookText(String text, boolean paragraph) {
+        if (paragraph)
+            paragraphBuilder.append('\n').append(text).append('\n');
+        else
+            commonTextBuilder.append(text).append(' ');
     }
 
     /** Called by the UI when the user clicks "Wait" */
@@ -285,8 +313,7 @@ public final class GameManager
 
     /** Moves from one turn to the next */
     private void nextTurn() {
-        fireAfterTurnEvent();
-        fireBeforeTurnEvent();
+        fireTurnEvent();
     }
     
     /** Called by the UI when the user clicks an exit button */
@@ -527,55 +554,28 @@ public final class GameManager
     }
 
     /**
-     * Adds a TurnListener to be notified when the turn begins.
+     * Adds a TurnListener to be notified when the next turn begins.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
      * listener will be notified before previously added listeners.
      * @param l listener to add
      */
-    public void addBeforeTurnListener(TurnListener l) {
-        if (!beforeTurnListeners.contains(l))
-            beforeTurnListeners.addFirst(l);
+    public void addTurnListener(TurnListener l) {
+        if (!turnListeners.contains(l))
+            turnListeners.addFirst(l);
     }
 
     /**
      * Removes a TurnListener from the turn-beginning notification list.
      * @param l listener to remove
      */
-    public void removeBeforeTurnListener(TurnListener l) {
-        beforeTurnListeners.remove(l);
+    public void removeTurnListener(TurnListener l) {
+        turnListeners.remove(l);
     }
-
-    /**
-     * Adds a TurnListener to be notified when the turn ends.
-     * <p/>
-     * Listeners are added to the front of our list, and thus the most recently added listener will be
-     * notified before previously added listeners.
-     * @param l listener to add
-     */
-    public void addAfterTurnListener(TurnListener l) {
-        if (!afterTurnListeners.contains(l))
-            afterTurnListeners.addFirst(l);
-    }
-
-    /**
-     * Removes a TurnListener from the turn-ending notification list.
-     * @param l listener to remove
-     */
-    public void removeAfterTurnListener(TurnListener l) {
-        afterTurnListeners.remove(l);
-    }
-
 
     /** Notifies registered {@code TurnListener}S that a turn is beginning */
-    private void fireBeforeTurnEvent() {
-        for (TurnListener l : beforeTurnListeners)
-            l.turn();
-    }
-
-    /** Notifies registered {@code TurnListener}S that a turn is ending */
-    private void fireAfterTurnEvent() {
-        for (TurnListener l : afterTurnListeners)
+    private void fireTurnEvent() {
+        for (TurnListener l : turnListeners)
             l.turn();
     }
 

@@ -120,6 +120,11 @@ public class SwingUI implements MetermanUI
         }
     }
 
+    public void clearEntitySelection() {
+        mainFrame.roomList.clearSelection();
+        mainFrame.inventoryList.clearSelection();
+    }
+
     public void clearExits() {
         mainFrame.clearExits();
     }
