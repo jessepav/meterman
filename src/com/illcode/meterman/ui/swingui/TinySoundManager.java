@@ -44,6 +44,8 @@ public final class TinySoundManager implements SoundManager
             logger.info("SoundManager spinning up soundThread");
             soundThread.start();
         }
+        setSoundEnabled(Utils.booleanPref("sound", true));
+        setMusicEnabled(Utils.booleanPref("music", true));
         initialized = true;
     }
 
@@ -82,6 +84,10 @@ public final class TinySoundManager implements SoundManager
 
     public void setMusicEnabled(boolean enabled) {
         musicEnabled = enabled;
+    }
+
+    public boolean isMusicEnabled() {
+        return musicEnabled;
     }
 
     /**
@@ -144,6 +150,10 @@ public final class TinySoundManager implements SoundManager
 
     public void setSoundEnabled(boolean enabled) {
         soundEnabled = enabled;
+    }
+
+    public boolean isSoundEnabled() {
+        return soundEnabled;
     }
 
     /**

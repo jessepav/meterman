@@ -1,5 +1,8 @@
 package com.illcode.meterman.ui.swingui;
 
+import com.illcode.meterman.Utils;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import java.awt.*;
@@ -200,4 +203,35 @@ public final class GuiUtils
         sb.append("-").append(font.getSize());
         return sb.toString();
     }
+
+
+    public static void setBoundsFromPrefs(Window w, String prefName) {
+        int x = -1, y = -1, width = -1, height = -1;
+        String val = Utils.getPref(prefName);
+        if (val != null && !val.isEmpty()) {
+            String[] vals = StringUtils.split(val, ", ");
+            if (vals.length == 4) {
+                x = Utils.parseInt(vals[0], 50);
+                y = Utils.parseInt(vals[1], 20);
+                width = Utils.parseInt(vals[2], 800);
+                height = Utils.parseInt(vals[3], 600);
+            } else if (vals.length == 2) {
+                width = Utils.parseInt(vals[0], 800);
+                height = Utils.parseInt(vals[1], 600);
+            }
+
+            if (x >= 0) {
+                w.setBounds(x, y, width, height);
+            } else if (width >= 0) {
+                w.setSize(width, height);
+                w.setLocationRelativeTo(null);
+            }
+        }
+    }
+
+    public static void saveBoundsToPref(Window w, String prefName) {
+        Rectangle r = w.getBounds();
+        Utils.setPref(prefName, Utils.fmt("%d, %d, %d, %d", r.x, r.y, r.width, r.height));
+    }
+
 }

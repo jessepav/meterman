@@ -121,12 +121,15 @@ class MainFrame implements ActionListener, ListSelectionListener
             defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"), -1);
             frameImage = defaultFrameImage;
             fc = new JFileChooser();
+
+            GuiUtils.setBoundsFromPrefs(frame, "main-window-size");
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
         }
     }
 
     void dispose() {
+        GuiUtils.saveBoundsToPref(frame, "main-window-size");
         if (frameImage != null) {
             frameImage.flush();
             frameImage = null;
@@ -296,6 +299,9 @@ class MainFrame implements ActionListener, ListSelectionListener
     }
 
     public void startup() {
+        soundCheckBoxMenuItem.setSelected(Meterman.sound.isSoundEnabled());
+        musicCheckBoxMenuItem.setSelected(Meterman.sound.isMusicEnabled());
+
         ui.clearActions();
         ui.clearExits();
         ui.clearText();

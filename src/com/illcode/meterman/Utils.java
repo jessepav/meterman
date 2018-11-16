@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
@@ -131,7 +132,7 @@ public final class Utils
      * @param defaultVal default value
      * @return value of the preference, or defaultVal if it doesn't exist.
      */
-    static boolean booleanPref(String key, boolean defaultVal) {
+    public static boolean booleanPref(String key, boolean defaultVal) {
         if (Meterman.prefs.containsKey(key)) {
             return parseBoolean(Meterman.prefs.getProperty(key));
         } else {
@@ -148,7 +149,7 @@ public final class Utils
      * @param defaultVal default value
      * @return value of the preference, or defaultVal if it doesn't exist.
      */
-    static int intPref(String key, int defaultVal) {
+    public static int intPref(String key, int defaultVal) {
         if (Meterman.prefs.containsKey(key)) {
             return parseInt(Meterman.prefs.getProperty(key), defaultVal);
         } else {
@@ -165,7 +166,7 @@ public final class Utils
      * @param defaultVal default value
      * @return value of the preference, or defaultVal if it doesn't exist.
      */
-    static float floatPref(String key, float defaultVal) {
+    public static float floatPref(String key, float defaultVal) {
         if (Meterman.prefs.containsKey(key)) {
             return parseFloat(Meterman.prefs.getProperty(key), defaultVal);
         } else {
@@ -181,13 +182,23 @@ public final class Utils
      * @param defaultVal default value
      * @return value of the preference, or defaultVal if it doesn't exist.
      */
-    static String pref(String key, String defaultVal) {
+    public static String pref(String key, String defaultVal) {
         if (Meterman.prefs.containsKey(key)) {
             return Meterman.prefs.getProperty(key);
         } else {
             Meterman.prefs.setProperty(key, defaultVal);
             return defaultVal;
         }
+    }
+
+    /** Facade for {@link Properties#getProperty(java.lang.String)}*/
+    public static String getPref(String key) {
+        return Meterman.prefs.getProperty(key);
+    }
+
+    /** Facade for {@link Properties#setProperty(java.lang.String, java.lang.String)}*/
+    public static void setPref(String key, String value) {
+        Meterman.prefs.setProperty(key, value);
     }
 
     /** Causes the current thread to sleep for {@code millis} milliseconds, catching InterruptedException

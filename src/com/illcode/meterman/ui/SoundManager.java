@@ -14,6 +14,8 @@ public interface SoundManager
 
     void setMusicEnabled(boolean enabled);
 
+    boolean isMusicEnabled();
+
     void loadMusic(String name, File f);
 
     void playMusic(String name, boolean loop);
@@ -25,6 +27,8 @@ public interface SoundManager
     void resumeAllMusic();
 
     void setSoundEnabled(boolean enabled);
+
+    boolean isSoundEnabled();
 
     void unloadMusic(String name);
 
