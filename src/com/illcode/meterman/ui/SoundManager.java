@@ -18,7 +18,7 @@ public interface SoundManager
 
     void loadMusic(String name, File f);
 
-    void playMusic(String name, boolean loop);
+    void playMusic(String name, boolean loop, double volume);
 
     void stopMusic(String name);
 
@@ -34,7 +34,7 @@ public interface SoundManager
 
     void loadSound(String name, File f);
 
-    void playSound(String name);
+    void playSound(String name, double volume);
 
     void unloadSound(String name);
 

@@ -44,8 +44,6 @@ public final class TinySoundManager implements SoundManager
             logger.info("SoundManager spinning up soundThread");
             soundThread.start();
         }
-        setSoundEnabled(Utils.booleanPref("sound", true));
-        setMusicEnabled(Utils.booleanPref("music", true));
         initialized = true;
     }
 
@@ -82,10 +80,15 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
+    /**
+     * Enables or disables the playing of music
+     * @param enabled true if music should be enabled
+     */
     public void setMusicEnabled(boolean enabled) {
         musicEnabled = enabled;
     }
 
+    /** Returns true if the playing of music is enabled.*/
     public boolean isMusicEnabled() {
         return musicEnabled;
     }
@@ -107,12 +110,13 @@ public final class TinySoundManager implements SoundManager
     /**
      * Plays music previously loaded.
      * @param name name of the Music, as specified in {@link #loadMusic}
+     * @param volume the relative volume at which to play the music (1.0 is nominal)
      */
-    public void playMusic(String name, boolean loop) {
+    public void playMusic(String name, boolean loop, double volume) {
         if (!musicEnabled)
             return;
         try {
-            queue.put(new SoundMessage(SoundMessage.PLAY_MUSIC, name, loop));
+            queue.put(new SoundMessage(SoundMessage.PLAY_MUSIC, name, loop, volume));
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "SoundManager", e);
         }
@@ -148,10 +152,15 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
+    /**
+     * Enables or disables the playing of sounds
+     * @param enabled true if sounds should be enabled
+     */
     public void setSoundEnabled(boolean enabled) {
         soundEnabled = enabled;
     }
 
+    /** Returns true if the playing of sounds is enabled.*/
     public boolean isSoundEnabled() {
         return soundEnabled;
     }
@@ -187,14 +196,15 @@ public final class TinySoundManager implements SoundManager
      * Note that if any music loads are pending, the sound won't be played, because
      * it may not play quickly and so many appear desynchronized with the visuals.
      * @param name name of the sound, as specified in {@link #loadSound}
+     * @param volume the relative volume at which to play the sound (1.0 is nominal)
      */
-    public void playSound(String name) {
+    public void playSound(String name, double volume) {
         if (!soundEnabled)
             return;
         if (pendingLoads.get() != 0)   // sound won't play quickly, so don't play it at all
             return;
         try {
-            queue.put(new SoundMessage(SoundMessage.PLAY_SOUND, name));
+            queue.put(new SoundMessage(SoundMessage.PLAY_SOUND, name, volume));
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "SoundManager", e);
         }
@@ -276,7 +286,7 @@ public final class TinySoundManager implements SoundManager
                 case SoundMessage.PLAY_SOUND:
                     s = soundMap.get(msg.name);
                     if (s != null)
-                        s.play();
+                        s.play(msg.val);
                     break;
                 case SoundMessage.LOAD_MUSIC:
                     if (!musicMap.containsKey(msg.name)) {
@@ -312,7 +322,7 @@ public final class TinySoundManager implements SoundManager
                 case SoundMessage.PLAY_MUSIC:
                     m = musicMap.get(msg.name);
                     if (m != null)
-                        m.play(msg.flag);
+                        m.play(msg.flag, msg.val);
                     break;
                 case SoundMessage.STOP_MUSIC:
                     m = musicMap.get(msg.name);
@@ -362,6 +372,7 @@ public final class TinySoundManager implements SoundManager
         String name;
         File file;
         boolean flag;
+        double val;
 
         private SoundMessage(int command) {
             this.command = command;
@@ -382,6 +393,19 @@ public final class TinySoundManager implements SoundManager
             this.command = command;
             this.name = name;
             this.flag = flag;
+        }
+
+        private SoundMessage(int command, String name, boolean flag, double val) {
+            this.command = command;
+            this.name = name;
+            this.flag = flag;
+            this.val = val;
+        }
+
+        private SoundMessage(int command, String name, double val) {
+            this.command = command;
+            this.name = name;
+            this.val = val;
         }
     }
 }

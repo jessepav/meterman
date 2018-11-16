@@ -69,6 +69,9 @@ public final class Meterman
         sound.init();
         persistence.init();
 
+        sound.setSoundEnabled(Utils.booleanPref("sound", true));
+        sound.setMusicEnabled(Utils.booleanPref("music", true));
+
         if (ui.run())
             shutdown();
     }
