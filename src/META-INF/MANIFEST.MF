@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Class-Path: lib/minlog-1.3.0.jar lib/objenesis-2.1.jar 
+ lib/reflectasm-1.10.1-shaded.jar lib/kryo-4.0.2.jar 
+ lib/bsh-2.1.0-SNAPSHOT.jar lib/tinysound-1.1.1-local.jar 
+ lib/jorbis-0.0.17.jar lib/tritonus_share.jar lib/vorbisspi1.0.3.jar 
+ lib/jgoodies-forms-1.7.2.jar lib/jgoodies-common-1.8.1.jar 
+ lib/jfd-loader.jar lib/jdom-2.0.6.jar lib/jaxen-1.1.6.jar 
+ lib/commons-codec-1.11.jar lib/minimal-json-0.9.5.jar 
+ lib/commons-lang3-3.4.jar
+Main-Class: com.illcode.meterman.Meterman

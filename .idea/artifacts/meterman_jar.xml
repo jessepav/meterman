@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact name="meterman:jar">
+    <output-path>$PROJECT_DIR$/build/artifacts/meterman_jar</output-path>
+    <root id="root">
+      <element id="archive" name="meterman.jar">
+        <element id="module-output" name="meterman" />
+      </element>
+      <element id="directory" name="config">
+        <element id="dir-copy" path="$PROJECT_DIR$/config" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="BeanShell" />
+        <element id="library" level="project" name="commons-codec" />
+        <element id="library" level="project" name="commons-lang3" />
+        <element id="library" level="project" name="JDOM" />
+        <element id="library" level="project" name="jfd-loader" />
+        <element id="library" level="project" name="jgoodies-forms" />
+        <element id="library" level="project" name="kryo" />
+        <element id="library" level="project" name="minimal-json" />
+        <element id="library" level="project" name="tinysound" />
+      </element>
+      <element id="directory" name="assets">
+        <element id="dir-copy" path="$PROJECT_DIR$/assets" />
+      </element>
+    </root>
+  </artifact>
+</component>
