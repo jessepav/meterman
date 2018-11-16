@@ -1,1 +1,7 @@
+- Double-click list item in ListDialog to select it
+
+- In the FrameImageComponent, scale the images only by integer multiples, based on
+  the relative size of the component vs the image. If the image is <= size of the
+  component, just center the images.
+
 - Write the Riverboat, modifying the engine as-needed to enable required features.
