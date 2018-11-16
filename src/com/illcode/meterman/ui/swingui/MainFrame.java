@@ -1,6 +1,7 @@
 package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.GamesList;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
@@ -118,6 +119,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             actions = new ArrayList<>(16);
             
             defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"), -1);
+            frameImage = defaultFrameImage;
             fc = new JFileChooser();
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
@@ -142,6 +144,9 @@ class MainFrame implements ActionListener, ListSelectionListener
             frameImage = image;
             imageComponent.repaint();
         }
+        // Once someone sets a frame image, we no longer need our defaultFrameImage
+        defaultFrameImage.flush();
+        defaultFrameImage = null;
     }
 
     void setEntityImage(BufferedImage image) {
@@ -321,30 +326,28 @@ class MainFrame implements ActionListener, ListSelectionListener
     private class FrameImageComponent extends JComponent {
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            BufferedImage img = frameImage != null ? frameImage : defaultFrameImage;
-            if (img != null) {
-                int cw = getWidth();
-                int iw = img.getWidth();
-                int ih = img.getHeight();
-                float ratio = (float) cw / iw;
-                RenderingHints oldHints = g2d.getRenderingHints();
-                g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
-                g2d.drawImage(img, 0, 0, cw, (int) (ih * ratio), null);
-                g2d.setRenderingHints(oldHints);
+            int cw = getWidth();
+            int ch = getHeight();
+            int x, y, width, height;
+            if (frameImage != null) {
+                int iw = frameImage.getWidth();
+                int ih = frameImage.getHeight();
+                int scale = Utils.clamp(cw / iw, 1, ch / ih);
+                width = iw * scale;
+                height = ih * scale;
+                x = Math.max(0, (cw - width) / 2);
+                y = Math.max(0, (ch - height) / 2);
+                g2d.drawImage(frameImage, x, y, width, height, null);
             }
             if (entityImage != null) {
-                int cw = getWidth();
-                int ch = getHeight();
                 int iw = entityImage.getWidth();
                 int ih = entityImage.getHeight();
-                final int margin = cw / 10;
-                cw -= 2*margin;
-                float ratio = (float) cw / iw;
-                ih = (int) (ih * ratio);
-                RenderingHints oldHints = g2d.getRenderingHints();
-                g2d.setRenderingHints(GuiUtils.getQualityRenderingHints());
-                g2d.drawImage(entityImage, margin, ch / 2 - ih / 3, cw, ih, null);
-                g2d.setRenderingHints(oldHints);
+                y = ch / 3;
+                int scale = Utils.clamp(cw / iw, 1, (ch-y) / ih);
+                width = iw * scale;
+                height = ih * scale;
+                x = Math.max(0, (cw - width) / 2);
+                g2d.drawImage(entityImage, x, y, width, height, null);
             }
         }
     }

@@ -46,14 +46,16 @@ public interface MetermanUI
     void openURL(String url);
 
     /**
-     * Sets the image displayed in the main UI frame. By default, the area allocated
-     * to this image is 150 pixels wide.
+     * Sets the image displayed in the main UI frame. The recommended size for
+     * frame images is 150x400 pixels.
      * @param image image to display, or null to remove the current image.
      */
     void setFrameImage(BufferedImage image);
 
     /**
      * Sets the entity image that will be drawn inset in the frame image.
+     * The recommended size for entity images is 140x140 pixels; the image
+     * itself should have a border to visually separate it from the frame image.
      * @param image image to display, or null to remove the current image.
      */
     void setEntityImage(BufferedImage image);

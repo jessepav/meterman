@@ -9,12 +9,14 @@ import com.jformdesigner.runtime.FormLoader;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.logging.Level;
 
 import static com.illcode.meterman.Utils.logger;
 
-class ListDialog implements ActionListener
+class ListDialog implements ActionListener, MouseListener
 {
     Window owner;
 
@@ -44,6 +46,8 @@ class ListDialog implements ActionListener
 
             okButton.addActionListener(this);
             cancelButton.addActionListener(this);
+            list.addMouseListener(this);
+            dialog.getRootPane().setDefaultButton(okButton);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "ListDialog()", ex);
         }
@@ -58,6 +62,7 @@ class ListDialog implements ActionListener
         cancelButton.setVisible(showCancelButton);
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
+        list.requestFocusInWindow();
         dialog.setVisible(true);  // blocks until hidden
         int idx = list.getSelectedIndex();
         if (idx == -1)
@@ -79,4 +84,21 @@ class ListDialog implements ActionListener
     public void dispose() {
         dialog.dispose();
     }
+
+
+    //region MouseListener implementation
+    public void mouseClicked(MouseEvent e) {
+        Object source = e.getSource();
+        if (source == list) {
+            if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
+                okButton.doClick();
+        }
+    }
+
+    public void mousePressed(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) { }
+    //endregion
+
 }
