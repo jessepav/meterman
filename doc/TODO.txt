@@ -2,4 +2,9 @@
 
 - unify UI-reset logic in new- and load-game
 
+- Add "loadImage(Path p, String imageName)", "unloadImage(String imageName)", "unloadAllImages()", methods to
+  MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
+  don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
+  we can also keep the default frame-image around, references by a special name.
+
 - Write the Riverboat, modifying the engine as-needed to enable required features.
