@@ -1,1 +1,5 @@
+- clear sound manager (and frame images?) when starting or loading a game
+
+- unify UI-reset logic in new- and load-game
+
 - Write the Riverboat, modifying the engine as-needed to enable required features.
