@@ -1,4 +1,4 @@
-- clear sound manager (and frame images?) when starting or loading a game
+- clear sound manager and UI images when starting or loading a game
 
 - unify UI-reset logic in new- and load-game
 
@@ -6,5 +6,9 @@
   MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
   don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
   we can also keep the default frame-image around, references by a special name.
+  
+- Add a side image panel to the TextDialog, that accepts the same imageName parameter as the frame image.
+  If the imageName is null, the panel will be hidden (set a preferred size of 150x400). I don't need a
+  custom JPanel subclass for this, but can just pop an Image into an ImageIcon and use a JLabel.
 
 - Write the Riverboat, modifying the engine as-needed to enable required features.
