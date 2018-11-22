@@ -7,7 +7,7 @@
   don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
   we can also keep the default frame-image around, references by a special name.
   
-- Add a side image panel to the TextDialog, that accepts the same imageName parameter as the frame image.
+- Add a side image panel to the XxxDialogS, that accepts the same imageName parameter as the frame image.
   If the imageName is null, the panel will be hidden (set a preferred size of 150x400). I don't need a
   custom JPanel subclass for this, but can just pop an Image into an ImageIcon and use a JLabel.
 
@@ -17,5 +17,8 @@
   comparing by identity--since it knows which entities were created when the world was instantiated--or
   by some custom ID field added to DelegatingEntity (which will actually be the custom entity class for
   a particular game).
+
+- BeanShell implementations of the delegate (used by DelegatingEntity), and of the world initialization
+  routine.
 
 - Write the Riverboat, modifying the engine as-needed to enable required features.
