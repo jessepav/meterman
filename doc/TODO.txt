@@ -7,9 +7,14 @@
   don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
   we can also keep the default frame-image around, references by a special name.
   
-- Add a side image panel to the XxxDialogS, that accepts the same imageName parameter as the frame image.
-  If the imageName is null, the panel will be hidden (set a preferred size of 150x400). I don't need a
-  custom JPanel subclass for this, but can just pop an Image into an ImageIcon and use a JLabel.
+- [Actually, don't do this:  the frame images are still visible when the dialogs appear, so there's still
+   some graphical feedback (like entity image) while viewing dialog text. If I want to ensure that the images
+   are visible I could position the dialogs to the immediate right of the FrameImagePanel instead of the center
+   of the frame.]
+   
+     Add a side image panel to the XxxDialogS, that accepts the same imageName parameter as the frame image.
+     If the imageName is null, the panel will be hidden (set a preferred size of 150x400). I don't need a
+     custom JPanel subclass for this, but can just pop an Image into an ImageIcon and use a JLabel.
 
 - Add a sort of "DelegatingEntity" which forwards its various methods to a handler object, the methods of
   which accept an additional parameter of the DelegatingEntity itself. This allows one class to implement
