@@ -213,6 +213,8 @@ public final class GameManager
             if (previousRoom != playerRoom) {
                 e.setRoom(playerRoom);
                 e.enterScope();
+            } else {
+                refreshRoomUI(playerRoom);
             }
             refreshInventoryUI();
         }
@@ -239,11 +241,13 @@ public final class GameManager
         if (wear) {
             if (e.checkAttribute(Attributes.WEARABLE) && isEntityInInventory(e) && !isEntityWorn(e)) {
                 player.worn.add(e);
+                refreshInventoryUI();
                 return true;
             }
         } else {
             if (isEntityWorn(e)) {
                 player.worn.remove(e);
+                refreshInventoryUI();
                 return true;
             }
         }
@@ -266,11 +270,13 @@ public final class GameManager
         if (equip) {
             if (e.checkAttribute(Attributes.EQUIPPABLE) && isEntityInInventory(e) && !isEntityEquipped(e)) {
                 player.equipped.add(e);
+                refreshInventoryUI();
                 return true;
             }
         } else {
             if (isEntityEquipped(e)) {
                 player.equipped.remove(e);
+                refreshInventoryUI();
                 return true;
             }
         }
