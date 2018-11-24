@@ -26,4 +26,8 @@
 - BeanShell implementations of the delegate (used by DelegatingEntity), and of the world initialization
   routine.
 
+- The logic of updating the UI to reflect world changes is getting tangled: I should probably just refresh
+  the UI at the start of every turn, or implement some sort of notification system to queue up requests to
+  update the different parts of the UI.
+
 - Write the Riverboat, modifying the engine as-needed to enable required features.
