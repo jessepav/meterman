@@ -350,7 +350,6 @@ public final class GameManager
      */
     public void entitySelected(Entity e) {
         selectedEntity = e;
-        actions.clear();
         if (e == null) {
             ui.clearActions();
             ui.setObjectName("(nothing selected)");
@@ -358,19 +357,21 @@ public final class GameManager
             ui.setEntityImage(null);
         } else {
             e.selected();
-            actions.addAll(e.getActions());
-            fireEntitySelectedEvent(e, actions);
             refreshEntityUI(e);
         }
     }
 
     /**
-     * Called by an entity when its internal state changes in such a way that the UI
-     * may have to be updated to reflect the change.
+     * Called when an entity is selected, or when an entity's internal state changes in such a
+     * way that the UI may have to be updated to reflect the change. If the given entity is the
+     * currently selected entity, we notify our entity-selection listeners.
      * @param e entity that has changed
      */
     public void refreshEntityUI(Entity e) {
         if (e == selectedEntity) {
+            actions.clear();
+            actions.addAll(e.getActions());
+            fireEntitySelectedEvent(e, actions);
             ui.setObjectName(e.getName());
             ui.setObjectText(e.getDescription());
             ui.clearActions();
