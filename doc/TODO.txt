@@ -1,3 +1,9 @@
+- create an interface, UiActionHandler, that is used to handle UI events (exits or actions selected, entities
+  selected) instead of having the UI hardcode calls into GameManager
+  
+- replace the public refreshXXXUI methods in GameManager with roomModified(Room r) and entityModified(Entity e),
+  which will cause UI updates as appropriate.
+
 - clear sound manager and UI images when starting or loading a game
 
 - unify UI-reset logic in new- and load-game
@@ -25,6 +31,8 @@
 
 - BeanShell implementations of the delegate (used by DelegatingEntity), and of the world initialization
   routine.
+
+- Also DelegatingRoom, and BeanShell implementation.
 
 - The logic of updating the UI to reflect world changes is getting tangled: I should probably just refresh
   the UI at the start of every turn, or implement some sort of notification system to queue up requests to
