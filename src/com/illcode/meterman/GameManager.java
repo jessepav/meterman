@@ -92,6 +92,9 @@ public final class GameManager
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
+        refreshRoomUI(getCurrentRoom());
+        refreshInventoryUI();
+        entitySelected(null);
         game.start(true);
         getCurrentRoom().entered();
         lookAction();
@@ -141,8 +144,6 @@ public final class GameManager
      * one of them may cancel this move.
      * @param toRoom the room to which the player should move.
      */
-    // Note that before even arriving here, the current room has a chance to block
-    // UI-initiated movement in exitSelected() by returning false from attemptExit()
     public void movePlayer(Room toRoom) {
         if (toRoom == null || toRoom == player.currentRoom)
             return;
