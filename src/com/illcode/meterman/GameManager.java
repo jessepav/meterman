@@ -62,7 +62,7 @@ public final class GameManager
     }
 
     public void dispose() {
-        game = null;
+        closeGame();
         worldState = null;
         player = null;
         rooms = null;
@@ -87,17 +87,19 @@ public final class GameManager
      * @param game game to start
      */
     public void newGame(Game game) {
+        closeGame();
         this.game = game;
         worldState = game.getInitialWorldState();
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
-        refreshRoomUI(getCurrentRoom());
+        ui.clearText();
+        refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
         game.start(true);
         getCurrentRoom().entered();
-        lookAction();
+        lookCommand();
         getCurrentRoom().setAttribute(Attributes.VISITED);
     }
 
@@ -108,15 +110,24 @@ public final class GameManager
      * @param worldState WorldState to restore
      */
     public void loadGame(WorldState worldState) {
+        closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
-        refreshRoomUI(getCurrentRoom());
+        ui.clearText();
+        refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
         game.start(false);
+    }
+
+    private void closeGame() {
+        if (game != null) {
+            game.dispose();
+            game = null;
+        }
     }
 
     public Game getGame() {
@@ -162,9 +173,9 @@ public final class GameManager
             e.enterScope();
         fireAfterPlayerMovementEvent(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
-        lookAction();
+        lookCommand();
         toRoom.setAttribute(Attributes.VISITED);
-        refreshRoomUI(toRoom);
+        refreshRoomUI();
     }
 
     /**
@@ -196,7 +207,9 @@ public final class GameManager
         if (r != null)
             r.getRoomEntities().add(e);
         if (previousRoom == playerRoom || r == playerRoom)
-            refreshRoomUI(playerRoom);
+            refreshRoomUI();
+        if (e == selectedEntity)
+            entitySelected(null);
     }
 
     /**
@@ -215,9 +228,11 @@ public final class GameManager
                 e.setRoom(playerRoom);
                 e.enterScope();
             } else {
-                refreshRoomUI(playerRoom);
+                refreshRoomUI();
             }
             refreshInventoryUI();
+            if (e == selectedEntity)
+                entitySelected(null);
         }
     }
 
@@ -290,7 +305,7 @@ public final class GameManager
     }
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
-    public void lookAction() {
+    public void lookCommand() {
         textBuilder.setLength(0);
         textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
@@ -325,11 +340,11 @@ public final class GameManager
     }
 
     /** Called by the UI when the user clicks "Wait" */
-    public void waitAction() {
+    public void waitCommand() {
         nextTurn();
     }
 
-    /** Moves from one turn to the next */
+    /** Called as one turn is transitioning to the next (before {@link WorldState#numTurns} is incremented) */
     private void nextTurn() {
         fireTurnEvent();
         worldState.numTurns++;
@@ -357,56 +372,63 @@ public final class GameManager
      */
     public void entitySelected(Entity e) {
         selectedEntity = e;
-        if (e == null) {
+        if (e != null)
+            e.selected();
+        refreshEntityUI();
+    }
+
+    /**
+     * May be called to indicate that the given entity's state has changed in such
+     * a way that the UI may need to be refreshed.
+     * @param e entity that has changed
+     */
+    public void entityChanged(Entity e) {
+        if (e != null && e == selectedEntity)
+            refreshEntityUI();
+    }
+
+    private void refreshEntityUI() {
+        if (selectedEntity != null) {
+            actions.clear();
+            actions.addAll(selectedEntity.getActions());
+            fireEntitySelectedEvent(selectedEntity, actions);
+            ui.setObjectName(selectedEntity.getName());
+            ui.setObjectText(selectedEntity.getDescription());
+            ui.clearActions();
+            for (String s : actions)
+                ui.addAction(s);
+        } else {
             ui.clearActions();
             ui.setObjectName("(nothing selected)");
             ui.setObjectText("");
             ui.setEntityImage(null);
-        } else {
-            e.selected();
-            refreshEntityUI(e);
         }
     }
 
     /**
-     * Called when an entity is selected, or when an entity's internal state changes in such a
-     * way that the UI may have to be updated to reflect the change. If the given entity is the
-     * currently selected entity, we notify our entity-selection listeners.
-     * @param e entity that has changed
-     */
-    public void refreshEntityUI(Entity e) {
-        if (e == selectedEntity) {
-            actions.clear();
-            actions.addAll(e.getActions());
-            fireEntitySelectedEvent(e, actions);
-            ui.setObjectName(e.getName());
-            ui.setObjectText(e.getDescription());
-            ui.clearActions();
-            for (String s : actions)
-                ui.addAction(s);
-        }
-    }
-
-    /**
-     * Called by a room when its internal state changes in such a way that the UI
+     * Called when a room's internal state changes in such a way that the UI
      * may have to be updated to reflect the change.
      * @param r room that has changed
      */
-    public void refreshRoomUI(Room r) {
-        if (r == getCurrentRoom()) {
-            for (int pos = 0; pos < UIConstants.NUM_EXIT_BUTTONS; pos++)
-                ui.setExitLabel(pos, r.getExitLabel(pos));
-            ui.clearRoomEntities();
-            for (Entity e : r.getRoomEntities())
-                if (!e.checkAttribute(Attributes.CONCEALED))
-                    ui.addRoomEntity(e);
-        }
+    public void roomChanged(Room r) {
+        if (r == getCurrentRoom())
+            refreshRoomUI();
+    }
+
+    private void refreshRoomUI() {
+        Room r = getCurrentRoom();
+        for (int pos = 0; pos < UIConstants.NUM_EXIT_BUTTONS; pos++)
+            ui.setExitLabel(pos, r.getExitLabel(pos));
+        ui.clearRoomEntities();
+        for (Entity e : r.getRoomEntities())
+            if (!e.checkAttribute(Attributes.CONCEALED))
+                ui.addRoomEntity(e);
     }
 
     /**
      * Called when the player inventory changes in such a way that the UI needs to be refreshed.
      */
-    public void refreshInventoryUI() {
+    private void refreshInventoryUI() {
         HashSet<Entity> remainingItems = new HashSet<>(player.inventory);
         ui.clearInventoryEntities();
         for (Entity item : player.equipped) {

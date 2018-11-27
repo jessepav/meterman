@@ -29,6 +29,10 @@ public class RiverboatGame implements Game
 
     }
 
+    public void dispose() {
+
+    }
+
     private void setupWorldState(WorldState worldState) {
         // Do stuff!
     }

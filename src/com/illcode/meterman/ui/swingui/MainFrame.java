@@ -13,7 +13,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -215,9 +214,9 @@ class MainFrame implements ActionListener, ListSelectionListener
         int buttonIdx;
 
         if (source == lookButton) {
-            Meterman.gm.lookAction();
+            Meterman.gm.lookCommand();
         } else if (source == waitButton) {
-            Meterman.gm.waitAction();
+            Meterman.gm.waitCommand();
         } else if ((buttonIdx = ArrayUtils.indexOf(exitButtons, source)) != -1) {
             Meterman.gm.exitSelected(buttonIdx);
         } else if ((buttonIdx = ArrayUtils.indexOf(actionButtons, source)) != -1) {
@@ -290,7 +289,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             roomList.clearSelection();
             suppressValueChanged = false;
             ui.inventoryEntitySelected(inventoryList.getSelectedIndex());
-        } else if (source == ui.listDialog.list) {
+        } else if (source == ui.listDialog.list) {  // used only when starting a new game
             String selectedGame = ui.listDialog.list.getSelectedValue();
             if (selectedGame == null)
                 selectedGame = "select-game";
