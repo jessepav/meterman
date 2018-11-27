@@ -417,6 +417,7 @@ public final class GameManager
 
     private void refreshRoomUI() {
         Room r = getCurrentRoom();
+        ui.setRoomName(r.getName());
         for (int pos = 0; pos < UIConstants.NUM_EXIT_BUTTONS; pos++)
             ui.setExitLabel(pos, r.getExitLabel(pos));
         ui.clearRoomEntities();
