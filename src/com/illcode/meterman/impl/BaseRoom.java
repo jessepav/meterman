@@ -71,14 +71,6 @@ public class BaseRoom implements Room
         return null;
     }
 
-    public void setExit(int direction, Room room) {
-        exits[direction] = room;
-    }
-
-    public void setExitLabel(int direction, String label) {
-        exitLabels[direction] = label;
-    }
-
     public List<Entity> getRoomEntities() {
         return entities;
     }

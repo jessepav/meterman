@@ -44,17 +44,6 @@ public interface Room
     Room getExit(int direction);
 
     /**
-     * Sets the exit leading from this room in the given direction.
-     * <p/>
-     * This method exists in order to enable world-modification helper classes and listeners -- if
-     * a particular Room wants to ignore this method, it is free to do so.
-     * @param direction one of the button constants in {@link UIConstants}, ex {@link UIConstants#NW_BUTTON}
-     * @param room the room found in the given direction, or null if no room
-     * @see #getExit(int)
-     */
-    void setExit(int direction, Room room);
-
-    /**
      * Return the text that should be shown on the UI button for a given direction.
      * @param direction one of the button constants in {@link UIConstants}
      * @return the text that should be shown on the respective UI button, or null if the button should
@@ -62,18 +51,6 @@ public interface Room
      * @see #getExit(int)
      */
     String getExitLabel(int direction);
-
-    /**
-     * Sets the exit label displayed in the UI for a given direction.
-     * <p/>
-     * This method exists in order to enable world-modification helper classes and listeners -- if
-     * a particular Room wants to ignore this method, it is free to do so.
-     * @param direction one of the button constants in {@link UIConstants}, ex {@link UIConstants#NW_BUTTON}
-     * @param label the label that should be displayed in the UI for the given direction, or null
-     *              if the button should be hidden
-     * @see #getExitLabel(int)
-     */
-    void setExitLabel(int direction, String label);
 
     /**
      * Returns a list of the entities found in this room.
