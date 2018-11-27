@@ -1,7 +1,16 @@
             Meterman Design Notes
             ---------------------
 
-Some big picture code notes:
+"Actions" are not general purpose messages that can be dispatched to any entity--they
+are specifically the result of the user selecting an action-word in the UI for the
+selected entity. Thus "Look" and "Wait" are not actions.
+
+Given the suggested dimensions of frame images (150x400) and entity images (140x140),
+using abstract or symbolic graphics could be more effective than attempting standard
+representational game art.
+
+
+== Some big picture code notes ==
 
 - This was the note as I originally wrote it:
 

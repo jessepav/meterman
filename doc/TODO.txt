@@ -1,8 +1,15 @@
 - create an interface, UiActionHandler, that is used to handle UI events (exits or actions selected, entities
   selected) instead of having the UI hardcode calls into GameManager
   
-- replace the public refreshXXXUI methods in GameManager with roomModified(Room r) and entityModified(Entity e),
-  which will cause UI updates as appropriate.
+- make the refreshXXXUI methods in GameManager private, and add roomModified(Room r) and 
+  entityModified(Entity e), which will cause UI updates as appropriate. These new methods may largely
+  delegate their functionality to the refreshXXXUI methods, but it introduces a good logical separation.
+
+- Remove the parameter of the refreshXxxUI() methods - they always work upon the current room / selected
+  entity.
+
+- moveEntity() and takeEntity() must check if the entity is the selected entity, and call
+  entitySelected(null) if so.
 
 - clear sound manager and UI images when starting or loading a game
 
