@@ -1,6 +1,16 @@
 Add parent-chaining to TextBundle, like the one in Properties. This way default messages can be stored in
 the system TextBundle and overridden by using the same passage heading in the game TextBundle.
 
+Preferences will have the path to the global text bundle, which will be accessible through a static field
+in the Meterman class. This is for "library messages".
+
+We must persist the GameManager listener lists in the WorldState worldData map, and restore them upon
+load, otherwise all will be borked.
+
+Doors are simply entities that know two rooms, a direction in each room, and will connect the rooms when
+unlocked, and disconnect them when locked. Locking and unlocking are actions on the door. The door additionally
+takes two descriptions, one to be displayed in each room.
+
 Add "loadImage(Path p, String imageName)", "unloadImage(String imageName)", "unloadAllImages()", methods to
 MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
 don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
