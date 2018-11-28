@@ -14,6 +14,8 @@ public class BaseEntity implements Entity
     public Room room;
     public Map<String,Object> properties;
 
+    private EntityDelegate delegate;
+
     public BaseEntity() {
     }
 
@@ -54,27 +56,33 @@ public class BaseEntity implements Entity
     }
 
     public void lookInRoom() {
-        // empty
+        if (delegate != null)
+            delegate.lookInRoom(this);
     }
 
     public void enterScope() {
-        // empty
+        if (delegate != null)
+            delegate.enterScope(this);
     }
 
     public void exitingScope() {
-        // empty
+        if (delegate != null)
+            delegate.exitingScope(this);
     }
 
     public void taken() {
-        // empty
+        if (delegate != null)
+            delegate.taken(this);
     }
 
     public void dropped() {
-        // empty
+        if (delegate != null)
+            delegate.dropped(this);
     }
 
     public void selected() {
-        // empty
+        if (delegate != null)
+            delegate.selected(this);
     }
 
     public Room getRoom() {
@@ -86,14 +94,28 @@ public class BaseEntity implements Entity
     }
 
     public List<String> getActions() {
-        return Collections.emptyList();
+        if (delegate != null)
+            return delegate.getActions(this);
+        else
+            return Collections.emptyList();
     }
 
     public boolean processAction(String action) {
-        return false;
+        if (delegate != null)
+            return delegate.processAction(this, action);
+        else
+            return false;
     }
 
     public Map<String,Object> getProperties() {
         return properties;
+    }
+
+    /**
+     * Set an {@link EntityDelegate} to proxy certain method calls for this BaseEntity.
+     * @param delegate delegate to set, or null to remove proxying
+     */
+    public void setDelegate(EntityDelegate delegate) {
+        this.delegate = delegate;
     }
 }

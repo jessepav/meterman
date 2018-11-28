@@ -14,8 +14,10 @@ public class BaseRoom implements Room
     public BitSet attributes;
     public Room[] exits;
     public String[] exitLabels;
-    public List<Entity> entities;
-    public Map<String,Object> properties;
+    public LinkedList<Entity> entities;
+    public HashMap<String,Object> properties;
+
+    private RoomDelegate delegate;
 
     public BaseRoom() {
     }
@@ -76,14 +78,24 @@ public class BaseRoom implements Room
     }
 
     public void entered() {
-        // empty
+        if (delegate != null)
+            delegate.entered(this);
     }
 
     public void exiting() {
-        // empty
+        if (delegate != null)
+            delegate.exiting(this);
     }
 
     public Map<String,Object> getProperties() {
         return properties;
+    }
+
+    /**
+     * Set a {@link RoomDelegate} to proxy certain method calls for this BaseRoom.
+     * @param delegate delegate to set, or null to remove proxying
+     */
+    public void setDelegate(RoomDelegate delegate) {
+        this.delegate = delegate;
     }
 }

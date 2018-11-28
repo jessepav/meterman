@@ -1,3 +1,8 @@
+Add parent-chaining to TextBundle, like the one in Properties. This way default messages can be stored in
+the system TextBundle and overridden by using the same passage heading in the game TextBundle.
+
+Should each Game have a getBundle() method to supply a TextBundle used globally?
+
 Add "loadImage(Path p, String imageName)", "unloadImage(String imageName)", "unloadAllImages()", methods to
 MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
 don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
@@ -6,18 +11,6 @@ already-loaded imageName will do nothing--so a Room or Entity can safely call lo
 to display that image, with no deleterious effects.
 
 clear sound manager and UI images when starting or loading a game
-
-Add a sort of "DelegatingEntity" which forwards its various methods to a handler object, the methods of
-which accept an additional parameter of the DelegatingEntity itself. This allows one class to implement
-custom behavior for many different entities. The delegate can differentiate individual entites by
-comparing by identity--since it knows which entities were created when the world was instantiated--or
-by some custom ID field added to DelegatingEntity (which will actually be the custom entity class for
-a particular game).
-
-BeanShell implementations of the delegate (used by DelegatingEntity), and of the world initialization
-routine.
-
-Also DelegatingRoom, and BeanShell implementation.
 
 == And then... ==
 
