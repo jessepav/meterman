@@ -117,6 +117,13 @@ public final class TextBundle
         subMap.clear();
     }
 
+    /** Returns true if this bundle, or any bundle up its parent chain, contains a passage
+     *  with the given name. */
+    public boolean hasPassage(String name) {
+        // TODO: parent chaining; replace direct usage of passageMap with hasPassage() and getPassage()
+        return false;
+    }
+
     /**
      * Returns a passage with newlines intact.
      * @param name passage heading name
