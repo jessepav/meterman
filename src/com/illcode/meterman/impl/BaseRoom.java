@@ -6,8 +6,17 @@ import com.illcode.meterman.ui.UIConstants;
 
 import java.util.*;
 
+/**
+ * A Room implementation that supports various standard features, and can
+ * be used as a starting point for more game-specific implementations.
+ */
 public class BaseRoom implements Room
 {
+    /**
+     * An ID for this particular room, which can be used to uniquely identify it.
+     */
+    public String id;
+
     public String name;
     public String exitName;
     public String description;
@@ -23,6 +32,7 @@ public class BaseRoom implements Room
     }
 
     public void init() {
+        id = "(id)";
         name = "(name)";
         exitName = "(exit name)";
         description = "(description)";
@@ -58,6 +68,11 @@ public class BaseRoom implements Room
     }
 
     public String getDescription() {
+        if (delegate != null) {
+            String s = delegate.getDescription(this);
+            if (s != null)
+                return s;
+        }
         return description;
     }
 
@@ -70,7 +85,8 @@ public class BaseRoom implements Room
             return exitLabels[direction];
         else if (exits[direction] != null)
             return exits[direction].getExitName();
-        return null;
+        else
+            return null;
     }
 
     public List<Entity> getRoomEntities() {

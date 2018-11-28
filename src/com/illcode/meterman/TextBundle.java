@@ -260,11 +260,14 @@ public final class TextBundle
      * Returns the passage name indicated by {@code line}, if {@code line} is a
      * passage heading string (i.e. {@code "[<name>]"}), or {@code null} otherwise.
      * @param line text to examine as a potential passage heading
+     * @return passage name, with whitespace trimmed off the ends, or null if the name is invalid
      */
     private static String getPassageName(String line) {
         int len = line.length();
         if (len >= 3 && line.charAt(0) == '[' && line.charAt(len - 1) == ']') {
-            return line.substring(1, len - 1);
+            String name = line.substring(1, len - 1).trim();
+            if (!name.isEmpty())
+                return name;
         }
         return null;
     }

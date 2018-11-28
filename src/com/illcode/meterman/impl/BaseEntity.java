@@ -5,8 +5,17 @@ import com.illcode.meterman.Room;
 
 import java.util.*;
 
+/**
+ * An Entity implementation that supports various standard features, and can
+ * be used as a starting point for more game-specific subclasses.
+ */
 public class BaseEntity implements Entity
 {
+    /**
+     * An ID for this particular entity, which can be used to uniquely identify it.
+     */
+    public String id;
+
     public String name;
     public String listName;
     public String description;
@@ -20,6 +29,7 @@ public class BaseEntity implements Entity
     }
 
     public void init() {
+        id = "(id)";
         name = "(name)";
         listName = "(list name)";
         description = "(description)";
@@ -52,6 +62,11 @@ public class BaseEntity implements Entity
     }
 
     public String getDescription() {
+        if (delegate != null) {
+            String s = delegate.getDescription(this);
+            if (s != null)
+                return s;
+        }
         return description;
     }
 

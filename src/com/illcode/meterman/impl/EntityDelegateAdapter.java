@@ -9,6 +9,10 @@ import java.util.List;
  */
 public class EntityDelegateAdapter implements EntityDelegate
 {
+    public String getDescription(BaseEntity e) {
+        return null;
+    }
+
     public void lookInRoom(BaseEntity e) {
         // empty
     }

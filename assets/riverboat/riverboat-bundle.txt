@@ -1,0 +1,35 @@
+[Description of -info entries]
+
+The keys of the JSON objects correspond to the names of member properties of BaseEntity and
+BaseRoom, though different Room and Entity implementations may recognize additional properties.
+
+For text properties, the values can either be strings, in which case they'll be used directly,
+or an array of strings, in which case the (usually first) string in the array will be treated
+as the name of a bundle entry whose contents will be used for the property.
+
+Room exits can be specified by providing a map whose keys are UI button constants, in string
+form ("N", "NW", "MID", "X2", etc.) and whose values are the IDs of other rooms.
+
+[ferryman-info]
+
+{
+    "id" : "ferryman",
+    "name" : "River Ferryman",
+    "listName" : "Ferryman",
+    "description" : ["ferryman-description"],
+}
+
+[ferryman-description]
+
+The ferryman sits quietly in his small punt at the river's edge, gazing
+at the lights glowing across the water.
+
+[river-edge-info]
+
+{
+    "id" : "river-edge",
+    "name" : "River's Edge",
+    "exitName" : "River Edge",
+    "exits" : {"N" : "jelly-river",
+               "MID" : "underground-store"},
+}

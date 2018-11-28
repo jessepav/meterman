@@ -1,11 +1,6 @@
 Add parent-chaining to TextBundle, like the one in Properties. This way default messages can be stored in
 the system TextBundle and overridden by using the same passage heading in the game TextBundle.
 
-Should each Game have a getBundle() method to supply a TextBundle used globally?
-
-No! The WorldUtils class will have all sorts of methods to build up and connect various classes (entities,
-rooms, doors, etc.) and will handle using text bundles in an elegant way.
-
 Add "loadImage(Path p, String imageName)", "unloadImage(String imageName)", "unloadAllImages()", methods to
 MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
 don't have to touch the java.awt API. Remember to unloadAllImages() when starting/loading a game. This way
@@ -15,9 +10,10 @@ to display that image, with no deleterious effects.
 
 clear sound manager and UI images when starting or loading a game
 
+
 == And then... ==
 
-Write the Riverboat, modifying the engine as-needed to enable required features.
+Write the Riverboat, modifying the engine as needed to enable required features.
 
 
 == Things I won't do ==

@@ -1,6 +1,8 @@
 package com.illcode.meterman.ui;
 
-public class UIConstants
+import org.apache.commons.lang3.ArrayUtils;
+
+public final class UIConstants
 {
     /** Series of constants indicating the status bar label position */
     public static final int LEFT_LABEL = 0,
@@ -23,4 +25,31 @@ public class UIConstants
 
     /** The number of exit buttons in the UI */
     public static final int NUM_EXIT_BUTTONS = 12;
+
+    private static final String[] BUTTON_NAMES =
+        {"NW", "N", "NE", "X1",
+         "W", "MID", "E", "X2",
+         "SW", "S", "SE", "X3"};
+
+    /**
+     * Returns a string representation of the direction indicated by a given button position
+     * @param position button position
+     * @return string representation, or "(none)" if {@code position} is invalid
+     */
+    public static String buttonPositionToText(int position) {
+        if (position < NUM_EXIT_BUTTONS)
+            return BUTTON_NAMES[position];
+        else
+            return "(none)";
+    }
+
+    /**
+     * Returns the corresponding button position for a given textual representation
+     * @param text textual representation of a button position ("N", "SW", "MID", "X1", etc.)
+     * @return the corresponding button position, or -1 if the text does not indicate a valid
+     * position
+     */
+    public static int buttonTextToPosition(String text) {
+        return ArrayUtils.indexOf(BUTTON_NAMES, text);
+    }
 }

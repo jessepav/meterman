@@ -56,7 +56,11 @@ representational game art.
 - The UI will be in a separate package, abstracted from the Swing/AWT API, so that I can
   switch to a different UI--like libGDX or GWT--in the future.
 
+- Should each Game have a getBundle() method to supply a TextBundle used globally?
 
+   No! The WorldBuilder class will have all sorts of methods to build up and connect various
+   classes (entities, rooms, doors, etc.) and will handle using text bundles in an elegant
+   way. And a reference to the bundle will be stored by the classes that need them.
 
 ------------------------------------------------------------
 :maxLineLen=90:noTabs=true:
