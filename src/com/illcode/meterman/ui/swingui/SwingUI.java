@@ -85,6 +85,10 @@ public class SwingUI implements MetermanUI
         ta.setCaretPosition(ta.getDocument().getLength()); // scroll to the bottom of the text area
     }
 
+    public void appendNewline() {
+        mainFrame.mainTextArea.append("\n");
+    }
+
     public void setObjectName(String name) {
         mainFrame.objectNameLabel.setText(name);
     }

@@ -3,3 +3,19 @@
 These are text fragments and messages used by default throughout
 the game system. To override one of these messages, create a passage
 with the same name in your game bundle.
+
+[ default-door-description ]
+
+A door stands here, perhaps forbiddingly.
+
+[ default-door-locked ]
+
+It is locked.
+
+[ default-door-unlocked ]
+
+It is unlocked.
+
+[ default-door-nokey ]
+
+You do not have the key for this door.

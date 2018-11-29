@@ -2,6 +2,9 @@ package com.illcode.meterman.ui;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+/**
+ * Constants for interacting with the UI, and methods for operating on those constants.
+ */
 public final class UIConstants
 {
     /** Series of constants indicating the status bar label position */

@@ -3,6 +3,7 @@ package com.illcode.meterman.ui.swingui;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.GamesList;
+import com.illcode.meterman.ui.UIConstants;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
 import com.jformdesigner.runtime.FormLoader;
@@ -168,6 +169,8 @@ class MainFrame implements ActionListener, ListSelectionListener
     }
 
     public void setExitLabel(int buttonPos, String label) {
+        if (buttonPos < 0 || buttonPos >= UIConstants.NUM_EXIT_BUTTONS)
+            return;
         JButton b = exitButtons[buttonPos];
         if (label == null) {
             b.setVisible(false);

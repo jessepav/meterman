@@ -7,9 +7,6 @@ For text properties, the values can either be strings, in which case they'll be 
 or an array of strings, in which case the (usually first) string in the array will be treated
 as the name of a bundle entry whose contents will be used for the property.
 
-Room exits can be specified by providing a map whose keys are UI button constants, in string
-form ("N", "NW", "MID", "X2", etc.) and whose values are the IDs of other rooms.
-
 [ferryman-info]
 
 {
@@ -30,6 +27,36 @@ at the lights glowing across the water.
     "id" : "river-edge",
     "name" : "River's Edge",
     "exitName" : "River Edge",
-    "exits" : {"N" : "jelly-river",
-               "MID" : "underground-store"},
+}
+
+[ grating-door-info ]
+
+{
+    "id" : "river-edge-grating",
+    "name" : "Iron Grating",
+    "listName" : "Grating",
+    "descriptions" : [
+        "A strong, oddly fresh iron grating is in the soil 30 meters from the bank.",
+        "Above you is an iron grating."
+    ],
+    "lockedMessages" : [
+        "The grating is secured by a padlock.",
+        "A padlock can be seen just through the bars."
+    ],
+    "unlockedMessages" : [
+        "A padlock lies opened on the grating.",
+        "An open padlock can be seen through the bars."
+    ],
+    "noKeyMessages" : [
+        "You do not have the key for the padlock."
+    ],
+}
+
+[ grating-key-info ]
+
+{
+    "id" : "grating-key",
+    "name" : "Iron Key",
+    "listName" : "Iron Key",
+    "description" : "An iron key with traces of soil on its teeth."
 }
