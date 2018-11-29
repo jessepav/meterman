@@ -17,6 +17,8 @@ import static com.illcode.meterman.Utils.logger;
  */
 public class WorldBuilder
 {
+    public static final String WORLDBUILDER_KEY = "com.illcode.meterman.impl.WorldBuilder";
+
     private WorldState worldState;
     private TextBundle bundle;
 
@@ -35,11 +37,11 @@ public class WorldBuilder
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
-        worldState.worldData.put("worldBuilder", this);
+        worldState.worldData.put(WORLDBUILDER_KEY, this);
     }
 
-    public static WorldBuilder getWorldBuilder(WorldState worldState) {
-        return (WorldBuilder) worldState.worldData.get("worldBuilder");
+    public static WorldBuilder getWorldBuilder() {
+        return (WorldBuilder) Meterman.gm.getWorldData().get(WORLDBUILDER_KEY);
     }
 
     public TextBundle getBundle() {
@@ -101,7 +103,6 @@ public class WorldBuilder
             logger.log(Level.WARNING, "JSON error, loadRoom()", ex);
         }
         putRoom(r.id, r);
-        worldState.rooms.add(r);
         return r;
     }
 
@@ -157,6 +158,8 @@ public class WorldBuilder
         Door d = (Door) getEntity(doorId);
         BaseRoom r1 = getRoom(roomId1);
         BaseRoom r2 = getRoom(roomId2);
+        r1.entities.add(d);
+        r2.entities.add(d);
         d.setRooms(r1, r2);
         d.setPositions(pos1, pos2);
         d.setLocked(locked);

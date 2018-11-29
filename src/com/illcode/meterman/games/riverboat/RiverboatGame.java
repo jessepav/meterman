@@ -23,7 +23,6 @@ public class RiverboatGame implements Game
         worldState.gameName = NAME;
         worldState.player = new Player();
         worldState.player.init();
-        worldState.rooms = new LinkedList<>();
         worldState.worldData = new HashMap<>();
         worldState.numTurns = 0;
         setupWorldState(worldState);

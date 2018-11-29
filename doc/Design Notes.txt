@@ -62,5 +62,10 @@ representational game art.
    classes (entities, rooms, doors, etc.) and will handle using text bundles in an elegant
    way. And a reference to the bundle will be stored by the classes that need them.
 
+- "Managers" (i.e. listeners or delegates that coordinate various objects) are registered
+  with the GameManager by Game#start at the beginning of a new (not loaded) game.
+  Additionally, they stash an instance of themselves in the worldData (keyed by
+  fully-qualified class name), so that other objects can access them during game time.
+
 ------------------------------------------------------------
 :maxLineLen=90:noTabs=true:

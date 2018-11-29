@@ -11,8 +11,10 @@ public interface GameActionListener
      * Called when an action is sent to the selected entity
      * @param action action name
      * @param entity selected entity
+     * @param beforeAction true if the method is being called before the action has reached the
+     *                     entity; false if it is called after
      * @return true to indicate that this listener processed the action, and to prevent further
-     * processing; false to continue the processing chain.
+     *         processing; false to continue the processing chain.
      */
-    boolean processAction(String action, Entity entity);
+    boolean processAction(String action, Entity entity, boolean beforeAction);
 }

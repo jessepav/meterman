@@ -17,9 +17,6 @@ public class WorldState
     /** The Player character */
     public Player player;
 
-    /** The rooms of this world (which in turn contain its various entities) */
-    public List<Room> rooms;
-
     /** Extra data that objects can use to maintain and communicate state */
     public Map<String,Object> worldData;
 

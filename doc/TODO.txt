@@ -13,6 +13,7 @@ to display that image, with no deleterious effects.
 
 clear sound manager and UI images when starting or loading a game
 
+Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 
 == And then... ==
 

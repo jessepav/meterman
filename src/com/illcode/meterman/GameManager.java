@@ -23,7 +23,6 @@ public final class GameManager
 
     // Elements of worldState, here for easy access
     private Player player;
-    private List<Room> rooms;
     private Map<String,Object> worldData;
 
     // Our listener lists
@@ -65,7 +64,6 @@ public final class GameManager
         closeGame();
         worldState = null;
         player = null;
-        rooms = null;
         worldData = null;
         beforeGameActionListeners = null;
         defaultGameActionListeners = null;
@@ -91,7 +89,6 @@ public final class GameManager
         this.game = game;
         worldState = game.getInitialWorldState();
         player = worldState.player;
-        rooms = worldState.rooms;
         worldData = worldState.worldData;
 
         // We store our listener lists in the worldState so that they're persisted
@@ -117,7 +114,6 @@ public final class GameManager
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
         player = worldState.player;
-        rooms = worldState.rooms;
         worldData = worldState.worldData;
 
         restoreListenerListsFromWorldData();
@@ -176,8 +172,8 @@ public final class GameManager
         return selectedEntity;
     }
 
-    public List<Room> getAllRooms() {
-        return rooms;
+    public Map<String,Object> getWorldData() {
+        return worldData;
     }
 
     /**
@@ -491,7 +487,7 @@ public final class GameManager
     //region Event Listener methods
     /**
      * Adds a GameActionListener to be called before a game action is processed. If the listener's
-     * {@link GameActionListener#processAction(String, Entity)} method returns true, further action
+     * {@link GameActionListener#processAction(String, Entity, boolean)} method returns true, further action
      * processing will be bypassed.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
@@ -544,7 +540,7 @@ public final class GameManager
      */
     private boolean fireBeforeActionEvent(String action, Entity e) {
         for (GameActionListener l : beforeGameActionListeners) {
-            if (l.processAction(action, e))
+            if (l.processAction(action, e, true))
                 return true;
         }
         return false;
@@ -559,7 +555,7 @@ public final class GameManager
      */
     private boolean fireDefaultActionEvent(String action, Entity e) {
         for (GameActionListener l : defaultGameActionListeners) {
-            if (l.processAction(action, e))
+            if (l.processAction(action, e, false))
                 return true;
         }
         return false;
@@ -567,7 +563,7 @@ public final class GameManager
 
     /**
      * Adds a PlayerMovementListener to be called before player movement actually occurs. The
-     * listener may return true from its {@link PlayerMovementListener#playerMove(Room, Room)}
+     * listener may return true from its {@link PlayerMovementListener#playerMove}
      * method to halt further movement processing.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
@@ -589,7 +585,7 @@ public final class GameManager
 
     /**
      * Adds a PlayerMovementListener to be called before player movement actually occurs. The
-     * listener may return true from its {@link PlayerMovementListener#playerMove(Room, Room)}
+     * listener may return true from its {@link PlayerMovementListener#playerMove}
      * method to halt further movement processing.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
@@ -618,7 +614,7 @@ public final class GameManager
      */
     private boolean fireBeforePlayerMovementEvent(Room from, Room to) {
         for (PlayerMovementListener l : beforePlayerMovementListeners) {
-            if (l.playerMove(from, to))
+            if (l.playerMove(from, to, true))
                 return true;
         }
         return false;
@@ -632,7 +628,7 @@ public final class GameManager
      */
     private boolean fireAfterPlayerMovementEvent(Room from, Room to) {
         for (PlayerMovementListener l : afterPlayerMovementListeners) {
-            if (l.playerMove(from, to))
+            if (l.playerMove(from, to, false))
                 return true;
         }
         return false;
