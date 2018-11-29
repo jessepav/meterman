@@ -1,6 +1,6 @@
 package com.illcode.meterman;
 
-import com.illcode.meterman.event.EntitySelectionListener;
+import com.illcode.meterman.event.EntityActionProcessor;
 import com.illcode.meterman.event.GameActionListener;
 import com.illcode.meterman.event.PlayerMovementListener;
 import com.illcode.meterman.event.TurnListener;
@@ -33,7 +33,7 @@ public final class GameManager
     private LinkedList<PlayerMovementListener> beforePlayerMovementListeners;
     private LinkedList<PlayerMovementListener> afterPlayerMovementListeners;
     private LinkedList<TurnListener> turnListeners;
-    private LinkedList<EntitySelectionListener> entitySelectionListeners;
+    private LinkedList<EntityActionProcessor> entityActionProcessors;
 
     // To be used in composing text before sending it off to the UI
     private StringBuilder textBuilder;
@@ -55,7 +55,7 @@ public final class GameManager
         beforePlayerMovementListeners = new LinkedList<>();
         afterPlayerMovementListeners = new LinkedList<>();
         turnListeners = new LinkedList<>();
-        entitySelectionListeners = new LinkedList<>();
+        entityActionProcessors = new LinkedList<>();
         textBuilder = new StringBuilder(2048);
         commonTextBuilder = new StringBuilder(1024);
         paragraphBuilder = new StringBuilder(1024);
@@ -72,7 +72,7 @@ public final class GameManager
         beforePlayerMovementListeners = null;
         afterPlayerMovementListeners = null;
         turnListeners = null;
-        entitySelectionListeners = null;
+        entityActionProcessors = null;
         textBuilder = null;
         commonTextBuilder = null;
         paragraphBuilder = null;
@@ -134,7 +134,7 @@ public final class GameManager
         worldData.put("beforePlayerMovementListeners", beforePlayerMovementListeners);
         worldData.put("afterPlayerMovementListeners", afterPlayerMovementListeners);
         worldData.put("turnListeners", turnListeners);
-        worldData.put("entitySelectionListeners", entitySelectionListeners);
+        worldData.put("entityActionProcessors", entityActionProcessors);
     }
 
     @SuppressWarnings("unchecked")
@@ -144,7 +144,7 @@ public final class GameManager
         beforePlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("beforePlayerMovementListeners");
         afterPlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("afterPlayerMovementListeners");
         turnListeners = (LinkedList<TurnListener>) worldData.get("turnListeners");
-        entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
+        entityActionProcessors = (LinkedList<EntityActionProcessor>) worldData.get("entityActionProcessors");
     }
 
     private void closeGame() {
@@ -155,7 +155,7 @@ public final class GameManager
         beforePlayerMovementListeners.clear();
         afterPlayerMovementListeners.clear();
         turnListeners.clear();
-        entitySelectionListeners.clear();
+        entityActionProcessors.clear();
         if (game != null) {
             game.dispose();
             game = null;
@@ -421,7 +421,7 @@ public final class GameManager
         if (selectedEntity != null) {
             actions.clear();
             actions.addAll(selectedEntity.getActions());
-            fireEntitySelectedEvent(selectedEntity, actions);
+            fireProcessEntityActionEvent(selectedEntity, actions);
             ui.setObjectName(selectedEntity.getName());
             ui.setObjectText(selectedEntity.getDescription());
             ui.clearActions();
@@ -668,34 +668,35 @@ public final class GameManager
     }
 
     /**
-     * Adds a EntitySelectionListener.
+     * Adds an EntityActionProcessor.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
      * listener will be notified before previously added listeners.
      * @param l listener to add
      */
-    public void addEntitySelectionListener(EntitySelectionListener l) {
-        if (!entitySelectionListeners.contains(l))
-            entitySelectionListeners.addFirst(l);
+    public void addEntityActionProcessor(EntityActionProcessor l) {
+        if (!entityActionProcessors.contains(l))
+            entityActionProcessors.addFirst(l);
     }
 
     /**
-     * Removes a EntitySelectionListener.
+     * Removes a EntityActionProcessor.
      * @param l listener to remove
      */
-    public void removeEntitySelectionListener(EntitySelectionListener l) {
-        entitySelectionListeners.remove(l);
+    public void removeEntityActionProcessor(EntityActionProcessor l) {
+        entityActionProcessors.remove(l);
     }
 
     /**
-     * Notifies registered {@code EntitySelectionListener}S that an entity has been selected.
-     * @param e selected entity
+     * Notifies registered {@code EntityActionProcessor}S that an entity's action list is
+     * being generated.
+     * @param e entity
      * @param actions the mutable list of actions that should be shown in the UI,
      *      which each listener may modify.
      */
-    private void fireEntitySelectedEvent(Entity e, List<String> actions) {
-        for (EntitySelectionListener l : entitySelectionListeners)
-            l.entitySelected(e, actions);
+    private void fireProcessEntityActionEvent(Entity e, List<String> actions) {
+        for (EntityActionProcessor l : entityActionProcessors)
+            l.processEntityActions(e, actions);
     }
     //endregion
 }
