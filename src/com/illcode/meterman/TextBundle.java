@@ -10,17 +10,15 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import static com.illcode.meterman.Utils.logger;
 
 /**
- * A TextBundle is a container for named text passages, also supporting variable subtitution.
+ * A TextBundle is a container for named text passages, also supporting variable subtitution, and parent
+ * bundle chaining.
  * <p/>
  * Here is an example bundle illustrating the file format:
  * <pre>{@code
@@ -48,9 +46,10 @@ import static com.illcode.meterman.Utils.logger;
  Or with all whitespace and newlines collapsed.
 
 
- [short]
+ [#Information Passage]
 
- A one-line passage.
+ Passages that start with the pound character "#" will not be saved into
+ the bundle, but are simply commentary passages in the text.
 
  * }</pre>
  */
@@ -68,12 +67,30 @@ public final class TextBundle
     private StrSubstitutor sub;
     private Map<String,String> subMap;
 
-    /** Construct an empty TextBundle */
+    private TextBundle parent;
+
     public TextBundle() {
+        this(null);
+    }
+
+    /**
+     * Construct an empty TextBundle.
+     * @param parent parent bundle
+     */
+    public TextBundle(TextBundle parent) {
+        this.parent = parent;
         passageMap = new HashMap<>();
         subMap = new HashMap<>();
         sub = new StrSubstitutor(subMap);
         sub.setValueDelimiter('|');
+    }
+
+    public TextBundle getParent() {
+        return parent;
+    }
+
+    public void setParent(TextBundle parent) {
+        this.parent = parent;
     }
 
     /**
@@ -120,8 +137,12 @@ public final class TextBundle
     /** Returns true if this bundle, or any bundle up its parent chain, contains a passage
      *  with the given name. */
     public boolean hasPassage(String name) {
-        // TODO: parent chaining; replace direct usage of passageMap with hasPassage() and getPassage()
-        return false;
+        if (passageMap.containsKey(name))
+            return true;
+        else if (parent != null)
+            return parent.hasPassage(name);
+        else
+            return false;
     }
 
     /**
@@ -130,10 +151,13 @@ public final class TextBundle
      * @return passage text or "" if the passage doesn't exist
      */
     public String getPassage(String name) {
-        if (!passageMap.containsKey(name))
+        String s = passageMap.get(name);
+        if (s != null)
+            return sub.replace(s);
+        else if (parent != null)
+            return parent.getPassage(name);
+        else
             return "";
-
-        return sub.replace(passageMap.get(name));
     }
 
     /**
@@ -144,14 +168,15 @@ public final class TextBundle
      * @return wrapped passage text or "" if the passage doesn't exist
      */
     public String getPassageWrapped(String name, int col) {
-        if (!passageMap.containsKey(name))
-            return "";
         if (col == -1)
             return getPassage(name);
+        String s = getPassage(name);
+        if (s.isEmpty())
+            return "";
 
         if (whiteSpacePattern == null)
             whiteSpacePattern = Pattern.compile("\\s+");
-        String text = whiteSpacePattern.matcher(passageMap.get(name)).replaceAll(" ");
+        String text = whiteSpacePattern.matcher(s).replaceAll(" ");
         if (col > 0)
             text = WordUtils.wrap(text, col);
         return sub.replace(text);
@@ -161,14 +186,15 @@ public final class TextBundle
      * Returns a passage with each paragraph flowed into one line, but paragraph
      * breaks (two or more newlines in sequence) left intact.
      * @param name passage heading name
-     * @return flowed passage text
+     * @return flowed passage text, or "" if the named passage doesn't exit
      */
     public String getPassageFlowed(String name) {
-        if (!passageMap.containsKey(name))
+        String s = getPassage(name);
+        if (s.isEmpty())
             return "";
         if (flowPattern == null)
             flowPattern = Pattern.compile("(?<!\\n)\\n(?!\\n)");
-        return flowPattern.matcher(passageMap.get(name)).replaceAll(" ");
+        return flowPattern.matcher(s).replaceAll(" ");
     }
 
     /**
@@ -176,6 +202,17 @@ public final class TextBundle
      */
     public Set<String> getPassageNames() {
         return passageMap.keySet();
+    }
+
+    /**
+     * Returns a set of the names of the passages contained in this text bundle
+     * and all of its parents.
+     */
+    public Set<String> getAllPassageNames() {
+        Set<String> names = new HashSet<>(200);
+        for (TextBundle b = this; b != null; b = b.parent)
+            names.addAll(b.passageMap.keySet());
+        return names;
     }
 
     /**
@@ -191,19 +228,30 @@ public final class TextBundle
      * Load a TextBundle from a given Path. The format of text bundles is given in
      * the {@link TextBundle class notes}.
      * @param p path of bundle file
-     * @return a new TextBundle containing passages from the file
+     * @return a new TextBundle containing passages from the file, with no parent
      */
     public static TextBundle loadBundle(Path p) {
+        return loadBundle(p, null);
+    }
+
+    /**
+     * Load a TextBundle from a given Path. The format of text bundles is given in
+     * the {@link TextBundle class notes}.
+     * @param p path of bundle file
+     * @param parent the parent bundle of the loaded TextBundle
+     * @return a new TextBundle containing passages from the file
+     */
+    public static TextBundle loadBundle(Path p, TextBundle parent) {
         ArrayList<String> passageLines = new ArrayList<>(100);
         String name = null;  // name of the current passage
 
-        TextBundle b = new TextBundle();
+        TextBundle b = new TextBundle(parent);
         try (BufferedReader r = new BufferedReader(
             new InputStreamReader(Files.newInputStream(p), StandardCharsets.UTF_8))) {
             String line;
             while ((line = r.readLine()) != null) {
                 String newName = getPassageName(line);
-                if (newName != null) {   // we've encountered a new heading
+                if (newName != null && !newName.startsWith("#")) {   // we've encountered a new, non-comment heading
                     if (name != null) {  // we need to save the current passage
                         b.passageMap.put(name, gatherPassage(passageLines));
                         passageLines.clear();

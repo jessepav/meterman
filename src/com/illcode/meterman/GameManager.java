@@ -93,6 +93,9 @@ public final class GameManager
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
+
+        // We store our listener lists in the worldState so that they're persisted
+        storeListenerListsInWorldData();
         ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
@@ -116,6 +119,8 @@ public final class GameManager
         player = worldState.player;
         rooms = worldState.rooms;
         worldData = worldState.worldData;
+
+        restoreListenerListsFromWorldData();
         ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
@@ -123,7 +128,32 @@ public final class GameManager
         game.start(false);
     }
 
+    private void storeListenerListsInWorldData() {
+        worldData.put("beforeGameActionListeners", beforeGameActionListeners);
+        worldData.put("defaultGameActionListeners", defaultGameActionListeners);
+        worldData.put("beforePlayerMovementListeners", beforePlayerMovementListeners);
+        worldData.put("afterPlayerMovementListeners", afterPlayerMovementListeners);
+        worldData.put("turnListeners", turnListeners);
+        worldData.put("entitySelectionListeners", entitySelectionListeners);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void restoreListenerListsFromWorldData() {
+        beforeGameActionListeners = (LinkedList<GameActionListener>) worldData.get("beforeGameActionListeners");
+        defaultGameActionListeners = (LinkedList<GameActionListener>) worldData.get("defaultGameActionListeners");
+        beforePlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("beforePlayerMovementListeners");
+        afterPlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("afterPlayerMovementListeners");
+        turnListeners = (LinkedList<TurnListener>) worldData.get("turnListeners");
+        entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
+    }
+
     private void closeGame() {
+        beforeGameActionListeners.clear();
+        defaultGameActionListeners.clear();
+        beforePlayerMovementListeners.clear();
+        afterPlayerMovementListeners.clear();
+        turnListeners.clear();
+        entitySelectionListeners.clear();
         if (game != null) {
             game.dispose();
             game = null;

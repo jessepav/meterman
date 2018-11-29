@@ -1,4 +1,4 @@
-[Description of -info entries]
+[#Description of -info entries]
 
 The keys of the JSON objects correspond to the names of member properties of BaseEntity and
 BaseRoom, though different Room and Entity implementations may recognize additional properties.

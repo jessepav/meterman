@@ -33,6 +33,9 @@ public final class Meterman
     /** Our persistence implementation */
     public static Persistence persistence;
 
+    /** The default system text bundle */
+    public static TextBundle systemBundle;
+
     public static void main(String[] args) throws IOException {
         prefsPath = Paths.get("config/meterman.properties");
         if (!loadPrefs(prefsPath)) {
@@ -45,6 +48,12 @@ public final class Meterman
         savesPath = Paths.get(Utils.pref("saves-path", "saves"));
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
+
+        systemBundle = TextBundle.loadBundle(Paths.get(Utils.pref("system-bundle", "assets/meterman/system-bundle.txt")));
+        if (systemBundle == null) {
+            logger.severe("Invalid system bundle path in config!");
+            return;
+        }
 
         gm = new GameManager();
         switch (Utils.pref("ui", "swing")) {
