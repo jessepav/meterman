@@ -1,6 +1,8 @@
-Doors are simply entities that know two rooms, a direction in each room, and will connect the rooms when
-unlocked, and disconnect them when locked. Locking and unlocking are actions on the door. The door additionally
-takes two descriptions, one to be displayed in each room.
+Add a "stage" argument to the GameActionListener and PlayerMovementListener interfaces so that the
+callee will know whether they're being invoked before or after the event has occurred.
+
+Write a BasicWorldManager that will implement various listeners and handle things like taking and dropping
+items and updating the status bar.
 
 Add "loadImage(Path p, String imageName)", "unloadImage(String imageName)", "unloadAllImages()", methods to
 MetermanUI, change setXXXImage() methods to use an image-name instead of a BufferedImage, so that games
