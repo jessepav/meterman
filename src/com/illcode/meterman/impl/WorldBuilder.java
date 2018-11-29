@@ -5,7 +5,6 @@ import com.illcode.meterman.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -52,8 +51,8 @@ public class WorldBuilder
         return entityIdMap.get(entityId);
     }
 
-    public void putEntity(String entityId, BaseEntity e) {
-        entityIdMap.put(entityId, e);
+    public void putEntity(BaseEntity e) {
+        entityIdMap.put(e.id, e);
     }
     
     public void removeEntity(String entityId) {
@@ -64,8 +63,8 @@ public class WorldBuilder
         return roomIdMap.get(roomId);
     }
 
-    public void putRoom(String roomId, BaseRoom e) {
-        roomIdMap.put(roomId, e);
+    public void putRoom(BaseRoom r) {
+        roomIdMap.put(r.id, r);
     }
     
     public void removeRoom(String roomId) {
@@ -75,6 +74,12 @@ public class WorldBuilder
     public BaseEntity loadEntity(String passageName) {
         BaseEntity e = new BaseEntity();
         e.init();
+        readEntityDataFromBundle(e, passageName);
+        putEntity(e);
+        return e;
+    }
+
+    public void readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
@@ -82,16 +87,20 @@ public class WorldBuilder
             e.name = getJsonString(o.get("name"));
             e.listName = getJsonString(o.get("listName"));
             e.description = getJsonString(o.get("description"));
-        } catch (ParseException|UnsupportedOperationException ex) {
+        } catch (ParseException |UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntity()", ex);
         }
-        putEntity(e.id, e);
-        return e;
     }
 
     public BaseRoom loadRoom(String passageName) {
         BaseRoom r = new BaseRoom();
         r.init();
+        readRoomDataFromBundle(r, passageName);
+        putRoom(r);
+        return r;
+    }
+
+    public void readRoomDataFromBundle(BaseRoom r, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
@@ -99,16 +108,20 @@ public class WorldBuilder
             r.name = getJsonString(o.get("name"));
             r.exitName = getJsonString(o.get("exitName"));
             r.description = getJsonString(o.get("description"));
-        } catch (ParseException|UnsupportedOperationException ex) {
+        } catch (ParseException |UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadRoom()", ex);
         }
-        putRoom(r.id, r);
-        return r;
     }
 
     public Door loadDoor(String passageName) {
         Door d = new Door();
         d.init();
+        readDoorDataFromBundle(d, passageName);
+        putEntity(d);
+        return d;
+    }
+
+    public void readDoorDataFromBundle(Door d, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
@@ -123,11 +136,9 @@ public class WorldBuilder
             d.setUnlockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
             retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-nokey");
             d.setNoKeyMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-        } catch (ParseException|UnsupportedOperationException ex) {
+        } catch (ParseException |UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
         }
-        putEntity(d.id, d);
-        return d;
     }
 
     public void connectRooms(String roomId1, int pos1, String roomId2, int pos2) {

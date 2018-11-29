@@ -1,15 +1,17 @@
 package com.illcode.meterman.games.riverboat;
 
-import com.illcode.meterman.Game;
-import com.illcode.meterman.Player;
-import com.illcode.meterman.WorldState;
+import com.illcode.meterman.*;
+import com.illcode.meterman.impl.WorldBuilder;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class RiverboatGame implements Game
 {
     private static final String NAME = "The Riverboat";
+
+    private TextBundle bundle;
     
     public RiverboatGame() {
     }
@@ -42,6 +44,7 @@ public class RiverboatGame implements Game
     }
 
     private void setupWorldState(WorldState worldState) {
-        // Do stuff!
+        bundle = TextBundle.loadBundle(Paths.get("assets/riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
+        WorldBuilder wb = new WorldBuilder(worldState, bundle);
     }
 }
