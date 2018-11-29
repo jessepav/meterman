@@ -133,6 +133,17 @@ public class SwingUI implements MetermanUI
         }
     }
 
+    public void selectEntity(Entity e) {
+        int idx = roomEntities.indexOf(e);
+        if (idx != -1) {
+            mainFrame.roomList.setSelectedIndex(idx);
+        } else {
+            idx = inventoryEntities.indexOf(e);
+            if (idx != -1)
+                mainFrame.inventoryList.setSelectedIndex(idx);
+        }
+    }
+
     public void clearEntitySelection() {
         mainFrame.roomList.clearSelection();
         mainFrame.inventoryList.clearSelection();

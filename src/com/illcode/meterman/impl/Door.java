@@ -135,7 +135,7 @@ public class Door extends BaseEntity
         if (idx == -1)
             return false;
         // From here on, we're in charge and will return true
-        if (key == null || !Meterman.gm.isEntityInInventory(key)) {
+        if (key == null || !Meterman.gm.isInInventory(key)) {
             Meterman.ui.appendNewline();
             Meterman.ui.appendText(noKeyMessages[idx]);
         } else {

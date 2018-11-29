@@ -129,6 +129,13 @@ public interface MetermanUI
     void removeInventoryEntity(Entity e);
 
     /**
+     * Cause a given entity to be selected in the UI, if it is present in the room
+     * or inventory lists.
+     * @param e entity to select
+     */
+    void selectEntity(Entity e);
+
+    /**
      * Clears any selection in the room and inventory entity lists.
      */
     void clearEntitySelection();

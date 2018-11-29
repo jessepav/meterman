@@ -213,7 +213,7 @@ public final class GameManager
     public void moveEntity(Entity e, Room r) {
         Room previousRoom = e.getRoom();
         Room playerRoom = player.currentRoom;
-        if (isEntityInInventory(e)) {
+        if (isInInventory(e)) {
             player.worn.remove(e);
             player.equipped.remove(e);
             player.inventory.remove(e);
@@ -243,7 +243,7 @@ public final class GameManager
      * @param e entity to take
      */
     public void takeEntity(Entity e) {
-        if (!isEntityInInventory(e)) {
+        if (!isInInventory(e)) {
             Room previousRoom = e.getRoom();
             Room playerRoom = player.currentRoom;
             if (previousRoom != null)
@@ -257,18 +257,16 @@ public final class GameManager
                 refreshRoomUI();
             }
             refreshInventoryUI();
-            if (e == selectedEntity)
-                entitySelected(null);
         }
     }
 
     /** Returns true if the given entity is in the player inventory. */
-    public boolean isEntityInInventory(Entity e) {
+    public boolean isInInventory(Entity e) {
         return player.inventory.contains(e);
     }
 
     /** Returns true if the entity is being worn by the player */
-    public boolean isEntityWorn(Entity e) {
+    public boolean isWorn(Entity e) {
         return player.worn.contains(e);
     }
 
@@ -279,15 +277,15 @@ public final class GameManager
      *      the player inventory and is {@link Attributes#WEARABLE wearable}, the player will wear it.
      * @return true if the operation succeeded
      */
-    public boolean setEntityWorn(Entity e, boolean wear) {
+    public boolean setWorn(Entity e, boolean wear) {
         if (wear) {
-            if (e.checkAttribute(Attributes.WEARABLE) && isEntityInInventory(e) && !isEntityWorn(e)) {
+            if (e.checkAttribute(Attributes.WEARABLE) && isInInventory(e) && !isWorn(e)) {
                 player.worn.add(e);
                 refreshInventoryUI();
                 return true;
             }
         } else {
-            if (isEntityWorn(e)) {
+            if (isWorn(e)) {
                 player.worn.remove(e);
                 refreshInventoryUI();
                 return true;
@@ -297,7 +295,7 @@ public final class GameManager
     }
 
     /** Returns true if the entity is equipped by the player */
-    public boolean isEntityEquipped(Entity e) {
+    public boolean isEquipped(Entity e) {
         return player.equipped.contains(e);
     }
 
@@ -308,15 +306,15 @@ public final class GameManager
      *      the player inventory and is {@link Attributes#EQUIPPABLE equippable}, the player will equip it.
      * @return true if the operation succeeded
      */
-    public boolean setEntityEquipped(Entity e, boolean equip) {
+    public boolean setEquipped(Entity e, boolean equip) {
         if (equip) {
-            if (e.checkAttribute(Attributes.EQUIPPABLE) && isEntityInInventory(e) && !isEntityEquipped(e)) {
+            if (e.checkAttribute(Attributes.EQUIPPABLE) && isInInventory(e) && !isEquipped(e)) {
                 player.equipped.add(e);
                 refreshInventoryUI();
                 return true;
             }
         } else {
-            if (isEntityEquipped(e)) {
+            if (isEquipped(e)) {
                 player.equipped.remove(e);
                 refreshInventoryUI();
                 return true;
@@ -457,6 +455,7 @@ public final class GameManager
      */
     private void refreshInventoryUI() {
         HashSet<Entity> remainingItems = new HashSet<>(player.inventory);
+        Entity savedSE = selectedEntity;
         ui.clearInventoryEntities();
         for (Entity item : player.equipped) {
             if (remainingItems.remove(item))
@@ -470,6 +469,8 @@ public final class GameManager
             if (remainingItems.remove(item))
                 ui.addInventoryEntity(item);
         }
+        if (isInInventory(savedSE))
+            ui.selectEntity(savedSE);
     }
 
     /** Called by the UI when it's time to load a saved game*/
