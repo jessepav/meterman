@@ -5,6 +5,7 @@ import com.illcode.meterman.event.GameActionListener;
 import com.illcode.meterman.event.PlayerMovementListener;
 import com.illcode.meterman.event.TurnListener;
 import com.illcode.meterman.games.GamesList;
+import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.io.OutputStream;
 import java.util.*;
 
 import static com.illcode.meterman.Meterman.ui;
+import static com.illcode.meterman.Meterman.sound;
 
 public final class GameManager
 {
@@ -97,6 +99,7 @@ public final class GameManager
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
+        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         game.start(true);
         getCurrentRoom().entered();
         lookCommand();
@@ -120,6 +123,7 @@ public final class GameManager
         ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
+        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         entitySelected(null);
         game.start(false);
     }
@@ -144,6 +148,8 @@ public final class GameManager
     }
 
     private void closeGame() {
+        ui.unloadAllImages();
+        sound.clearAudio();
         beforeGameActionListeners.clear();
         defaultGameActionListeners.clear();
         beforePlayerMovementListeners.clear();

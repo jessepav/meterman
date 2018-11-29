@@ -81,6 +81,14 @@ public final class GuiUtils
     }
 
     /**
+     * Load a bitmask image from a given Path.
+     * @param path path from which to load the image
+     */
+    public static BufferedImage loadBitmaskImage(Path path) {
+        return loadBitmaskImage(path, -1);
+    }
+
+    /**
      * Load a bitmask image from a given Path, optionally making a specified color transparent.
      * @param path path from which to load the image
      * @param transparentColor the 0x00RRGGBB color to make transparent. If equal to -1, no

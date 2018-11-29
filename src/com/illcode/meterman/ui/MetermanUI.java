@@ -3,7 +3,7 @@ package com.illcode.meterman.ui;
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Meterman;
 
-import java.awt.image.BufferedImage;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -13,6 +13,13 @@ import java.util.List;
  */
 public interface MetermanUI
 {
+    /** Parameter to {@link #setFrameImage(String)} to show the default frame image. */
+    public static final String DEFAULT_FRAME_IMAGE = "default";
+
+    /** Parameter to {@link #setFrameImage(String)} or {@link #setEntityImage(String)} to
+     *  show no image. */
+    public static final String NO_IMAGE = "empty";
+
     /**
      * Initializes the UI.
      */
@@ -46,19 +53,35 @@ public interface MetermanUI
     void openURL(String url);
 
     /**
+     * Load an image into the UI.
+     * @param name name by which the image will be referred to in the {@code setXXXImage()} methods.
+     * @param p path of the image file.
+     */
+    void loadImage(String name, Path p);
+
+    /**
+     * Unload an image from the UI.
+     * @param name name of image
+     */
+    void unloadImage(String name);
+
+    /** Unload all images from the UI. */
+    void unloadAllImages();
+
+    /**
      * Sets the image displayed in the main UI frame. The recommended size for
      * frame images is 150x400 pixels.
-     * @param image image to display, or null to remove the current image.
+     * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
      */
-    void setFrameImage(BufferedImage image);
+    void setFrameImage(String imageName);
 
     /**
      * Sets the entity image that will be drawn inset in the frame image.
      * The recommended size for entity images is 140x140 pixels; the image
      * itself should have a border to visually separate it from the frame image.
-     * @param image image to display, or null to remove the current image.
+     * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
      */
-    void setEntityImage(BufferedImage image);
+    void setEntityImage(String imageName);
 
     /**
      * Sets the room name displayed in the UI

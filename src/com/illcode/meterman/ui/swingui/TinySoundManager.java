@@ -80,24 +80,14 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Enables or disables the playing of music
-     * @param enabled true if music should be enabled
-     */
     public void setMusicEnabled(boolean enabled) {
         musicEnabled = enabled;
     }
 
-    /** Returns true if the playing of music is enabled.*/
     public boolean isMusicEnabled() {
         return musicEnabled;
     }
 
-    /**
-     * Loads music from a file
-     * @param name the name by which the music will be referred by this SoundManager
-     * @param f the File to load music from
-     */
     public void loadMusic(String name, File f) {
         try {
             pendingLoads.incrementAndGet();
@@ -107,11 +97,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Plays music previously loaded.
-     * @param name name of the Music, as specified in {@link #loadMusic}
-     * @param volume the relative volume at which to play the music (1.0 is nominal)
-     */
     public void playMusic(String name, boolean loop, double volume) {
         if (!musicEnabled)
             return;
@@ -122,10 +107,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Stops playback for music previously loaded.
-     * @param name name of the Music, as specified in {@link #loadMusic}
-     */
     public void stopMusic(String name) {
         try {
             queue.put(new SoundMessage(SoundMessage.STOP_MUSIC, name));
@@ -134,7 +115,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /** Pauses all music currently playing. */
     public void pauseAllMusic() {
         try {
             queue.put(new SoundMessage(SoundMessage.PAUSE_ALL_MUSIC));
@@ -143,7 +123,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /** Resumes playing all music that was previously paused by a call to {@link #pauseAllMusic()}. */
     public void resumeAllMusic() {
         try {
             queue.put(new SoundMessage(SoundMessage.RESUME_ALL_MUSIC));
@@ -152,23 +131,14 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Enables or disables the playing of sounds
-     * @param enabled true if sounds should be enabled
-     */
     public void setSoundEnabled(boolean enabled) {
         soundEnabled = enabled;
     }
 
-    /** Returns true if the playing of sounds is enabled.*/
     public boolean isSoundEnabled() {
         return soundEnabled;
     }
 
-    /**
-     * Unloads Music previously loaded by this SoundManager
-     * @param name the name under which the audio was loaded
-     */
     public void unloadMusic(String name) {
         try {
             queue.put(new SoundMessage(SoundMessage.UNLOAD_MUSIC, name));
@@ -177,11 +147,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Loads a Sound from a file
-     * @param name the name by which the sound will be referred by this SoundManager
-     * @param f the File to load sound from
-     */
     public void loadSound(String name, File f) {
         try {
             queue.put(new SoundMessage(SoundMessage.LOAD_SOUND, name, f));
@@ -190,14 +155,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Plays a sound previously loaded.
-     * <p/>
-     * Note that if any music loads are pending, the sound won't be played, because
-     * it may not play quickly and so many appear desynchronized with the visuals.
-     * @param name name of the sound, as specified in {@link #loadSound}
-     * @param volume the relative volume at which to play the sound (1.0 is nominal)
-     */
     public void playSound(String name, double volume) {
         if (!soundEnabled)
             return;
@@ -211,10 +168,6 @@ public final class TinySoundManager implements SoundManager
     }
 
 
-    /**
-     * Unloads a Sound previously loaded by this SoundManager
-     * @param name the name under which the audio was loaded
-     */
     public void unloadSound(String name) {
         try {
             queue.put(new SoundMessage(SoundMessage.UNLOAD_SOUND, name));
@@ -223,10 +176,6 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    /**
-     * Returns true if all pending load and play commands have been
-     * processed by the soundThread.
-     */
     public boolean finishedProcessing() {
         return queue.isEmpty() && pendingLoads.get() == 0;
     }

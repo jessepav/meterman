@@ -27,7 +27,8 @@ public interface Game
     void start(boolean newGame);
 
     /**
-     * Free any allocated resources. Called when the GameManager is unloading the
+     * Free any allocated resources, other than images and sounds, which will be freed
+     * automatically. Called when the GameManager is unloading the
      * current game instance.
      */
     void dispose();

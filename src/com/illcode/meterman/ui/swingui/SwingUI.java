@@ -8,8 +8,12 @@ import com.illcode.meterman.ui.UIConstants;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SwingUI implements MetermanUI
 {
@@ -22,11 +26,16 @@ public class SwingUI implements MetermanUI
 
     private boolean realized;  // true once the UI has been made visible on the EDT
 
+    private Map<String,BufferedImage> imageMap;
+    private BufferedImage defaultFrameImage;
+    private String currentFrameImage, currentEntityImage;
+
     public void init() {
         GuiUtils.initGraphics();
 
         roomEntities = new ArrayList<>();
         inventoryEntities = new ArrayList<>();
+        imageMap = new HashMap<>();
         mainFrame = new MainFrame(this);
         textDialog = new TextDialog(mainFrame.frame);
         promptDialog = new PromptDialog(mainFrame.frame);
@@ -35,9 +44,16 @@ public class SwingUI implements MetermanUI
         setStatusLabel(UIConstants.LEFT_LABEL, "");
         setStatusLabel(UIConstants.CENTER_LABEL, "");
         setStatusLabel(UIConstants.RIGHT_LABEL, "");
+
+        defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"));
+        currentFrameImage = NO_IMAGE;
+        currentEntityImage = NO_IMAGE;
     }
 
     public void dispose() {
+        unloadAllImages();
+        defaultFrameImage.flush();
+        defaultFrameImage = null;
         listDialog.dispose();
         promptDialog.dispose();
         textDialog.dispose();
@@ -63,12 +79,53 @@ public class SwingUI implements MetermanUI
         DesktopUtils.browseURI(url);
     }
 
-    public void setFrameImage(BufferedImage image) {
-        mainFrame.setFrameImage(image);
+    public void loadImage(String name, Path p) {
+        if (!imageMap.containsKey(name)) {
+            BufferedImage img = GuiUtils.loadBitmaskImage(p);
+            if (img != null)
+                imageMap.put(name, img);
+        }
     }
 
-    public void setEntityImage(BufferedImage image) {
-        mainFrame.setEntityImage(image);
+    public void unloadImage(String name) {
+        BufferedImage img = imageMap.get(name);
+        if (img != null)
+            img.flush();
+        imageMap.remove(name);
+    }
+
+    public void unloadAllImages() {
+        mainFrame.setFrameImage(null);
+        mainFrame.setEntityImage(null);
+        for (BufferedImage img : imageMap.values())
+            img.flush();
+        imageMap.clear();
+    }
+
+    public void setFrameImage(String imageName) {
+        if (currentFrameImage.equals(imageName))
+            return;
+        currentFrameImage = imageName;
+        BufferedImage img;
+        if (imageName == DEFAULT_FRAME_IMAGE)
+            img = defaultFrameImage;
+        else if (imageName == NO_IMAGE)
+            img = null;
+        else
+            img = imageMap.get(imageName);
+        mainFrame.setFrameImage(img);
+    }
+
+    public void setEntityImage(String imageName) {
+        if (currentEntityImage.equals(imageName))
+            return;
+        currentEntityImage = imageName;
+        BufferedImage img;
+        if (imageName == NO_IMAGE)
+            img = null;
+        else
+            img = imageMap.get(imageName);
+        mainFrame.setEntityImage(img);
     }
 
     public void setRoomName(String name) {

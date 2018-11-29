@@ -3,6 +3,7 @@ package com.illcode.meterman.ui.swingui;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.GamesList;
+import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
@@ -54,7 +55,6 @@ class MainFrame implements ActionListener, ListSelectionListener
     DefaultListModel<String> roomListModel, inventoryListModel;
 
     private BufferedImage frameImage, entityImage;
-    private BufferedImage defaultFrameImage;
     private List<String> actions;
 
     private boolean suppressValueChanged;
@@ -118,8 +118,6 @@ class MainFrame implements ActionListener, ListSelectionListener
             moreActionCombo.addActionListener(this);
             actions = new ArrayList<>(16);
             
-            defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"), -1);
-            frameImage = defaultFrameImage;
             fc = new JFileChooser();
 
             GuiUtils.setBoundsFromPrefs(frame, "main-window-size");
@@ -130,33 +128,20 @@ class MainFrame implements ActionListener, ListSelectionListener
 
     void dispose() {
         GuiUtils.saveBoundsToPref(frame, "main-window-size");
-        if (frameImage != null) {
-            frameImage.flush();
-            frameImage = null;
-        }
-        if (entityImage != null) {
-            entityImage.flush();
-            entityImage = null;
-        }
+        frameImage = null;
+        entityImage = null;
         setVisible(false);
         frame.dispose();
     }
 
     void setFrameImage(BufferedImage image) {
-        if (image != frameImage) {
-            frameImage = image;
-            imageComponent.repaint();
-        }
-        // Once someone sets a frame image, we no longer need our defaultFrameImage
-        defaultFrameImage.flush();
-        defaultFrameImage = null;
+        frameImage = image;
+        imageComponent.repaint();
     }
 
     void setEntityImage(BufferedImage image) {
-        if (image != entityImage) {
-            entityImage = image;
-            imageComponent.repaint();
-        }
+        entityImage = image;
+        imageComponent.repaint();
     }
 
     void setVisible(boolean visible) {
@@ -309,6 +294,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         ui.clearText();
         ui.setObjectName("(nothing selected)");
         ui.setObjectText("");
+        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
 
         initGame:  // make the user keep selecting choices until a game is
         do {       // successfully started or loaded
