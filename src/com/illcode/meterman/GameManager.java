@@ -214,31 +214,38 @@ public final class GameManager
      * Moves an entity to a room. The entity can currently reside in a room, in player inventory,
      * or nowhere.
      * @param e entity to move
-     * @param r destination room, or null if the entity should be removed from the game world
+     * @param toRoom destination room, or null if the entity should be removed from the game world
      */
-    public void moveEntity(Entity e, Room r) {
+    public void moveEntity(Entity e, Room toRoom) {
         Room previousRoom = e.getRoom();
         Room playerRoom = player.currentRoom;
+
+        // First, let's deal with where the entity is coming from
         if (isInInventory(e)) {
             player.worn.remove(e);
             player.equipped.remove(e);
             player.inventory.remove(e);
             e.dropped();
             refreshInventoryUI();
-        } else {
-            if (previousRoom != null)
-                previousRoom.getRoomEntities().remove(e);
+        } else if (previousRoom != null) {
+            previousRoom.getRoomEntities().remove(e);
         }
-        if (previousRoom != r) {
+
+        // If the entity is changing rooms, we need to deal with scope issues
+        if (previousRoom != toRoom) {
             if (previousRoom == playerRoom)
                 e.exitingScope();
-            else if (r == playerRoom)
+            e.setRoom(toRoom);
+            if (toRoom == playerRoom)
                 e.enterScope();
-            e.setRoom(r);
         }
-        if (r != null)
-            r.getRoomEntities().add(e);
-        if (previousRoom == playerRoom || r == playerRoom)
+
+        // If the entity is being moved to a room, as opposed to nowhere, add it to that room
+        if (toRoom != null)
+            toRoom.getRoomEntities().add(e);
+
+        // And we may need to update our UI and selection
+        if (previousRoom == playerRoom || toRoom == playerRoom)
             refreshRoomUI();
         if (e == selectedEntity)
             entitySelected(null);
