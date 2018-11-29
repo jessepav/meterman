@@ -26,6 +26,10 @@ public class WorldBuilder
     // For use with getDoorTextOrDefault()
     private String[] retrieveMultiStrings;
 
+    // Zero-arg constructor for deserialization
+    public WorldBuilder() {
+    }
+
     public WorldBuilder(WorldState worldState, TextBundle bundle) {
         this.worldState = worldState;
         this.bundle = bundle;
