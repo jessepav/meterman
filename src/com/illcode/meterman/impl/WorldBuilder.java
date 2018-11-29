@@ -31,10 +31,11 @@ public class WorldBuilder
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
+        worldState.worldData.put("worldBuilder", this);
     }
 
-    public WorldState getWorldState() {
-        return worldState;
+    public static WorldBuilder getWorldBuilder(WorldState worldState) {
+        return (WorldBuilder) worldState.worldData.get("worldBuilder");
     }
 
     public TextBundle getBundle() {
