@@ -5,6 +5,7 @@ import com.illcode.meterman.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -40,6 +41,30 @@ public class WorldBuilder
         return bundle;
     }
 
+    public BaseEntity getEntity(String entityId) {
+        return entityIdMap.get(entityId);
+    }
+
+    public void putEntity(String entityId, BaseEntity e) {
+        entityIdMap.put(entityId, e);
+    }
+    
+    public void removeEntity(String entityId) {
+        entityIdMap.remove(entityId);
+    }
+    
+    public BaseRoom getRoom(String roomId) {
+        return roomIdMap.get(roomId);
+    }
+
+    public void putRoom(String roomId, BaseRoom e) {
+        roomIdMap.put(roomId, e);
+    }
+    
+    public void removeRoom(String roomId) {
+        roomIdMap.remove(roomId);
+    }
+
     public BaseEntity loadEntity(String passageName) {
         BaseEntity e = new BaseEntity();
         e.init();
@@ -53,8 +78,26 @@ public class WorldBuilder
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntity()", ex);
         }
-        entityIdMap.put(e.id, e);
+        putEntity(e.id, e);
         return e;
+    }
+
+    public BaseRoom loadRoom(String passageName) {
+        BaseRoom r = new BaseRoom();
+        r.init();
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonObject o = Json.parse(json).asObject();
+            r.id = getJsonString(o.get("id"));
+            r.name = getJsonString(o.get("name"));
+            r.exitName = getJsonString(o.get("exitName"));
+            r.description = getJsonString(o.get("description"));
+        } catch (ParseException|UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadRoom()", ex);
+        }
+        putRoom(r.id, r);
+        worldState.rooms.add(r);
+        return r;
     }
 
     public Door loadDoor(String passageName) {
@@ -77,24 +120,60 @@ public class WorldBuilder
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
         }
-        entityIdMap.put(d.id, d);
+        putEntity(d.id, d);
         return d;
     }
 
     public void connectRooms(String roomId1, int pos1, String roomId2, int pos2) {
-        BaseRoom r1 = roomIdMap.get(roomId1);
-        BaseRoom r2 = roomIdMap.get(roomId2);
+        connectRooms(roomId1, pos1, null, roomId2, pos2, null);
+    }
+
+    public void connectRooms(String roomId1, int pos1, String label1, String roomId2, int pos2, String label2) {
+        BaseRoom r1 = getRoom(roomId1);
+        BaseRoom r2 = getRoom(roomId2);
         r1.exits[pos1] = r2;
+        r1.exitLabels[pos1] = label1;
         r2.exits[pos2] = r1;
+        r2.exitLabels[pos2] = label2;
+    }
+
+    public void connectRoomOneWay(String roomId1, int pos1, String roomId2) {
+        connectRoomOneWay(roomId1, pos1, null, roomId2);
+    }
+
+    public void connectRoomOneWay(String roomId1, int pos1, String label, String roomId2) {
+        BaseRoom r1 = getRoom(roomId1);
+        BaseRoom r2 = getRoom(roomId2);
+        r1.exits[pos1] = r2;
+        r1.exitLabels[pos1] = label;
     }
 
     public void connectRoomsWithDoor(String doorId, String roomId1, int pos1, String roomId2, int pos2, boolean locked) {
-        Door d = (Door) entityIdMap.get(doorId);
-        BaseRoom r1 = roomIdMap.get(roomId1);
-        BaseRoom r2 = roomIdMap.get(roomId2);
+        Door d = (Door) getEntity(doorId);
+        BaseRoom r1 = getRoom(roomId1);
+        BaseRoom r2 = getRoom(roomId2);
         d.setRooms(r1, r2);
         d.setPositions(pos1, pos2);
         d.setLocked(locked);
+        // Exit labels don't work with rooms that are connected by a door
+        r1.exitLabels[pos1] = null;
+        r2.exitLabels[pos2] = null;
+        if (locked) {
+            r1.exits[pos1] = null;
+            r2.exits[pos2] = null;
+        } else {
+            r1.exits[pos1] = r2;
+            r2.exits[pos2] = r1;
+        }
+    }
+
+    public void putEntitiesInRoom(String roomId, String... entityIds) {
+        BaseRoom r = getRoom(roomId);
+        for (String id : entityIds) {
+            Entity e = getEntity(id);
+            if (!r.entities.contains(e))
+                r.entities.add(e);
+        }
     }
 
     private String retrieveTextOrDefault(JsonObject o, String key, String defaultPassageName) {
@@ -129,7 +208,9 @@ public class WorldBuilder
      * take its first item as a string, and use it as a passage name in the text bundle.
      */
     private String getJsonString(JsonValue v) {
-        if (v.isString())
+        if (v == null)
+            return "";
+        else if (v.isString())
             return v.asString();
         else if (v.isArray())
             return bundle.getPassage(v.asArray().get(0).asString());

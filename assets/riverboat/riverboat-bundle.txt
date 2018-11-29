@@ -27,6 +27,7 @@ at the lights glowing across the water.
     "id" : "river-edge",
     "name" : "River's Edge",
     "exitName" : "River Edge",
+    "description" : "Here the woods give way to the bank of the River Jelly.",
 }
 
 [ grating-door-info ]
