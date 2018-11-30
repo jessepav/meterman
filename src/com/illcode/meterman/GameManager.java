@@ -433,7 +433,7 @@ public final class GameManager
         if (selectedEntity != null) {
             actions.clear();
             actions.addAll(selectedEntity.getActions());
-            fireProcessEntityActionEvent(selectedEntity, actions);
+            fireProcessEntityActionsEvent(selectedEntity, actions);
             ui.setObjectName(selectedEntity.getName());
             ui.setObjectText(selectedEntity.getDescription());
             ui.clearActions();
@@ -443,7 +443,7 @@ public final class GameManager
             ui.clearActions();
             ui.setObjectName("(nothing selected)");
             ui.setObjectText("");
-            ui.setEntityImage(null);
+            ui.setEntityImage(MetermanUI.NO_IMAGE);
         }
     }
 
@@ -706,7 +706,7 @@ public final class GameManager
      * @param actions the mutable list of actions that should be shown in the UI,
      *      which each listener may modify.
      */
-    private void fireProcessEntityActionEvent(Entity e, List<String> actions) {
+    private void fireProcessEntityActionsEvent(Entity e, List<String> actions) {
         for (EntityActionProcessor l : entityActionProcessors)
             l.processEntityActions(e, actions);
     }
