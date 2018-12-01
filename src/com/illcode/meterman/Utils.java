@@ -78,19 +78,23 @@ public final class Utils
      * @param p path to JSON file
      */
     public static void loadActionNameTranslations(Path p) {
+        int n = 0;
         try (Reader r = Files.newBufferedReader(p, StandardCharsets.UTF_8)) {
             JsonValue v = Json.parse(r);
             if (v.isObject()) {
                 JsonObject o = v.asObject();
                 for (JsonObject.Member m : o) {
                     JsonValue value = m.getValue();
-                    if (value.isString())
+                    if (value.isString()) {
                         actionNameMap.put(m.getName(), value.asString());
+                        n++;
+                    }
                 }
             }
         } catch (IOException e) {
             logger.log(Level.WARNING, "Utils.loadActionNameTranslations()", e);
         }
+        logger.fine(fmt("Loaded %d action name translations from %s", n, p.getFileName().toString()));
     }
 
     /**

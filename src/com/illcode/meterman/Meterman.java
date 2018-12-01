@@ -56,6 +56,8 @@ public final class Meterman
             return;
         }
 
+        Utils.loadActionNameTranslations(Utils.pathForAsset("meterman/system-action-translations.json"));
+
         gm = new GameManager();
         switch (Utils.pref("ui", "swing")) {
         case "swing":
