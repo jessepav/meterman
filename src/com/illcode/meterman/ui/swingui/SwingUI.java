@@ -2,6 +2,7 @@ package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.Utils;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
@@ -45,7 +46,7 @@ public class SwingUI implements MetermanUI
         setStatusLabel(UIConstants.CENTER_LABEL, "");
         setStatusLabel(UIConstants.RIGHT_LABEL, "");
 
-        defaultFrameImage = GuiUtils.loadBitmaskImage(Paths.get("assets/meterman/default-frame-image.png"));
+        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.getAssetsPath("meterman/default-frame-image.png"));
         currentFrameImage = NO_IMAGE;
         currentEntityImage = NO_IMAGE;
     }

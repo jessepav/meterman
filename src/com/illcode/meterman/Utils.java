@@ -1,31 +1,47 @@
 package com.illcode.meterman;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public final class Utils
 {
     public static Logger logger;
-
     private static Random random;
+    private static Path assetsPath;
+    private static FileSystem zipfs;
+
+    public static void init() {
+
+    }
+
+    public static void dispose() {
+        if (zipfs != null) {
+            try {
+                zipfs.close();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Utils.dispose()", e);
+            }
+        }
+    }
 
     /**
      * Initializes our static logger, pulling the logs directory from the "log-path" pref.
      * Henceforth, {@link Utils#logger} will be ready for action.
      * @throws IOException
      */
-    public static void initLogging() throws IOException {
+    public static void initializeLogging() throws IOException {
         System.setProperty("java.util.logging.config.file", "config/logging.properties");
         LogManager.getLogManager().readConfiguration();
 
@@ -36,6 +52,38 @@ public final class Utils
         logger.addHandler(new FileHandler(logPath.toString() + "/meterman-%g.log", 50000, 10, true));
 
         logger.info("Meterman Logger Initialized. Default Charset: " + Charset.defaultCharset());
+    }
+
+    /**
+     * Return a potentially translated representation of {@code name} to be used as action names.
+     * @param name canonical action name
+     * @return version of {@code name} to be shown to the user.
+     */
+    public static String getActionName(String name) {
+        return name;
+    }
+
+    /**
+     * Returns a Path representing the given asset, resolved against the base assets path.
+     * @param asset path (relative to the base assets path) of the asset we want
+     * @return the resolved path
+     */
+    public static Path getAssetsPath(String asset) {
+        if (assetsPath == null) {
+            String p = Utils.pref("assets-path", "assets");
+            if (StringUtils.endsWithIgnoreCase(p, ".zip")) {
+                try {
+                    zipfs = FileSystems.newFileSystem(Paths.get(p), null);
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Utils.getAssetsPath()", e);
+                    return null;
+                }
+                assetsPath = zipfs.getPath("/");
+            } else {
+                assetsPath = Paths.get(p);
+            }
+        }
+        return assetsPath.resolve(asset);
     }
 
     /**

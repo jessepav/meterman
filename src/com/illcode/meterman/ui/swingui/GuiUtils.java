@@ -50,7 +50,7 @@ public final class GuiUtils
     public static BufferedImage loadOpaqueImage(Path p) {
         BufferedImage image;
         try {
-            BufferedImage bi = ImageIO.read(p.toFile());
+            BufferedImage bi = ImageIO.read(p.toUri().toURL());
             image = createOpaqueImage(bi.getWidth(), bi.getHeight());
             Graphics g = image.getGraphics();
             g.drawImage(bi, 0, 0, null);
@@ -67,7 +67,7 @@ public final class GuiUtils
     public static BufferedImage loadTranslucentImage(Path p) {
         BufferedImage image;
         try {
-            BufferedImage bi = ImageIO.read(p.toFile());
+            BufferedImage bi = ImageIO.read(p.toUri().toURL());
             image = createTranslucentImage(bi.getWidth(), bi.getHeight());
             Graphics g = image.getGraphics();
             g.drawImage(bi, 0, 0, null);
@@ -97,7 +97,7 @@ public final class GuiUtils
     public static BufferedImage loadBitmaskImage(Path path, int transparentColor) {
         BufferedImage image = null;
         try {
-            BufferedImage bi = ImageIO.read(path.toFile());
+            BufferedImage bi = ImageIO.read(path.toUri().toURL());
             int w = bi.getWidth();
             int h = bi.getHeight();
             if (transparentColor != -1) {

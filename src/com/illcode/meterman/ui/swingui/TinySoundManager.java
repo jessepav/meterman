@@ -7,6 +7,8 @@ import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,16 +84,20 @@ public final class TinySoundManager implements SoundManager
 
     public void setMusicEnabled(boolean enabled) {
         musicEnabled = enabled;
+        if (musicEnabled)
+            resumeAllMusic();
+        else
+            pauseAllMusic();
     }
 
     public boolean isMusicEnabled() {
         return musicEnabled;
     }
 
-    public void loadMusic(String name, File f) {
+    public void loadMusic(String name, Path p) {
         try {
             pendingLoads.incrementAndGet();
-            queue.put(new SoundMessage(SoundMessage.LOAD_MUSIC, name, f));
+            queue.put(new SoundMessage(SoundMessage.LOAD_MUSIC, name, p));
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "SoundManager", e);
         }
@@ -147,9 +153,9 @@ public final class TinySoundManager implements SoundManager
         }
     }
 
-    public void loadSound(String name, File f) {
+    public void loadSound(String name, Path p) {
         try {
-            queue.put(new SoundMessage(SoundMessage.LOAD_SOUND, name, f));
+            queue.put(new SoundMessage(SoundMessage.LOAD_SOUND, name, p));
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "SoundManager", e);
         }
@@ -220,7 +226,12 @@ public final class TinySoundManager implements SoundManager
                     break;
                 case SoundMessage.LOAD_SOUND:
                     if (!soundMap.containsKey(msg.name)) {
-                        s = TinySound.loadSound(msg.file);
+                        try {
+                            s = TinySound.loadSound(msg.path.toUri().toURL());
+                        } catch (MalformedURLException e) {
+                            logger.log(Level.WARNING, "TinySoundManager LOAD_SOUND", e);
+                            s = null;
+                        }
                         if (s != null)
                             soundMap.put(msg.name, s);
                     }
@@ -239,7 +250,12 @@ public final class TinySoundManager implements SoundManager
                     break;
                 case SoundMessage.LOAD_MUSIC:
                     if (!musicMap.containsKey(msg.name)) {
-                        m = TinySound.loadMusic(msg.file);
+                        try {
+                            m = TinySound.loadMusic(msg.path.toUri().toURL());
+                        } catch (MalformedURLException e) {
+                            logger.log(Level.WARNING, "TinySoundManager LOAD_MUSIC", e);
+                            m = null;
+                        }
                         if (m != null)
                             musicMap.put(msg.name, m);
                     }
@@ -319,7 +335,7 @@ public final class TinySoundManager implements SoundManager
 
         int command;
         String name;
-        File file;
+        Path path;
         boolean flag;
         double val;
 
@@ -332,10 +348,10 @@ public final class TinySoundManager implements SoundManager
             this.name = name;
         }
 
-        private SoundMessage(int command, String name, File file) {
+        private SoundMessage(int command, String name, Path path) {
             this.command = command;
             this.name = name;
-            this.file = file;
+            this.path = path;
         }
 
         private SoundMessage(int command, String name, boolean flag) {

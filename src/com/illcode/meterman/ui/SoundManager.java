@@ -1,6 +1,6 @@
 package com.illcode.meterman.ui;
 
-import java.io.File;
+import java.nio.file.Path;
 
 public interface SoundManager
 {
@@ -37,9 +37,9 @@ public interface SoundManager
     /**
      * Loads music from a file
      * @param name the name by which the music will be referred by this SoundManager
-     * @param f the File to load music from
+     * @param p the Path to load music from
      */
-    void loadMusic(String name, File f);
+    void loadMusic(String name, Path p);
 
     /**
      * Plays music previously loaded.
@@ -78,9 +78,9 @@ public interface SoundManager
     /**
      * Loads a Sound from a file
      * @param name the name by which the sound will be referred by this SoundManager
-     * @param f the File to load sound from
+     * @param p the Path to load sound from
      */
-    void loadSound(String name, File f);
+    void loadSound(String name, Path p);
 
     /**
      * Plays a sound previously loaded.

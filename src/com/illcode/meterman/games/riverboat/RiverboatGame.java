@@ -44,7 +44,7 @@ public class RiverboatGame implements Game
     }
 
     private void setupWorldState(WorldState worldState) {
-        bundle = TextBundle.loadBundle(Paths.get("assets/riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
+        bundle = TextBundle.loadBundle(Utils.getAssetsPath("riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
     }
 }

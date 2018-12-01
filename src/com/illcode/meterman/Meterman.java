@@ -43,13 +43,14 @@ public final class Meterman
             System.exit(1);
         }
 
-        Utils.initLogging();
+        Utils.init();
+        Utils.initializeLogging();
 
         savesPath = Paths.get(Utils.pref("saves-path", "saves"));
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
 
-        systemBundle = TextBundle.loadBundle(Paths.get(Utils.pref("system-bundle", "assets/meterman/system-bundle.txt")));
+        systemBundle = TextBundle.loadBundle(Utils.getAssetsPath(Utils.pref("system-bundle", "meterman/system-bundle.txt")));
         if (systemBundle == null) {
             logger.severe("Invalid system bundle path in config!");
             return;
@@ -114,5 +115,6 @@ public final class Meterman
         ui.dispose();
         gm.dispose();
         savePrefs(prefsPath);
+        Utils.dispose();
     }
 }

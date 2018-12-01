@@ -95,6 +95,9 @@ class MainFrame implements ActionListener, ListSelectionListener
             centerStatusLabel = cr.getLabel("centerStatusLabel");
             rightStatusLabel = cr.getLabel("rightStatusLabel");
 
+            lookButton.setText(Utils.getActionName("Look"));
+            waitButton.setText(Utils.getActionName("Wait"));
+
             imageComponent = new FrameImageComponent();
             imagePanel.add(imageComponent);
 

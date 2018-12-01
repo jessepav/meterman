@@ -2,6 +2,7 @@ package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.Utils;
 import com.illcode.meterman.ui.UIConstants;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -19,6 +20,11 @@ import static com.illcode.meterman.Meterman.gm;
  */
 public class Door extends BaseEntity
 {
+    public static final String DOOR_OPEN_ACTION_NAME = Utils.getActionName("Open");
+    public static final String DOOR_CLOSE_ACTION_NAME = Utils.getActionName("Close");
+    public static final String DOOR_UNLOCK_ACTION_NAME = Utils.getActionName("Unlock");
+    public static final String DOOR_LOCK_ACTION_NAME = Utils.getActionName("Lock");
+
     private BaseRoom[] rooms;
     private int[] positions;
     private String[] descriptions;
@@ -161,14 +167,14 @@ public class Door extends BaseEntity
         if (key == null)
             locked = false;
         if (locked) {
-            actions.add("Unlock");
+            actions.add(DOOR_UNLOCK_ACTION_NAME);
         } else { // okay, we're unlocked
             if (open) {
-                actions.add("Close");
+                actions.add(DOOR_CLOSE_ACTION_NAME);
             } else { // closed but unlocked
-                actions.add("Open");
+                actions.add(DOOR_OPEN_ACTION_NAME);
                 if (key != null)
-                    actions.add("Lock");
+                    actions.add(DOOR_LOCK_ACTION_NAME);
             }
         }
         return actions;
@@ -178,9 +184,8 @@ public class Door extends BaseEntity
         int idx = ArrayUtils.indexOf(rooms, Meterman.gm.getCurrentRoom());
         if (idx == -1)
             return false;
-        switch (action) {
-        case "Lock":  // note that in these cases key != null
-        case "Unlock":
+        if (action.equals(DOOR_LOCK_ACTION_NAME) || action.equals(DOOR_UNLOCK_ACTION_NAME)) {
+            // note that in these cases we already know that key != null
             if (!Meterman.gm.isInInventory(key)) {
                 Meterman.ui.appendNewline();
                 Meterman.ui.appendText(noKeyMessages[idx]);
@@ -189,8 +194,7 @@ public class Door extends BaseEntity
                 gm.entityChanged(this);
             }
             return true;
-        case "Open":
-        case "Close":
+        } else if (action.equals(DOOR_OPEN_ACTION_NAME) || action.equals(DOOR_CLOSE_ACTION_NAME)) {
             open = !open;
             if (open) {
                 rooms[0].exits[positions[0]] = rooms[1];
@@ -205,7 +209,7 @@ public class Door extends BaseEntity
             Meterman.gm.roomChanged(rooms[0]);
             Meterman.gm.roomChanged(rooms[1]);
             return true;
-        default:
+        } else {
             return false;
         }
     }

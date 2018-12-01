@@ -2,6 +2,7 @@ package com.illcode.meterman.games;
 
 import com.illcode.meterman.Game;
 import com.illcode.meterman.TextBundle;
+import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
 
 import java.nio.file.Paths;
@@ -38,7 +39,7 @@ public class GamesList
      */
     public static String getGameDescription(String gameName) {
         if (descriptionBundle == null)
-            descriptionBundle = TextBundle.loadBundle(Paths.get("assets/game-description-bundle.txt"));
+            descriptionBundle = TextBundle.loadBundle(Utils.getAssetsPath("game-description-bundle.txt"));
         return descriptionBundle.getPassage(gameName);
     }
 }

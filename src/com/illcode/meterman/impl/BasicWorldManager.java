@@ -3,6 +3,7 @@ package com.illcode.meterman.impl;
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Game;
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.Utils;
 import com.illcode.meterman.event.EntityActionProcessor;
 
 import java.util.List;
@@ -19,6 +20,13 @@ import java.util.List;
 public class BasicWorldManager implements EntityActionProcessor
 {
     public static final String BASIC_WORLD_MANAGER_KEY = "com.illcode.meterman.impl.BasicWorldManager";
+
+    public static final String TAKE_ACTION_NAME = Utils.getActionName("Take");
+    public static final String DROP_ACTION_NAME = Utils.getActionName("Drop");
+    public static final String EQUIP_ACTION_NAME = Utils.getActionName("Equip");
+    public static final String UNEQUIP_ACTION_NAME = Utils.getActionName("Unequip");
+    public static final String WEAR_ACTION_NAME = Utils.getActionName("Wear");
+    public static final String TAKEOFF_ACTION_NAME = Utils.getActionName("Take Off");
 
     public BasicWorldManager() {
     }
