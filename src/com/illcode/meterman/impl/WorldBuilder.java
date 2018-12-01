@@ -136,6 +136,8 @@ public class WorldBuilder
             d.setUnlockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
             retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-nokey");
             d.setNoKeyMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-open");
+            d.setOpenMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
         } catch (ParseException |UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
         }
@@ -165,7 +167,8 @@ public class WorldBuilder
         r1.exitLabels[pos1] = label;
     }
 
-    public void connectRoomsWithDoor(String doorId, String roomId1, int pos1, String roomId2, int pos2, boolean locked) {
+    public void connectRoomsWithDoor(String doorId, String roomId1, int pos1, String roomId2, int pos2,
+                                     Entity key, boolean locked, boolean open) {
         Door d = (Door) getEntity(doorId);
         BaseRoom r1 = getRoom(roomId1);
         BaseRoom r2 = getRoom(roomId2);
@@ -173,7 +176,9 @@ public class WorldBuilder
         r2.entities.add(d);
         d.setRooms(r1, r2);
         d.setPositions(pos1, pos2);
+        d.setKey(key);
         d.setLocked(locked);
+        d.setOpen(open);
         // Exit labels don't work with rooms that are connected by a door
         r1.exitLabels[pos1] = null;
         r2.exitLabels[pos2] = null;

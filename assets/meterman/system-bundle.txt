@@ -19,3 +19,7 @@ It is unlocked.
 [ default-door-nokey ]
 
 You do not have the key for this door.
+
+[ default-door-open ]
+
+It is open.

@@ -1,5 +1,3 @@
-Doors can also be open or closed. We need one more pair of openMessages[] (since the door cannot be open and locked at the same time). Only when the door is closed do we go to the locked- and unlocked-messages.
-
 Write a BasicWorldManager that will implement various listeners and handle things like taking and dropping
 items, wearing, equipping, and updating the status bar.
 

@@ -51,6 +51,10 @@ at the lights glowing across the water.
     "noKeyMessages" : [
         "You do not have the key for the padlock."
     ],
+    "openMessages" : [
+        "The grate is open.",
+        "You can see the sky through the open grate."
+    ],
 }
 
 [ grating-key-info ]
