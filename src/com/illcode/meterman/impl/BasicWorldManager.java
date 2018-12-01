@@ -5,6 +5,7 @@ import com.illcode.meterman.Game;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.event.EntityActionProcessor;
+import com.illcode.meterman.event.GameActionListener;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *     <li>Equipping and unequipping equippables.</li>
  * </ul>
  */
-public class BasicWorldManager implements EntityActionProcessor
+public class BasicWorldManager implements GameActionListener, EntityActionProcessor
 {
     public static final String BASIC_WORLD_MANAGER_KEY = "com.illcode.meterman.impl.BasicWorldManager";
 
@@ -32,8 +33,7 @@ public class BasicWorldManager implements EntityActionProcessor
     }
 
     /**
-     * Installs the BasicWorldManager in the GameManager, and saves the instance
-     * in the world-data.
+     * Installs the BasicWorldManager in the GameManager, and saves the instance in the world-data.
      * <p/>
      * This should be called in {@link Game#start(boolean)} when a new game is started.
      */
@@ -50,5 +50,9 @@ public class BasicWorldManager implements EntityActionProcessor
 
     public void processEntityActions(Entity e, List<String> actions) {
 
+    }
+
+    public boolean processAction(String action, Entity entity, boolean beforeAction) {
+        return false;
     }
 }

@@ -11,7 +11,11 @@ public interface Game
     /** Called when the user selects "About..." in the UI  */
     void about();
 
-    /** The world state at the start of the game */
+    /**
+     * Generate the world state to be used at the start of the game.
+     * <p/>
+     * The player character's current room must be set appropriately.
+     */
     WorldState getInitialWorldState();
 
     /**
