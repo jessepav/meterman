@@ -30,7 +30,7 @@ public final class GameManager
     private LinkedList<PlayerMovementListener> beforePlayerMovementListeners;
     private LinkedList<PlayerMovementListener> afterPlayerMovementListeners;
     private LinkedList<TurnListener> turnListeners;
-    private LinkedList<EntityActionProcessor> entityActionProcessors;
+    private LinkedList<EntityActionsProcessor> entityActionsProcessors;
     private LinkedList<EntitySelectionListener> entitySelectionListeners;
 
     // To be used in composing text before sending it off to the UI
@@ -53,7 +53,7 @@ public final class GameManager
         beforePlayerMovementListeners = new LinkedList<>();
         afterPlayerMovementListeners = new LinkedList<>();
         turnListeners = new LinkedList<>();
-        entityActionProcessors = new LinkedList<>();
+        entityActionsProcessors = new LinkedList<>();
         entitySelectionListeners = new LinkedList<>();
         textBuilder = new StringBuilder(2048);
         commonTextBuilder = new StringBuilder(1024);
@@ -71,7 +71,7 @@ public final class GameManager
         beforePlayerMovementListeners = null;
         afterPlayerMovementListeners = null;
         turnListeners = null;
-        entityActionProcessors = null;
+        entityActionsProcessors = null;
         entitySelectionListeners = null;
         textBuilder = null;
         commonTextBuilder = null;
@@ -134,7 +134,7 @@ public final class GameManager
         worldData.put("beforePlayerMovementListeners", beforePlayerMovementListeners);
         worldData.put("afterPlayerMovementListeners", afterPlayerMovementListeners);
         worldData.put("turnListeners", turnListeners);
-        worldData.put("entityActionProcessors", entityActionProcessors);
+        worldData.put("entityActionsProcessors", entityActionsProcessors);
         worldData.put("entitySelectionListeners", entitySelectionListeners);
     }
 
@@ -145,7 +145,7 @@ public final class GameManager
         beforePlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("beforePlayerMovementListeners");
         afterPlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("afterPlayerMovementListeners");
         turnListeners = (LinkedList<TurnListener>) worldData.get("turnListeners");
-        entityActionProcessors = (LinkedList<EntityActionProcessor>) worldData.get("entityActionProcessors");
+        entityActionsProcessors = (LinkedList<EntityActionsProcessor>) worldData.get("entityActionsProcessors");
         entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
     }
 
@@ -157,8 +157,11 @@ public final class GameManager
         beforePlayerMovementListeners.clear();
         afterPlayerMovementListeners.clear();
         turnListeners.clear();
-        entityActionProcessors.clear();
+        entityActionsProcessors.clear();
         entitySelectionListeners.clear();
+        player = null;
+        worldData = null;
+        worldState = null;
         if (game != null) {
             game.dispose();
             game = null;
@@ -195,7 +198,7 @@ public final class GameManager
             return;
         Room fromRoom = player.currentRoom;
         // Here we go...
-        if (fireBeforePlayerMovementEvent(fromRoom, toRoom))
+        if (fireBeforePlayerMovement(fromRoom, toRoom))
             return;  // we were blocked by a listener
         for (Entity e : fromRoom.getRoomEntities())
             e.exitingScope();
@@ -206,7 +209,7 @@ public final class GameManager
             e.setRoom(toRoom);
         for (Entity e : toRoom.getRoomEntities())
             e.enterScope();
-        fireAfterPlayerMovementEvent(fromRoom, toRoom);
+        fireAfterPlayerMovement(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
         lookCommand();
         toRoom.setAttribute(Attributes.VISITED);
@@ -386,7 +389,7 @@ public final class GameManager
 
     /** Called as one turn is transitioning to the next (before {@link WorldState#numTurns} is incremented) */
     private void nextTurn() {
-        fireTurnEvent();
+        fireTurn();
         worldState.numTurns++;
     }
     
@@ -399,9 +402,9 @@ public final class GameManager
     /** Called by the UI when the user clicks an action button (or selects an action
      *  from the combo box when there are many actions) */
     public void entityActionSelected(String action) {
-        if (!fireBeforeActionEvent(action, selectedEntity)) {
+        if (!fireBeforeAction(action, selectedEntity)) {
             if (!selectedEntity.processAction(action))
-                fireDefaultActionEvent(action, selectedEntity);
+                fireDefaultAction(action, selectedEntity);
         }
         nextTurn();
     }
@@ -415,7 +418,7 @@ public final class GameManager
         refreshEntityUI();
         if (e != null) {
             e.selected();
-            fireEntitySelectedEvent(e);
+            fireEntitySelected(e);
         }
     }
 
@@ -433,7 +436,7 @@ public final class GameManager
         if (selectedEntity != null) {
             actions.clear();
             actions.addAll(selectedEntity.getActions());
-            fireProcessEntityActionsEvent(selectedEntity, actions);
+            fireProcessEntityActions(selectedEntity, actions);
             ui.setObjectName(selectedEntity.getName());
             ui.setObjectText(selectedEntity.getDescription());
             ui.clearActions();
@@ -557,7 +560,7 @@ public final class GameManager
      * @return true if any GameActionListener interrupted the chain by returning true,
      *         and thus normal action processing should be skipped.
      */
-    private boolean fireBeforeActionEvent(String action, Entity e) {
+    private boolean fireBeforeAction(String action, Entity e) {
         for (GameActionListener l : beforeGameActionListeners) {
             if (l.processAction(action, e, true))
                 return true;
@@ -572,7 +575,7 @@ public final class GameManager
      * @param e selected entity
      * @return true if any GameActionListener interrupted the chain by returning true,
      */
-    private boolean fireDefaultActionEvent(String action, Entity e) {
+    private boolean fireDefaultAction(String action, Entity e) {
         for (GameActionListener l : defaultGameActionListeners) {
             if (l.processAction(action, e, false))
                 return true;
@@ -631,7 +634,7 @@ public final class GameManager
      * @return true if any PlayerMovementListener interrupted the chain by returning true,
      *              and thus that player movement should be blocked.
      */
-    private boolean fireBeforePlayerMovementEvent(Room from, Room to) {
+    private boolean fireBeforePlayerMovement(Room from, Room to) {
         for (PlayerMovementListener l : beforePlayerMovementListeners) {
             if (l.playerMove(from, to, true))
                 return true;
@@ -645,7 +648,7 @@ public final class GameManager
      * @param to room player has moved to
      * @return true if any PlayerMovementListener interrupted the chain by returning true,
      */
-    private boolean fireAfterPlayerMovementEvent(Room from, Room to) {
+    private boolean fireAfterPlayerMovement(Room from, Room to) {
         for (PlayerMovementListener l : afterPlayerMovementListeners) {
             if (l.playerMove(from, to, false))
                 return true;
@@ -674,40 +677,40 @@ public final class GameManager
     }
 
     /** Notifies registered {@code TurnListener}S that we have reached the cycle of turns */
-    private void fireTurnEvent() {
+    private void fireTurn() {
         for (TurnListener l : turnListeners)
             l.turn();
     }
 
     /**
-     * Adds an EntityActionProcessor.
+     * Adds an EntityActionsProcessor.
      * <p/>
      * Listeners are added to the front of our list, and thus the most recently added
      * listener will be notified before previously added listeners.
      * @param l listener to add
      */
-    public void addEntityActionProcessor(EntityActionProcessor l) {
-        if (!entityActionProcessors.contains(l))
-            entityActionProcessors.addFirst(l);
+    public void addEntityActionsProcessor(EntityActionsProcessor l) {
+        if (!entityActionsProcessors.contains(l))
+            entityActionsProcessors.addFirst(l);
     }
 
     /**
-     * Removes a EntityActionProcessor.
+     * Removes a EntityActionsProcessor.
      * @param l listener to remove
      */
-    public void removeEntityActionProcessor(EntityActionProcessor l) {
-        entityActionProcessors.remove(l);
+    public void removeEntityActionsProcessor(EntityActionsProcessor l) {
+        entityActionsProcessors.remove(l);
     }
 
     /**
-     * Notifies registered {@code EntityActionProcessor}S that an entity's action list is
+     * Notifies registered {@code EntityActionsProcessor}S that an entity's action list is
      * being generated.
      * @param e entity
      * @param actions the mutable list of actions that should be shown in the UI,
      *      which each listener may modify.
      */
-    private void fireProcessEntityActionsEvent(Entity e, List<String> actions) {
-        for (EntityActionProcessor l : entityActionProcessors)
+    private void fireProcessEntityActions(Entity e, List<String> actions) {
+        for (EntityActionsProcessor l : entityActionsProcessors)
             l.processEntityActions(e, actions);
     }
 
@@ -735,7 +738,7 @@ public final class GameManager
      * Notifies registered {@code EntitySelectionListener}S that an entity has been selected.
      * @param e selected entity
      */
-    private void fireEntitySelectedEvent(Entity e) {
+    private void fireEntitySelected(Entity e) {
         for (EntitySelectionListener l : entitySelectionListeners)
             l.entitySelected(e);
     }
