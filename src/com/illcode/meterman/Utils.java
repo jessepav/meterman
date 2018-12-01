@@ -1,15 +1,13 @@
 package com.illcode.meterman;
 
 import org.apache.commons.lang3.StringUtils;
+import com.eclipsesource.json.*;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -22,8 +20,10 @@ public final class Utils
     private static Path assetsPath;
     private static FileSystem zipfs;
 
-    public static void init() {
+    private static Map<String,String> actionNameMap;
 
+    public static void init() {
+        actionNameMap = new HashMap<>();
     }
 
     public static void dispose() {
@@ -34,6 +34,7 @@ public final class Utils
                 logger.log(Level.WARNING, "Utils.dispose()", e);
             }
         }
+        actionNameMap = null;
     }
 
     /**
@@ -60,7 +61,36 @@ public final class Utils
      * @return version of {@code name} to be shown to the user.
      */
     public static String getActionName(String name) {
-        return name;
+        String val = actionNameMap.get(name);
+        return val != null ? val : name;
+    }
+
+    /**
+     * Loads action name translations from a JSON file. The JSON data should be an object,
+     * whose names are the canonical action names ("Look", etc.) and the values the translated
+     * names. An example:
+     * <pre>{@code
+     * {
+     *    "Look" : "Espy",
+     *    "Wait" : "Tarry"
+     * }
+     * }</pre>
+     * @param p path to JSON file
+     */
+    public static void loadActionNameTranslations(Path p) {
+        try (Reader r = Files.newBufferedReader(p, StandardCharsets.UTF_8)) {
+            JsonValue v = Json.parse(r);
+            if (v.isObject()) {
+                JsonObject o = v.asObject();
+                for (JsonObject.Member m : o) {
+                    JsonValue value = m.getValue();
+                    if (value.isString())
+                        actionNameMap.put(m.getName(), value.asString());
+                }
+            }
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Utils.loadActionNameTranslations()", e);
+        }
     }
 
     /**
@@ -68,14 +98,14 @@ public final class Utils
      * @param asset path (relative to the base assets path) of the asset we want
      * @return the resolved path
      */
-    public static Path getAssetsPath(String asset) {
+    public static Path pathForAsset(String asset) {
         if (assetsPath == null) {
             String p = Utils.pref("assets-path", "assets");
             if (StringUtils.endsWithIgnoreCase(p, ".zip")) {
                 try {
                     zipfs = FileSystems.newFileSystem(Paths.get(p), null);
                 } catch (IOException e) {
-                    logger.log(Level.WARNING, "Utils.getAssetsPath()", e);
+                    logger.log(Level.WARNING, "Utils.pathForAsset()", e);
                     return null;
                 }
                 assetsPath = zipfs.getPath("/");

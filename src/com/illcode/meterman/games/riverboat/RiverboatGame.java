@@ -3,9 +3,7 @@ package com.illcode.meterman.games.riverboat;
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.WorldBuilder;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class RiverboatGame implements Game
 {
@@ -44,7 +42,7 @@ public class RiverboatGame implements Game
     }
 
     private void setupWorldState(WorldState worldState) {
-        bundle = TextBundle.loadBundle(Utils.getAssetsPath("riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
+        bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
     }
 }

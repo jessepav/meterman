@@ -50,7 +50,7 @@ public final class Meterman
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
 
-        systemBundle = TextBundle.loadBundle(Utils.getAssetsPath(Utils.pref("system-bundle", "meterman/system-bundle.txt")));
+        systemBundle = TextBundle.loadBundle(Utils.pathForAsset(Utils.pref("system-bundle", "meterman/system-bundle.txt")));
         if (systemBundle == null) {
             logger.severe("Invalid system bundle path in config!");
             return;

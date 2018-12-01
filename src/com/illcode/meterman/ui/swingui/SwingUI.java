@@ -10,7 +10,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +45,7 @@ public class SwingUI implements MetermanUI
         setStatusLabel(UIConstants.CENTER_LABEL, "");
         setStatusLabel(UIConstants.RIGHT_LABEL, "");
 
-        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.getAssetsPath("meterman/default-frame-image.png"));
+        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForAsset("meterman/default-frame-image.png"));
         currentFrameImage = NO_IMAGE;
         currentEntityImage = NO_IMAGE;
     }

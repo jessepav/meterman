@@ -5,8 +5,6 @@ import com.illcode.meterman.TextBundle;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
 
-import java.nio.file.Paths;
-
 /**
  * A class containing the names of all the games packaged with Meterman,
  * and {@link #getGame a method} to retrieve a {@link Game} instance based on a given name.
@@ -39,7 +37,7 @@ public class GamesList
      */
     public static String getGameDescription(String gameName) {
         if (descriptionBundle == null)
-            descriptionBundle = TextBundle.loadBundle(Utils.getAssetsPath("game-description-bundle.txt"));
+            descriptionBundle = TextBundle.loadBundle(Utils.pathForAsset("game-description-bundle.txt"));
         return descriptionBundle.getPassage(gameName);
     }
 }

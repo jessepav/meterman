@@ -13,7 +13,7 @@ as the name of a bundle entry whose contents will be used for the property.
     "id" : "ferryman",
     "name" : "River Ferryman",
     "listName" : "Ferryman",
-    "description" : ["ferryman-description"],
+    "description" : ["ferryman-description"]
 }
 
 [ferryman-description]
@@ -27,7 +27,7 @@ at the lights glowing across the water.
     "id" : "river-edge",
     "name" : "River's Edge",
     "exitName" : "River Edge",
-    "description" : "Here the woods give way to the bank of the River Jelly.",
+    "description" : "Here the woods give way to the bank of the River Jelly."
 }
 
 [ grating-door-info ]
@@ -54,7 +54,7 @@ at the lights glowing across the water.
     "openMessages" : [
         "The grate is open.",
         "You can see the sky through the open grate."
-    ],
+    ]
 }
 
 [ grating-key-info ]
