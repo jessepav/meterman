@@ -36,6 +36,7 @@ public class WorldBuilder
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
+        GameUtils.ensureBundleHasSystemParent(bundle);
         worldState.worldData.put(WORLDBUILDER_KEY, this);
     }
 
@@ -226,6 +227,25 @@ public class WorldBuilder
             if (!r.entities.contains(e))
                 r.entities.add(e);
         }
+    }
+
+    public Map<String,TalkTopic> loadTopicMap(String passageName) {
+        Map<String,TalkTopic> topicMap = new HashMap<>();
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonObject o = Json.parse(json).asObject();
+            for (JsonObject.Member member : o) {
+                String key = member.getName();
+                JsonArray a = member.getValue().asArray();
+                String label = getJsonString(a.get(0));
+                String text = getJsonString(a.get(1));
+                if (!label.isEmpty() && !text.isEmpty())
+                    topicMap.put(key, new TalkTopic(key, label, text));
+            }
+        } catch (ParseException|UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
+        }
+        return topicMap;
     }
 
     private String retrieveTextOrDefault(JsonObject o, String key, String defaultPassageName) {

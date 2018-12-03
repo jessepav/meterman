@@ -55,4 +55,21 @@ public class GameUtils
         showPassages(b, header, defaultMoreLabel, defaultCloseLabel, passageNames);
     }
 
+    /**
+     * Ensures that somewhere up the parent chain, this bundle has the system bundle.
+     * @param b text bundle
+     */
+    public static void ensureBundleHasSystemParent(TextBundle b) {
+        if (b == null || b == Meterman.systemBundle)
+            return;
+        TextBundle parent = b.getParent();
+        while (parent != null) {
+            if (parent == Meterman.systemBundle)
+                return;
+            b = parent;
+            parent = b.getParent();
+        }
+        b.setParent(Meterman.systemBundle);
+    }
+
 }

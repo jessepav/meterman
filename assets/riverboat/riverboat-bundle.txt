@@ -78,3 +78,15 @@ at the lights glowing across the water.
     "darkDescription" : "The air is still and slightly acrid in this dark passage.",
     "dark" : true,
 }
+
+[ fireside-chat-topics ]
+
+{
+    "hello" : ["Hello", "Hello stranger."],
+    "monster" : ["Monster in the Dark", ["monster-in-dark"]]
+}
+
+[ monster-in-dark ]
+
+The monster is a Zorgobeast from the 8th dimension.
+You're lucky you didn't get disembowled.
