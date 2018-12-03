@@ -32,8 +32,10 @@ public final class GameManager
     private LinkedList<TurnListener> turnListeners;
     private LinkedList<EntityActionsProcessor> entityActionsProcessors;
     private LinkedList<EntitySelectionListener> entitySelectionListeners;
+    private LinkedList<DescriptionTextProcessor> descriptionTextProcessors;
 
-    // To be used in composing text before sending it off to the UI
+    // To be used in composing text before sending it off to the UI.
+    // Methods that use textBuilder should call .setLength(0) when finished to leave it empty.
     private StringBuilder textBuilder;
 
     // See queueLookText()
@@ -55,6 +57,7 @@ public final class GameManager
         turnListeners = new LinkedList<>();
         entityActionsProcessors = new LinkedList<>();
         entitySelectionListeners = new LinkedList<>();
+        descriptionTextProcessors = new LinkedList<>();
         textBuilder = new StringBuilder(2048);
         commonTextBuilder = new StringBuilder(1024);
         paragraphBuilder = new StringBuilder(1024);
@@ -73,6 +76,7 @@ public final class GameManager
         turnListeners = null;
         entityActionsProcessors = null;
         entitySelectionListeners = null;
+        descriptionTextProcessors = null;
         textBuilder = null;
         commonTextBuilder = null;
         paragraphBuilder = null;
@@ -136,6 +140,7 @@ public final class GameManager
         worldData.put("turnListeners", turnListeners);
         worldData.put("entityActionsProcessors", entityActionsProcessors);
         worldData.put("entitySelectionListeners", entitySelectionListeners);
+        worldData.put("descriptionTextProcessors", descriptionTextProcessors);
     }
 
     @SuppressWarnings("unchecked")
@@ -147,6 +152,7 @@ public final class GameManager
         turnListeners = (LinkedList<TurnListener>) worldData.get("turnListeners");
         entityActionsProcessors = (LinkedList<EntityActionsProcessor>) worldData.get("entityActionsProcessors");
         entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
+        descriptionTextProcessors = (LinkedList<DescriptionTextProcessor>) worldData.get("descriptionTextProcessors");
     }
 
     private void closeGame() {
@@ -159,6 +165,7 @@ public final class GameManager
         turnListeners.clear();
         entityActionsProcessors.clear();
         entitySelectionListeners.clear();
+        descriptionTextProcessors.clear();
         player = null;
         worldData = null;
         worldState = null;
@@ -353,7 +360,6 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
-        textBuilder.setLength(0);
         textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
@@ -368,6 +374,7 @@ public final class GameManager
             textBuilder.append(paragraphBuilder);
             paragraphBuilder.setLength(0);
         }
+        fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ROOM_DESCRIPTION);
         ui.appendText(textBuilder.toString());
         textBuilder.setLength(0);
         nextTurn();
@@ -442,7 +449,10 @@ public final class GameManager
             actions.addAll(selectedEntity.getActions());
             fireProcessEntityActions(selectedEntity, actions);
             ui.setObjectName(selectedEntity.getName());
-            ui.setObjectText(selectedEntity.getDescription());
+            textBuilder.append(selectedEntity.getDescription());
+            fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ENTITY_DESCRIPTION);
+            ui.setObjectText(textBuilder.toString());
+            textBuilder.setLength(0);
             ui.clearActions();
             for (String s : actions)
                 ui.addAction(s);
@@ -745,6 +755,34 @@ public final class GameManager
     private void fireEntitySelected(Entity e) {
         for (EntitySelectionListener l : entitySelectionListeners)
             l.entitySelected(e);
+    }
+
+    /**
+     * Add a DescriptionTextProcessor
+     * @param l listener to add
+     */
+    public void addLookListener(DescriptionTextProcessor l) {
+
+    }
+
+    /**
+     * Remove a DescriptionTextProcessor
+     * @param l listener to remove
+     */
+    public void removeLookListener(DescriptionTextProcessor l) {
+
+    }
+
+    /**
+     * Notifies registered <tt>DescriptionTextProcessor</tt>s that the text of a look command has been
+     * gathered and will be displayed in the UI.
+     * @param sb the StringBuilder containing the text to be shown
+     * @param textType either {@link DescriptionTextProcessor#ROOM_DESCRIPTION} or {@link
+     *   DescriptionTextProcessor#ENTITY_DESCRIPTION}, indicating at what point the method is being called.
+     */
+    public void fireDescriptionTextReady(StringBuilder sb, int textType) {
+        for (DescriptionTextProcessor l : descriptionTextProcessors)
+            l.descriptionTextReady(sb, textType);
     }
     //endregion
 }

@@ -14,7 +14,7 @@ public interface EntitySelectionListener
      * Called when an entity is selected.
      * </p>
      * Note that it is called <em>after</em> the UI is updated as normal for that entity,
-     * so that the listener can modify it if desired (change description text, etc.).
+     * so that the listener can modify it if desired.
      * @param e selected entity
      */
     void entitySelected(Entity e);
