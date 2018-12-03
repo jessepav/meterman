@@ -22,39 +22,49 @@ import static com.illcode.meterman.Utils.logger;
  * <p/>
  * Here is an example bundle illustrating the file format:
  * <pre>{@code
- [intro]
+[intro]
 
- This is a "text bundle" (handled by the TextBundle class). It's an easy
- way to store and reference passages of text.
+This is a "text bundle" (handled by the TextBundle class). It's an easy
+way to store and reference passages of text.
 
- Each passage is headed by a "passage name" between square brackets
- ("intro", in this case) and comprises the first non-blank line to the
- last non-blank line, inclusive.
-
-
- [passage-2]
-
- The passages can be retrieved complete with line breaks and whitespace
- preserved
-
- +-------------------------------------------+
- |                                           |
- |         Like this beautiful box           |
- |                                           |
- +-------------------------------------------+
-
- Or with all whitespace and newlines collapsed.
+Each passage is headed by a "passage name" between square brackets
+("intro", in this case) and comprises the first non-blank line to the
+last non-blank line, inclusive.
 
 
- [#Information Passage]
+[passage-2]
 
- Passages that start with the pound character "#" will not be saved into
- the bundle, but are simply commentary passages in the text.
+The passages can be retrieved complete with line breaks and whitespace
+preserved
+
++-------------------------------------------+
+|                                           |
+|         Like this beautiful box           |
+|                                           |
++-------------------------------------------+
+
+Or with all whitespace and newlines collapsed.
+
+
+[#Information Passage]
+
+Passages that start with the pound character "#" will not be saved into
+the bundle, but are simply commentary passages in the text.
+
+[Multiline Passage (flowed)]
+
+If a passage name ends with the string "(flowed)" its text with be flowed
+automatically, as though calls to getPassage() were calls to getPassageFlowed().
+Note that the name of the passage will be the original passage name without
+"(flowed)" and with whitespace trimmed off of both ends. Thus this passage
+would have a name of "Multiline Passage".
 
  * }</pre>
  */
 public final class TextBundle
 {
+    private static final String FLOWED_SUFFIX = "(flowed)";
+
     /** We cache the {@code '\s+'} Pattern to avoid recompilation.
      *  @see #getPassageWrapped(String, int) */
     private static Pattern whiteSpacePattern;
@@ -189,12 +199,15 @@ public final class TextBundle
      * @return flowed passage text, or "" if the named passage doesn't exit
      */
     public String getPassageFlowed(String name) {
-        String s = getPassage(name);
-        if (s.isEmpty())
+        return flowText(getPassage(name));
+    }
+
+    private static String flowText(String text) {
+        if (text.isEmpty())
             return "";
         if (flowPattern == null)
             flowPattern = Pattern.compile("(?<!\\n)\\n(?!\\n)");
-        return flowPattern.matcher(s).replaceAll(" ");
+        return flowPattern.matcher(text).replaceAll(" ");
     }
 
     /**
@@ -253,7 +266,7 @@ public final class TextBundle
                 String newName = getPassageName(line);
                 if (newName != null && !newName.startsWith("#")) {   // we've encountered a new, non-comment heading
                     if (name != null) {  // we need to save the current passage
-                        b.passageMap.put(name, gatherPassage(passageLines));
+                        savePassage(b.passageMap, name, gatherPassage(passageLines));
                         passageLines.clear();
                     }
                     name = newName;
@@ -263,11 +276,22 @@ public final class TextBundle
                 // else we're not reading passage lines at all, so forget about it
             }
             if (name != null)   // save the last passage, if any
-                b.passageMap.put(name, gatherPassage(passageLines));
+                savePassage(b.passageMap, name, gatherPassage(passageLines));
         } catch (IOException e) {
             logger.log(Level.WARNING, "loadBundle()", e);
         }
         return b;
+    }
+
+    // This exists to handle special passage name suffixes, like "(flowed)"
+    private static void savePassage(Map<String,String> passageMap, String name, String text) {
+        if (name.endsWith(FLOWED_SUFFIX)) {
+            name = name.substring(0, name.length() - FLOWED_SUFFIX.length()).trim();
+            if (!name.isEmpty())
+                passageMap.put(name, flowText(text));
+        } else {
+            passageMap.put(name, text);
+        }
     }
 
     /**
