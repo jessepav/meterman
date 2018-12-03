@@ -2,9 +2,12 @@ package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Game;
+import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.event.EntityActionsProcessor;
 import com.illcode.meterman.event.GameActionListener;
+import com.illcode.meterman.event.TurnListener;
+import com.illcode.meterman.ui.UIConstants;
 
 import static com.illcode.meterman.Meterman.gm;
 import static com.illcode.meterman.Attributes.*;
@@ -20,7 +23,7 @@ import java.util.List;
  *     <li>Equipping and unequipping equippables.</li>
  * </ul>
  */
-public class BasicWorldManager implements GameActionListener, EntityActionsProcessor
+public class BasicWorldManager implements GameActionListener, EntityActionsProcessor, TurnListener
 {
     public static final String BASIC_WORLD_MANAGER_KEY = "com.illcode.meterman.impl.BasicWorldManager";
 
@@ -42,6 +45,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     public void install() {
         gm.addDefaultGameActionListener(this);
         gm.addEntityActionsProcessor(this);
+        gm.addTurnListener(this);
         gm.getWorldData().put(BASIC_WORLD_MANAGER_KEY, this);
     }
 
@@ -103,5 +107,9 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         } else {
             return false;
         }
+    }
+
+    public void turn() {
+        Meterman.ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
     }
 }
