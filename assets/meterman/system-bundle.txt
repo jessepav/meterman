@@ -4,6 +4,14 @@ These are text fragments and messages used by default throughout
 the game system. To override one of these messages, create a passage
 with the same name in your game bundle.
 
+[ more-button-label ]
+
+More...
+
+[ close-button-label ]
+
+Close
+
 [ default-door-description ]
 
 A door stands here, perhaps forbiddingly.
