@@ -79,7 +79,7 @@ public class WorldBuilder
         return e;
     }
 
-    public void readEntityDataFromBundle(BaseEntity e, String passageName) {
+    public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
@@ -87,8 +87,10 @@ public class WorldBuilder
             e.name = getJsonString(o.get("name"));
             e.listName = getJsonString(o.get("listName"));
             e.description = getJsonString(o.get("description"));
-        } catch (ParseException |UnsupportedOperationException ex) {
+            return o;
+        } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntity()", ex);
+            return null;
         }
     }
 
@@ -100,7 +102,7 @@ public class WorldBuilder
         return r;
     }
 
-    public void readRoomDataFromBundle(BaseRoom r, String passageName) {
+    public JsonObject readRoomDataFromBundle(BaseRoom r, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
@@ -108,8 +110,34 @@ public class WorldBuilder
             r.name = getJsonString(o.get("name"));
             r.exitName = getJsonString(o.get("exitName"));
             r.description = getJsonString(o.get("description"));
-        } catch (ParseException |UnsupportedOperationException ex) {
+            return o;
+        } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadRoom()", ex);
+            return null;
+        }
+    }
+
+    public DarkRoom loadDarkRoom(String passageName) {
+        DarkRoom dr = new DarkRoom();
+        dr.init();
+        readDarkRoomDataFromBundle(dr, passageName);
+        putRoom(dr);
+        return dr;
+    }
+
+    private void readDarkRoomDataFromBundle(DarkRoom dr, String passageName) {
+        JsonObject o = readRoomDataFromBundle(dr, passageName);
+        if (o == null)
+            return;
+        try {
+            dr.darkName = retrieveTextOrDefault(o, "darkName", "default-darkName");
+            dr.darkExitName = retrieveTextOrDefault(o, "darkExitName", "default-darkExitName");
+            dr.darkDescription = retrieveTextOrDefault(o, "darkDescription", "default-darkDescription");
+            JsonValue v = o.get("dark");
+            if (v != null && v.isBoolean() && v.asBoolean())
+                dr.setAttribute(Attributes.DARK);
+        } catch (UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, readDarkRoomDataFromBundle()", ex);
         }
     }
 

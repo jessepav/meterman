@@ -1,5 +1,7 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.impl.WorldBuilder;
+
 /**
  * An instance of a particular game.
  */
@@ -14,7 +16,16 @@ public interface Game
     /**
      * Generate the world state to be used at the start of the game.
      * <p/>
-     * The player character's current room must be set appropriately.
+     * Remember that player character's current room must be set appropriately.
+     * <hr/>
+     * The general order of things in the typical implementation of this method is
+     * <ol>
+     *     <li>Create all rooms and entities</li>
+     *     <li>Connect rooms and add entities</li>
+     *     <li>Install managers, listeners, and delegates, passing as parameters
+     *         references to the particular objects they need to work with.</li>
+     * </ol>
+     * @see WorldBuilder
      */
     WorldState getInitialWorldState();
 

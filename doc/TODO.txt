@@ -1,5 +1,5 @@
-Write a BasicWorldManager that will implement various listeners and handle things like taking and dropping
-items, wearing, equipping, and updating the status bar.
+Conversation system: load a topicMap from a bundle, maps keys to talk topics. Talk topic has a map key,
+topic (to show in the list), and text to display.
 
 Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 

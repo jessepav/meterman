@@ -18,8 +18,20 @@ It is unlocked.
 
 [ default-door-nokey ]
 
-You do not have the key for this door.
+You do not have the key.
 
 [ default-door-open ]
 
 It is open.
+
+[ default-darkName ]
+
+A dark place
+
+[ default-darkExitName ]
+
+(darkness)
+
+[ default-darkDescription ]
+
+It is too dark here to see anything.

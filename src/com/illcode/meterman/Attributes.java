@@ -1,5 +1,7 @@
 package com.illcode.meterman;
 
+import com.illcode.meterman.impl.DarkRoom;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,11 +32,18 @@ public final class Attributes
     /** The entity is equippable */
     public static final int EQUIPPABLE = 3;
 
+    /** This entity is a light source. */
+    public static final int LIGHTSOURCE = 4;
+
     //
     // Room attributes
     //
 
     /** Indicates if a room has been visited before */
     public static final int VISITED = 0;
+
+    /** This room is naturally dark.
+     *  @see DarkRoom */
+    public static final int DARK = 1;
 
 }

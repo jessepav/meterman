@@ -188,6 +188,10 @@ public final class GameManager
         return worldData;
     }
 
+    public int getNumTurns() {
+        return worldState.numTurns;
+    }
+
     /**
      * Moves the player to a destination room. All appropriate listeners will be notified, and
      * one of them may cancel this move.

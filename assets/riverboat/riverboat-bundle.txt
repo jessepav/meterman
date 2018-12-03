@@ -65,3 +65,16 @@ at the lights glowing across the water.
     "listName" : "Iron Key",
     "description" : "An iron key with traces of soil on its teeth."
 }
+
+[dark-passage1-info]
+
+{
+    "id" : "dark-passage1",
+    "name" : "Dark Passage",
+    "exitName" : "Dark Passage",
+    "description" : "A stony underground passage."
+    "darkName" : "Dark Underground Passage",
+    "darkExitName" : "Darkness",
+    "darkDescription" : "The air is still and slightly acrid in this dark passage.",
+    "dark" : true,
+}

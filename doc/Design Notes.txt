@@ -9,6 +9,12 @@ Given the suggested dimensions of frame images (150x400) and entity images (140x
 using abstract or symbolic graphics could be more effective than attempting standard
 representational game art.
 
+Each game can stuff a big POD object into the world-data so that state can be shared amongst its
+components without mucking with String world-data keys and type casts.
+
+"Winning" and "losing" can be implemented by creating special rooms that display appropriate messages and
+have no exits. Unless one wants to implement an afterlife, of course.
+
 
 == Some big picture code notes ==
 
