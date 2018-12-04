@@ -219,7 +219,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         } else if (source == newMenuItem) {
             ui.listDialog.list.addListSelectionListener(this);
             String gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
-                Arrays.asList(GamesList.games), true);
+                GamesList.getGameNames(), true);
             ui.listDialog.list.removeListSelectionListener(this);
             if (gameName != null)
                 Meterman.gm.newGame(GamesList.getGame(gameName));

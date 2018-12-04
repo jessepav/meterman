@@ -5,6 +5,10 @@ import com.illcode.meterman.TextBundle;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A class containing the names of all the games packaged with Meterman,
  * and {@link #getGame a method} to retrieve a {@link Game} instance based on a given name.
@@ -13,7 +17,7 @@ public class GamesList
 {
     private static final String RIVERBOAT_NAME = "The Riverboat";
 
-    public static final String[] games = {RIVERBOAT_NAME};
+    private static List<String> gameNames;
 
     private static TextBundle descriptionBundle;
 
@@ -24,6 +28,15 @@ public class GamesList
         default:
             return null;
         }
+    }
+
+    public static List<String> getGameNames() {
+        if (gameNames == null) {
+            gameNames = new LinkedList<>();
+            // If we dynamically load games from .jar files, we could query and add them here.
+            gameNames.add(RIVERBOAT_NAME);
+        }
+        return gameNames;
     }
 
     /**
