@@ -137,12 +137,16 @@ public final class Meterman
     /**
      * Installs a bundle as a game-specific bundle in front of the default system bundle, in order to
      * customize game messages.
+     * <p/>
+     * This method needs to be called in {@link Game#start(boolean)} for both new and loaded games, since
+     * game-specific bundle settings are not persisted.
      * @param b game-specific bundle, or null to remove any such bundle. If this bundle does not have the
      * default system bundle in its parent chain, the default system bundle will be placed in its parent
      * chain.
      */
     public static void setGameBundle(TextBundle b) {
-        GameUtils.ensureBundleHasParent(b, systemBundle);
         gameBundle = b;
+        if (gameBundle != null)
+            GameUtils.ensureBundleHasParent(gameBundle, systemBundle);
     }
 }

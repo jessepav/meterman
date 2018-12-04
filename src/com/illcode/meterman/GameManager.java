@@ -169,6 +169,7 @@ public final class GameManager
         player = null;
         worldData = null;
         worldState = null;
+        Meterman.setGameBundle(null);
         if (game != null) {
             game.dispose();
             game = null;
@@ -395,6 +396,8 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Wait" */
     public void waitCommand() {
+        ui.appendNewline();
+        ui.appendText(Meterman.getSystemBundle().getPassage("wait-message"));
         nextTurn();
     }
 
