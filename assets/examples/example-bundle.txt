@@ -4,7 +4,7 @@ The keys of the JSON objects correspond to the names of member properties of Bas
 BaseRoom, though different Room and Entity implementations may recognize additional properties.
 
 For text properties, the values can either be strings, in which case they'll be used directly,
-or an array of strings, in which case the (usually first) string in the array will be treated
+or a string of the form "[[<passage-name>]]", in which case <passage-name> will be used as
 as the name of a bundle entry whose contents will be used for the property.
 
 [ferryman-info]
@@ -13,7 +13,7 @@ as the name of a bundle entry whose contents will be used for the property.
     "id" : "ferryman",
     "name" : "River Ferryman",
     "listName" : "Ferryman",
-    "description" : ["ferryman-description"]
+    "description" : "[[ferryman-description]]"
 }
 
 [ferryman-description]
@@ -85,7 +85,7 @@ at the lights glowing across the water.
     "id" : "underground-hermit",
     "name" : "Bearded Hermit",
     "listName" : "Hermit",
-    "description" : ["underground-hermit-description"]
+    "description" : "[[underground-hermit-description]]"
 }
 
 [ underground-hermit-description (flowed) ]
@@ -96,7 +96,7 @@ A bearded hermit sits beside a flickering bonfire.
 
 {
     "hello" : ["Hello", "Hello stranger."],
-    "monster" : ["Monster in the Dark", ["monster-in-dark-topic"]]
+    "monster" : ["Monster in the Dark", "[[monster-in-dark-topic]]"]
 }
 
 [ monster-in-dark-topic ]

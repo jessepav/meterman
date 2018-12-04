@@ -18,14 +18,14 @@ public class WorldBuilder
 {
     public static final String WORLDBUILDER_KEY = "com.illcode.meterman.impl.WorldBuilder";
 
-    private WorldState worldState;
-    private TextBundle bundle;
+    protected WorldState worldState;
+    protected TextBundle bundle;
 
-    private Map<String,BaseEntity> entityIdMap;
-    private Map<String,BaseRoom> roomIdMap;
+    protected Map<String,BaseEntity> entityIdMap;
+    protected Map<String,BaseRoom> roomIdMap;
 
     // For use with getDoorTextOrDefault()
-    private String[] retrieveMultiStrings;
+    protected String[] retrieveMultiStrings;
 
     // Zero-arg constructor for deserialization
     public WorldBuilder() {
@@ -126,7 +126,7 @@ public class WorldBuilder
         return dr;
     }
 
-    private void readDarkRoomDataFromBundle(DarkRoom dr, String passageName) {
+    public void readDarkRoomDataFromBundle(DarkRoom dr, String passageName) {
         JsonObject o = readRoomDataFromBundle(dr, passageName);
         if (o == null)
             return;
@@ -248,7 +248,7 @@ public class WorldBuilder
         return topicMap;
     }
 
-    private String retrieveTextOrDefault(JsonObject o, String key, String defaultPassageName) {
+    protected String retrieveTextOrDefault(JsonObject o, String key, String defaultPassageName) {
         JsonValue v = o.get(key);
         if (v == null)
             return bundle.getPassage(defaultPassageName);
@@ -256,7 +256,7 @@ public class WorldBuilder
             return getJsonString(v);
     }
 
-    private void retrieveMultiTextOrDefault(JsonObject o, String key, int numStrings, String defaultPassageName) {
+    protected void retrieveMultiTextOrDefault(JsonObject o, String key, int numStrings, String defaultPassageName) {
         if (retrieveMultiStrings == null || retrieveMultiStrings.length < numStrings)
             retrieveMultiStrings = new String[numStrings];
         JsonValue v = o.get(key);
@@ -276,17 +276,31 @@ public class WorldBuilder
     }
 
     /**
-     * If <tt>v</tt> is a JSON string, return its String value; if <tt>v</tt> is a JSON array,
-     * take its first item as a string, and use it as a passage name in the text bundle.
+     * If <tt>v</tt> is a normal JSON string, return its String value; if <tt>v</tt> is a string of
+     * the form <tt>"[[passage-name]]"</tt> use it as a passage name in the text bundle. Otherwise
+     * return the empty string.
      */
-    private String getJsonString(JsonValue v) {
-        if (v == null)
-            return "";
-        else if (v.isString())
-            return v.asString();
-        else if (v.isArray())
-            return bundle.getPassage(v.asArray().get(0).asString());
-        else
-            return "";
+    protected String getJsonString(JsonValue v) {
+        return getJsonString(v, "");
+    }
+
+    /**
+     * If <tt>v</tt> is a normal JSON string, return its String value; if <tt>v</tt> is a string of
+     * the form <tt>"[[passage-name]]"</tt> use it as a passage name in the text bundle. Otherwise
+     * return {@code defaultVal}.
+     */
+    protected String getJsonString(JsonValue v, String defaultVal) {
+        if (v == null || !v.isString())
+            return defaultVal;
+        String s = v.asString();
+        if (s.startsWith("[[") && s.endsWith("]]")) {
+            s = s.substring(2, s.length() - 2).trim();
+            if (s.isEmpty())
+                return defaultVal;
+            else
+                return bundle.getPassage(s);
+        } else {
+            return s;
+        }
     }
 }
