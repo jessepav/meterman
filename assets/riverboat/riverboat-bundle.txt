@@ -79,14 +79,27 @@ at the lights glowing across the water.
     "dark" : true,
 }
 
-[ fireside-chat-topics ]
+[ underground-hermit-info ]
+
+{
+    "id" : "underground-hermit",
+    "name" : "Bearded Hermit",
+    "listName" : "Hermit",
+    "description" : ["underground-hermit-description"]
+}
+
+[ underground-hermit-description (flowed) ]
+
+A bearded hermit sits beside a flickering bonfire.
+
+[ underground-hermit-topics ]
 
 {
     "hello" : ["Hello", "Hello stranger."],
-    "monster" : ["Monster in the Dark", ["monster-in-dark"]]
+    "monster" : ["Monster in the Dark", ["monster-in-dark-topic"]]
 }
 
-[ monster-in-dark ]
+[ monster-in-dark-topic ]
 
 The monster is a Zorgobeast from the 8th dimension.
 You're lucky you didn't get disembowled.

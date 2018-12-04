@@ -11,14 +11,14 @@ package com.illcode.meterman.impl;
 public class TalkTopic
 {
     /** Unique topic key, as found in the topic map */
-    String key;
+    public String key;
 
     /** Topic as shown to the user in the list dialog. There can be multiple <tt>TalkTopic</tt>s
      *  with the same label, if the NPC will say different things depending on circumstances. */
-    String label;
+    public String label;
 
     /** What the NPC will say for this topic. */
-    String text;
+    public String text;
 
     public TalkTopic() {
     }
@@ -27,5 +27,10 @@ public class TalkTopic
         this.key = key;
         this.label = label;
         this.text = text;
+    }
+
+    // This is used by ui.showListDialog()
+    public String toString() {
+        return label;
     }
 }

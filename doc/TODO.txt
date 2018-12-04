@@ -1,9 +1,8 @@
-Conversation system: load a topicMap from a bundle, maps keys to talk topics. Talk topic has a map key,
-topic (to show in the list), and text to display.
-
 Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 
 == And then... ==
+
+Implement Cloak of Darkness (see firthworks.com description)
 
 Write the Riverboat, modifying the engine as needed to enable required features.
 

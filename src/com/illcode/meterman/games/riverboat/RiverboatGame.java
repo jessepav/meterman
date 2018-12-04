@@ -44,5 +44,17 @@ public class RiverboatGame implements Game
     private void setupWorldState(WorldState worldState) {
         bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
+
+        // Install the state object for part 1
+        RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
+        statePart1.init();
+        statePart1.install();
+
+        // Create the UndergroundHermit sitting by the fire
+        UndergroundHermit hermit = new UndergroundHermit();
+        hermit.init();
+        wb.readEntityDataFromBundle(hermit, "underground-hermit-info");
+        hermit.setTopicMap(wb.loadTopicMap("underground-hermit-topics"));
+
     }
 }
