@@ -33,8 +33,10 @@ public final class Meterman
     /** Our persistence implementation */
     public static Persistence persistence;
 
-    /** The default system text bundle */
-    public static TextBundle systemBundle;
+    // The default system text bundle, and a game-specific bundle that can shadow passages
+    // in the default system bundle to customize messages.
+    private static TextBundle systemBundle, gameBundle;
+
 
     public static void main(String[] args) throws IOException {
         prefsPath = Paths.get("config/meterman.properties");
@@ -118,5 +120,29 @@ public final class Meterman
         gm.dispose();
         savePrefs(prefsPath);
         Utils.dispose();
+    }
+
+    /**
+     * Return a bundle representing system messages. This bundle may have passages shadowed by
+     * a game-specific bundle installed to customize messages.
+     * @return bundle with system passages
+     */
+    public static TextBundle getSystemBundle() {
+        if (gameBundle != null)
+            return gameBundle;
+        else
+            return systemBundle;
+    }
+
+    /**
+     * Installs a bundle as a game-specific bundle in front of the default system bundle, in order to
+     * customize game messages.
+     * @param b game-specific bundle, or null to remove any such bundle. If this bundle does not have the
+     * default system bundle in its parent chain, the default system bundle will be placed in its parent
+     * chain.
+     */
+    public static void setGameBundle(TextBundle b) {
+        GameUtils.ensureBundleHasParent(b, systemBundle);
+        gameBundle = b;
     }
 }

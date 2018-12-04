@@ -42,7 +42,7 @@ public class RiverboatGame implements Game
     }
 
     private void setupWorldState(WorldState worldState) {
-        bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.systemBundle);
+        bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.getSystemBundle());
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
 
         // Install the state object for part 1

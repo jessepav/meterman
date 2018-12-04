@@ -49,27 +49,29 @@ public class GameUtils
     /** Like {@link #showPassages(TextBundle, String, String...)} but using default button labels. */
     public static void showPassages(TextBundle b, String header, String... passageNames) {
         if (defaultMoreLabel == null) {
-            defaultMoreLabel = Meterman.systemBundle.getPassage("more-button-label");
-            defaultCloseLabel = Meterman.systemBundle.getPassage("close-button-label");
+            TextBundle sysBundle = Meterman.getSystemBundle();
+            defaultMoreLabel = sysBundle.getPassage("more-button-label");
+            defaultCloseLabel = sysBundle.getPassage("close-button-label");
         }
         showPassages(b, header, defaultMoreLabel, defaultCloseLabel, passageNames);
     }
 
     /**
-     * Ensures that somewhere up the parent chain, this bundle has the system bundle.
+     * Ensures that somewhere up the parent chain, this bundle has a certain parent bundle.
      * @param b text bundle
+     * @param parentToEnsure the parent bundle we want to ensure is in the chain
      */
-    public static void ensureBundleHasSystemParent(TextBundle b) {
-        if (b == null || b == Meterman.systemBundle)
+    public static void ensureBundleHasParent(TextBundle b, TextBundle parentToEnsure) {
+        if (b == null || b == parentToEnsure)
             return;
         TextBundle parent = b.getParent();
         while (parent != null) {
-            if (parent == Meterman.systemBundle)
+            if (parent == parentToEnsure)
                 return;
             b = parent;
             parent = b.getParent();
         }
-        b.setParent(Meterman.systemBundle);
+        b.setParent(parentToEnsure);
     }
 
 }

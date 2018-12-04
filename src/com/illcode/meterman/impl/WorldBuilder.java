@@ -36,7 +36,7 @@ public class WorldBuilder
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
-        GameUtils.ensureBundleHasSystemParent(bundle);
+        GameUtils.ensureBundleHasParent(bundle, Meterman.getSystemBundle());
         worldState.worldData.put(WORLDBUILDER_KEY, this);
     }
 
