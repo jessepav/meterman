@@ -1,0 +1,105 @@
+[#Description of -info entries]
+
+The keys of the JSON objects correspond to the names of member properties of BaseEntity and
+BaseRoom, though different Room and Entity implementations may recognize additional properties.
+
+For text properties, the values can either be strings, in which case they'll be used directly,
+or an array of strings, in which case the (usually first) string in the array will be treated
+as the name of a bundle entry whose contents will be used for the property.
+
+[ferryman-info]
+
+{
+    "id" : "ferryman",
+    "name" : "River Ferryman",
+    "listName" : "Ferryman",
+    "description" : ["ferryman-description"]
+}
+
+[ferryman-description]
+
+The ferryman sits quietly in his small punt at the river's edge, gazing
+at the lights glowing across the water.
+
+[river-edge-info]
+
+{
+    "id" : "river-edge",
+    "name" : "River's Edge",
+    "exitName" : "River Edge",
+    "description" : "Here the woods give way to the bank of the River Jelly."
+}
+
+[ grating-door-info ]
+
+{
+    "id" : "river-edge-grating",
+    "name" : "Iron Grating",
+    "listName" : "Grating",
+    "descriptions" : [
+        "A strong, oddly fresh iron grating is in the soil 30 meters from the bank.",
+        "Above you is an iron grating."
+    ],
+    "lockedMessages" : [
+        "The grating is secured by a padlock.",
+        "A padlock can be seen just through the bars."
+    ],
+    "unlockedMessages" : [
+        "A padlock lies opened on the grating.",
+        "An open padlock can be seen through the bars."
+    ],
+    "noKeyMessages" : [
+        "You do not have the key for the padlock."
+    ],
+    "openMessages" : [
+        "The grate is open.",
+        "You can see the sky through the open grate."
+    ]
+}
+
+[ grating-key-info ]
+
+{
+    "id" : "grating-key",
+    "name" : "Iron Key",
+    "listName" : "Iron Key",
+    "description" : "An iron key with traces of soil on its teeth."
+}
+
+[dark-passage1-info]
+
+{
+    "id" : "dark-passage1",
+    "name" : "Dark Passage",
+    "exitName" : "Dark Passage",
+    "description" : "A stony underground passage."
+    "darkName" : "Dark Underground Passage",
+    "darkExitName" : "Darkness",
+    "darkDescription" : "The air is still and slightly acrid in this dark passage.",
+    "dark" : true,
+}
+
+[ underground-hermit-info ]
+
+{
+    "id" : "underground-hermit",
+    "name" : "Bearded Hermit",
+    "listName" : "Hermit",
+    "description" : ["underground-hermit-description"]
+}
+
+[ underground-hermit-description (flowed) ]
+
+A bearded hermit sits beside a flickering bonfire.
+
+[ underground-hermit-topics ]
+
+{
+    "hello" : ["Hello", "Hello stranger."],
+    "monster" : ["Monster in the Dark", ["monster-in-dark-topic"]]
+}
+
+[ monster-in-dark-topic ]
+
+The monster is a Zorgobeast from the 8th dimension.
+You're lucky you didn't get disembowled.
