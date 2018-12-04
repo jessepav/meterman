@@ -1,18 +1,16 @@
 package com.illcode.meterman.games.riverboat;
 
-import com.illcode.meterman.Meterman;
-import com.illcode.meterman.Utils;
 import com.illcode.meterman.impl.BaseEntity;
 import com.illcode.meterman.impl.TalkTopic;
 
 import static com.illcode.meterman.Meterman.ui;
 
+import static com.illcode.meterman.games.riverboat.RiverboatActions.TALK_ACTION;
+
 import java.util.*;
 
 public class UndergroundHermit extends BaseEntity
 {
-    private static final String TALK_ACTION = Utils.getActionName("Talk");
-
     private Map<String,TalkTopic> topicMap;
 
     private List<String> actions;

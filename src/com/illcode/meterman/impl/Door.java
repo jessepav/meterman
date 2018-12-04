@@ -2,7 +2,6 @@ package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
 import com.illcode.meterman.Meterman;
-import com.illcode.meterman.Utils;
 import com.illcode.meterman.ui.UIConstants;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -10,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.illcode.meterman.Meterman.gm;
+import static com.illcode.meterman.impl.BasicActions.*;
+
 
 /**
  * A door is a special usage entity that can connect and disconnect two rooms, depending
@@ -20,11 +21,6 @@ import static com.illcode.meterman.Meterman.gm;
  */
 public class Door extends BaseEntity
 {
-    public static final String DOOR_OPEN_ACTION_NAME = Utils.getActionName("Open");
-    public static final String DOOR_CLOSE_ACTION_NAME = Utils.getActionName("Close");
-    public static final String DOOR_UNLOCK_ACTION_NAME = Utils.getActionName("Unlock");
-    public static final String DOOR_LOCK_ACTION_NAME = Utils.getActionName("Lock");
-
     private BaseRoom[] rooms;
     private int[] positions;
     private String[] descriptions;
@@ -167,14 +163,14 @@ public class Door extends BaseEntity
         if (key == null)
             locked = false;
         if (locked) {
-            actions.add(DOOR_UNLOCK_ACTION_NAME);
+            actions.add(UNLOCK_ACTION);
         } else { // okay, we're unlocked
             if (open) {
-                actions.add(DOOR_CLOSE_ACTION_NAME);
+                actions.add(CLOSE_ACTION);
             } else { // closed but unlocked
-                actions.add(DOOR_OPEN_ACTION_NAME);
+                actions.add(OPEN_ACTION);
                 if (key != null)
-                    actions.add(DOOR_LOCK_ACTION_NAME);
+                    actions.add(LOCK_ACTION);
             }
         }
         return actions;
@@ -184,7 +180,7 @@ public class Door extends BaseEntity
         int idx = ArrayUtils.indexOf(rooms, Meterman.gm.getCurrentRoom());
         if (idx == -1)
             return false;
-        if (action.equals(DOOR_LOCK_ACTION_NAME) || action.equals(DOOR_UNLOCK_ACTION_NAME)) {
+        if (action.equals(LOCK_ACTION) || action.equals(UNLOCK_ACTION)) {
             // note that in these cases we already know that key != null
             if (!Meterman.gm.isInInventory(key)) {
                 Meterman.ui.appendNewline();
@@ -194,7 +190,7 @@ public class Door extends BaseEntity
                 gm.entityChanged(this);
             }
             return true;
-        } else if (action.equals(DOOR_OPEN_ACTION_NAME) || action.equals(DOOR_CLOSE_ACTION_NAME)) {
+        } else if (action.equals(OPEN_ACTION) || action.equals(CLOSE_ACTION)) {
             open = !open;
             if (open) {
                 rooms[0].exits[positions[0]] = rooms[1];

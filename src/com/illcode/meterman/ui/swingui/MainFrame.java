@@ -1,6 +1,7 @@
 package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.Meterman;
+import com.illcode.meterman.SystemActions;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.GamesList;
 import com.illcode.meterman.ui.MetermanUI;
@@ -95,8 +96,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             centerStatusLabel = cr.getLabel("centerStatusLabel");
             rightStatusLabel = cr.getLabel("rightStatusLabel");
 
-            lookButton.setText(Utils.getActionName("Look"));
-            waitButton.setText(Utils.getActionName("Wait"));
+            lookButton.setText(SystemActions.LOOK_ACTION);
+            waitButton.setText(SystemActions.WAIT_ACTION);
 
             imageComponent = new FrameImageComponent();
             imagePanel.add(imageComponent);
