@@ -18,7 +18,7 @@ import static com.illcode.meterman.Utils.logger;
 
 public final class Meterman
 {
-    static Path prefsPath, savesPath;
+    public static Path prefsPath, savesPath;
     static Properties prefs;
 
     /** The GameManager running the current game */

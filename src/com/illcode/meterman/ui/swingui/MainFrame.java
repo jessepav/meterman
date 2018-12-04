@@ -123,6 +123,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             actions = new ArrayList<>(16);
             
             fc = new JFileChooser();
+            fc.setCurrentDirectory(Meterman.savesPath.toFile());
 
             GuiUtils.setBoundsFromPrefs(frame, "main-window-size");
         } catch (Exception ex) {
@@ -218,10 +219,13 @@ class MainFrame implements ActionListener, ListSelectionListener
             if (idx > 0)   // index 0 is "More..."
                 Meterman.gm.entityActionSelected(moreActionCombo.getItemAt(idx));
         } else if (source == newMenuItem) {
-            ui.listDialog.list.addListSelectionListener(this);
-            String gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
-                GamesList.getGameNames(), true);
-            ui.listDialog.list.removeListSelectionListener(this);
+            String gameName = Utils.getPref("single-game-name");
+            if (gameName == null) {
+                ui.listDialog.list.addListSelectionListener(this);
+                gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
+                    GamesList.getGameNames(), true);
+                ui.listDialog.list.removeListSelectionListener(this);
+            }
             if (gameName != null)
                 Meterman.gm.newGame(GamesList.getGame(gameName));
         } else if (source == loadMenuItem) {
