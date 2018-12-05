@@ -27,15 +27,17 @@ public interface Game
     void about();
 
     /**
-     * Generate the world state to be used at the start of the game.
+     * Generate the world state to be used at the start of the game. This includes
+     * registering any listeners and processors with the GameManager that should
+     * be active when play begins.
      * <p/>
-     * Remember that player character's current room must be set appropriately.
+     * Remember that the player character's current room must be set appropriately.
      * <hr/>
      * The general order of things in the typical implementation of this method is
      * <ol>
      *     <li>Create all rooms and entities</li>
      *     <li>Connect rooms and add entities</li>
-     *     <li>Install managers, listeners, and delegates, passing as parameters
+     *     <li>Register managers, listeners, and delegates, passing as parameters
      *         references to the particular objects they need to work with.</li>
      * </ol>
      * @see WorldBuilder

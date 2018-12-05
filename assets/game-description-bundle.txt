@@ -17,3 +17,13 @@
   help guide the implementation of
   their own adventures.
 +-------------------------------------+
+
+[ Cloak of Darkness ]
+
++-------------------------------------+
+
+  Our implementation of the Cloak of
+  Darkness specification used to test
+  new IF systems.
+
++-------------------------------------+

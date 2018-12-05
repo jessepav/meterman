@@ -3,6 +3,7 @@ package com.illcode.meterman.games;
 import com.illcode.meterman.Game;
 import com.illcode.meterman.TextBundle;
 import com.illcode.meterman.Utils;
+import com.illcode.meterman.games.cloakofdarkness.CloakGame;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.List;
 public class GamesList
 {
     private static final String RIVERBOAT_NAME = "The Riverboat";
+    private static final String CLOAK_NAME = "Cloak of Darkness";
 
     private static List<String> gameNames;
 
@@ -25,6 +27,8 @@ public class GamesList
         switch (gameName) {
         case RIVERBOAT_NAME:
             return new RiverboatGame();
+        case CLOAK_NAME:
+            return new CloakGame();
         default:
             return null;
         }
@@ -35,6 +39,7 @@ public class GamesList
             gameNames = new LinkedList<>();
             // If we dynamically load games from .jar files, we could query and add them here.
             gameNames.add(RIVERBOAT_NAME);
+            gameNames.add(CLOAK_NAME);
         }
         return gameNames;
     }

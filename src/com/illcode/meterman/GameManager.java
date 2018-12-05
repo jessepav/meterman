@@ -134,6 +134,21 @@ public final class GameManager
         game.start(false);
     }
 
+    private void closeGame() {
+        ui.unloadAllImages();
+        sound.clearAudio();
+        clearListenerLists();
+        player = null;
+        worldData = null;
+        worldState = null;
+        Meterman.setGameBundle(null);
+        Utils.resetActionNameTranslations();
+        if (game != null) {
+            game.dispose();
+            game = null;
+        }
+    }
+
     private void storeListenerListsInWorldData() {
         worldData.put("beforeGameActionListeners", beforeGameActionListeners);
         worldData.put("defaultGameActionListeners", defaultGameActionListeners);
@@ -157,9 +172,7 @@ public final class GameManager
         descriptionTextProcessors = (LinkedList<DescriptionTextProcessor>) worldData.get("descriptionTextProcessors");
     }
 
-    private void closeGame() {
-        ui.unloadAllImages();
-        sound.clearAudio();
+    private void clearListenerLists() {
         beforeGameActionListeners.clear();
         defaultGameActionListeners.clear();
         beforePlayerMovementListeners.clear();
@@ -168,15 +181,6 @@ public final class GameManager
         entityActionsProcessors.clear();
         entitySelectionListeners.clear();
         descriptionTextProcessors.clear();
-        player = null;
-        worldData = null;
-        worldState = null;
-        Meterman.setGameBundle(null);
-        Utils.resetActionNameTranslations();
-        if (game != null) {
-            game.dispose();
-            game = null;
-        }
     }
 
     public Game getGame() {

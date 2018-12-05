@@ -13,6 +13,7 @@ import static com.illcode.meterman.Attributes.*;
 import static com.illcode.meterman.impl.BasicActions.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A manager (global listener for various game events) that handles basic
@@ -30,6 +31,16 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     public BasicWorldManager() {
     }
 
+    /** Save this instance into a world-data map. */
+    public void saveTo(Map<String,Object> worldData) {
+        worldData.put(BASIC_WORLD_MANAGER_KEY, this);
+    }
+
+    /** Retrieve the BasicWorldManager instance stored by {@link #saveTo(Map)} from worldData. */
+    public static BasicWorldManager retrieveFrom(Map<String,Object> worldData) {
+        return (BasicWorldManager) worldData.get(BASIC_WORLD_MANAGER_KEY);
+    }
+
     /**
      * Registers the BasicWorldManager with the GameManager, and saves the instance in the world-data.
      * <p/>
@@ -39,7 +50,6 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         gm.addDefaultGameActionListener(this);
         gm.addEntityActionsProcessor(this);
         gm.addTurnListener(this);
-        gm.getWorldData().put(BASIC_WORLD_MANAGER_KEY, this);
     }
 
     /**
@@ -52,12 +62,6 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         gm.removeDefaultGameActionListener(this);
         gm.removeEntityActionsProcessor(this);
         gm.removeTurnListener(this);
-    }
-
-    /** Retrieve the BasicWorldManager instance (saved by {@link #register()}) from the
-     *  WorldState's worldData */
-    public static BasicWorldManager getBasicWorldManager() {
-        return (BasicWorldManager) gm.getWorldData().get(BASIC_WORLD_MANAGER_KEY);
     }
 
     public void processEntityActions(Entity e, List<String> actions) {

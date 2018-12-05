@@ -56,4 +56,14 @@ public class CloakGame implements Game
         worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
         worldState.worldData.put("roomIdMap", wb.getRoomIdMap());
     }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String,BaseEntity> retrieveEntityIdMap(Map<String,Object> worldData) {
+        return (Map<String,BaseEntity>) worldData.get("entityIdMap");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String,BaseRoom> retrieveRoomIdMap(Map<String,Object> worldData) {
+        return (Map<String,BaseRoom>) worldData.get("roomIdMap");
+    }
 }
