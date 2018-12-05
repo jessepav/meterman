@@ -239,18 +239,16 @@ public class WorldBuilder
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
-
             
-            /*
+            // On the first pass we just gather up the keys, labels, and text, and put
+            // the resulting TalkTopic instances into the topicMap.
             for (JsonObject.Member member : o) {
-                String key = member.getName();
-                JsonArray a = member.getValue().asArray();
-                String label = getJsonString(a.get(0));
-                String text = getJsonString(a.get(1));
-                if (!label.isEmpty() && !text.isEmpty())
-                    topicMap.put(key, new TalkTopic(key, label, text));
             }
-            */
+            
+            // On the second pass we read the addTopics and removeTopics lists and
+            // weave together the topic graph.
+            for (JsonObject.Member member : o) {
+            }
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
         }
