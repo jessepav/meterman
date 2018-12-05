@@ -16,13 +16,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +30,8 @@ class MainFrame implements ActionListener, ListSelectionListener
 {
     static final int NUM_EXIT_BUTTONS = 12;
     static final int NUM_ACTION_BUTTONS = 8;
+
+    static KeyStroke[] exitButtonKeystrokes;
 
     private SwingUI ui;
 
@@ -125,9 +123,37 @@ class MainFrame implements ActionListener, ListSelectionListener
             fc = new JFileChooser();
             fc.setCurrentDirectory(Meterman.savesPath.toFile());
 
+            installKeyBindings();
+
             GuiUtils.setBoundsFromPrefs(frame, "main-window-size");
         } catch (Exception ex) {
             logger.log(Level.WARNING, "MainFrame()", ex);
+        }
+    }
+
+    private void installKeyBindings() {
+        JRootPane root = frame.getRootPane();
+        InputMap inputMap = root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = root.getActionMap();
+
+        exitButtonKeystrokes = new KeyStroke[NUM_EXIT_BUTTONS];
+        exitButtonKeystrokes[UIConstants.NW_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0);
+        exitButtonKeystrokes[UIConstants.N_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_W, 0);
+        exitButtonKeystrokes[UIConstants.NE_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_E, 0);
+        exitButtonKeystrokes[UIConstants.X1_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_R, 0);
+        exitButtonKeystrokes[UIConstants.W_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0);
+        exitButtonKeystrokes[UIConstants.MID_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_S, 0);
+        exitButtonKeystrokes[UIConstants.E_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_D, 0);
+        exitButtonKeystrokes[UIConstants.X2_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_F, 0);
+        exitButtonKeystrokes[UIConstants.SW_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0);
+        exitButtonKeystrokes[UIConstants.S_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_X, 0);
+        exitButtonKeystrokes[UIConstants.SE_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_C, 0);
+        exitButtonKeystrokes[UIConstants.X3_BUTTON] = KeyStroke.getKeyStroke(KeyEvent.VK_V, 0);
+
+        for (int i = 0; i < NUM_EXIT_BUTTONS; i++) {
+            String actionMapKey = "exitButton:" + UIConstants.buttonPositionToText(i);
+            inputMap.put(exitButtonKeystrokes[i], actionMapKey);
+            actionMap.put(actionMapKey, new ButtonAction(exitButtons[i]));
         }
     }
 
@@ -360,4 +386,19 @@ class MainFrame implements ActionListener, ListSelectionListener
             close();
         }
     }
+
+    private class ButtonAction extends AbstractAction
+    {
+        AbstractButton b;
+
+        private ButtonAction(AbstractButton b) {
+            this.b = b;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (b.isVisible())
+                b.doClick();
+        }
+    }
+
 }
