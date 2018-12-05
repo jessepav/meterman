@@ -96,6 +96,7 @@ public class SwingUI implements MetermanUI
 
     public void unloadAllImages() {
         mainFrame.setFrameImage(null);
+        currentFrameImage = NO_IMAGE;
         mainFrame.setEntityImage(null);
         for (BufferedImage img : imageMap.values())
             img.flush();

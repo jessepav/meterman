@@ -25,7 +25,7 @@ new FormModel {
 					name: "textPanel"
 					"background": sfield java.awt.Color darkGray
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-						"$columnSpecs": "left:default, unrelgap, 26dlu, glue, 26dlu"
+						"$columnSpecs": "left:default, glue, 26dlu, unrelgap, 26dlu"
 						"$rowSpecs": "default"
 					} ) {
 						name: "panel1"
@@ -34,6 +34,7 @@ new FormModel {
 							name: "roomNameLabel"
 							"text": "(room name)"
 							"foreground": &Color0 new java.awt.Color( 231, 231, 231, 255 )
+							"font": new java.awt.Font( "Serif", 0, 20 )
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "lookButton"
@@ -160,8 +161,8 @@ new FormModel {
 					name: "buttonPanel"
 					"background": sfield java.awt.Color darkGray
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-						"$columnSpecs": "default, relgap, max(default;40dlu), labelcompgap, max(default;40dlu), labelcompgap, max(default;40dlu), labelcompgap, max(default;40dlu)"
-						"$rowSpecs": "max(default;15dlu), linegap, max(default;15dlu), linegap, max(default;15dlu)"
+						"$columnSpecs": "default, relgap, max(default;40dlu), center:4dlu, max(default;40dlu), center:4dlu, max(default;40dlu), center:4dlu, max(default;40dlu)"
+						"$rowSpecs": "max(default;15dlu), 4dlu, max(default;15dlu), 4dlu, max(default;15dlu)"
 					} ) {
 						name: "exitButtonPanel"
 						"opaque": false
@@ -204,6 +205,13 @@ new FormModel {
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
 						} )
+						add( new FormComponent( "javax.swing.JSeparator" ) {
+							name: "separator4"
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 2
+							"gridWidth": 5
+						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton5"
 							"text": "W Button"
@@ -212,6 +220,20 @@ new FormModel {
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 3
 							"gridX": 3
+						} )
+						add( new FormComponent( "javax.swing.JSeparator" ) {
+							name: "separator5"
+							"orientation": 1
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 4
+							"gridHeight": 5
+						} )
+						add( new FormComponent( "javax.swing.JSeparator" ) {
+							name: "separator6"
+							"orientation": 1
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 6
+							"gridHeight": 5
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton6"
@@ -239,6 +261,13 @@ new FormModel {
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
 							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JSeparator" ) {
+							name: "separator3"
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 4
+							"gridWidth": 5
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "exitButton9"

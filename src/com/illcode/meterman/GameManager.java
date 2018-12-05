@@ -93,6 +93,7 @@ public final class GameManager
     public void newGame(Game game) {
         closeGame();
         this.game = game;
+        ui.setTitle("Meterman - " + game.getGameName());
         game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;
@@ -121,6 +122,7 @@ public final class GameManager
         closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
+        ui.setTitle("Meterman - " + game.getGameName());
         game.init();
         player = worldState.player;
         worldData = worldState.worldData;
@@ -147,6 +149,7 @@ public final class GameManager
             game.dispose();
             game = null;
         }
+        ui.setTitle("Meterman");
     }
 
     private void storeListenerListsInWorldData() {
@@ -420,11 +423,12 @@ public final class GameManager
     /** Called by the UI when the user clicks an exit button */
     public void exitSelected(int position) {
         Room toRoom = getCurrentRoom().getExit(position);
-        // "> GO TO <exit label>"
-        ui.appendNewline();
-        ui.appendTextLn(Utils.fmt("> %s %s",
-            SystemActions.getGoAction().toUpperCase(), toRoom.getExitLabel(position).toUpperCase()));
-
+        if (toRoom != null) {
+            // "> GO TO <exit label>"
+            ui.appendNewline();
+            ui.appendTextLn(Utils.fmt("> %s %s",
+                SystemActions.getGoAction().toUpperCase(), toRoom.getExitName().toUpperCase()));
+        }
         movePlayer(toRoom);
         nextTurn();
     }

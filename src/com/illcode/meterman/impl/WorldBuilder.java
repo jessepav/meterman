@@ -127,14 +127,15 @@ public class WorldBuilder
     /**
      * Loads an entity from a bundle passage that contains JSON data in the format of this example:
      * <pre>{@code
-    {
-        "id" : "ferryman",
-        "name" : "River Ferryman",
-        "listName" : "Ferryman",
-        "description" : "[[ferryman-description]]",
-        "imageName" : "ferryman",
-    }
+        {
+            "id" : "ferryman",
+            "name" : "River Ferryman",
+            "listName" : "Ferryman",
+            "description" : "[[ferryman-description]]",
+            "imageName" : "ferryman"
+        }
      * }</pre>
+     * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -143,10 +144,10 @@ public class WorldBuilder
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
-            e.id = getJsonString(o.get("id"), passageName);
-            e.name = getJsonString(o.get("name"), passageName);
-            e.listName = getJsonString(o.get("listName"), passageName);
-            e.description = getJsonString(o.get("description"), passageName);
+            e.id = getJsonString(o.get("id"));
+            e.name = getJsonString(o.get("name"));
+            e.listName = getJsonString(o.get("listName"), e.name);
+            e.description = getJsonString(o.get("description"));
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
@@ -373,6 +374,7 @@ public class WorldBuilder
            "description" : "Here the woods give way to the bank of the River Jelly."
        }
      * }</pre>
+     * <tt>exitName</tt> is optional, and if not present the value of <tt>name</tt> will be used.
      * @param r BaseRoom into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -383,7 +385,7 @@ public class WorldBuilder
             JsonObject o = Json.parse(json).asObject();
             r.id = getJsonString(o.get("id"));
             r.name = getJsonString(o.get("name"));
-            r.exitName = getJsonString(o.get("exitName"));
+            r.exitName = getJsonString(o.get("exitName"), r.name);
             r.description = getJsonString(o.get("description"));
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
@@ -416,7 +418,7 @@ public class WorldBuilder
             "darkName" : "Dark Underground Passage",
             "darkExitName" : "Darkness",
             "darkDescription" : "The air is still and slightly acrid in this dark passage.",
-            "dark" : true,
+            "dark" : true
         }
      * }</pre>
      * @param dr DarkRoom into which to store the data

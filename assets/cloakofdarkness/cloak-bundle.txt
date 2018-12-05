@@ -4,3 +4,58 @@ This is the Meterman implementation of the Cloak of Darkness specification
 
    http://www.firthworks.com/roger/cloak/
 
+[ foyer ]
+
+{
+    "id" : "foyer",
+    "name" : "Foyer",
+    "description" : "..."
+}
+
+[ bar ]
+
+{
+    "id" : "bar",
+    "name" : "Bar",
+    "exitName" : "Bar",
+    "description" : "...",
+    "darkName" : "Darkened Bar",
+    "darkExitName" : "Dark Bar",
+    "darkDescription" : "...",
+    "dark" : true
+}
+
+[ cloakroom ]
+
+{
+    "id" : "cloakroom",
+    "name" : "Cloakroom",
+    "description" : "..."
+}
+
+[ cloak ]
+
+{
+    "id" : "cloak",
+    "name" : "Strange Cloak",
+    "listName" : "Cloak",
+    "description" : "...",
+    "imageName" : "cloak"
+}
+
+[ hook ]
+
+{
+    "id" : "hook",
+    "name" : "Brass Hook",
+    "description" : "..."
+}
+
+[ scrawled-message ]
+
+{
+    "id" : "scrawled-message",
+    "name" : "Scrawled Message",
+    "listName" : "Message",
+    "description" : "..."
+}

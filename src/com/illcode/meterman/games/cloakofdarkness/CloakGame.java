@@ -3,10 +3,13 @@ package com.illcode.meterman.games.cloakofdarkness;
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.BaseEntity;
 import com.illcode.meterman.impl.BaseRoom;
+import com.illcode.meterman.impl.DarkRoom;
 import com.illcode.meterman.impl.WorldBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.illcode.meterman.ui.UIConstants.*;
 
 public class CloakGame implements Game
 {
@@ -55,6 +58,22 @@ public class CloakGame implements Game
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
         worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
         worldState.worldData.put("roomIdMap", wb.getRoomIdMap());
+
+        BaseRoom foyer = wb.loadRoom("foyer");
+        DarkRoom bar = wb.loadDarkRoom("bar");
+        BaseRoom cloakroom = wb.loadRoom("cloakroom");
+        BaseEntity cloak = wb.loadEntity("cloak");
+        BaseEntity hook = wb.loadEntity("hook");
+        BaseEntity message = wb.loadEntity("scrawled-message");
+
+        wb.connectRooms("foyer", S_BUTTON, "bar", N_BUTTON);
+        wb.connectRooms("foyer", W_BUTTON, "cloakroom", E_BUTTON);
+        foyer.exitLabels[N_BUTTON] = "Patio";  // fake exit
+
+        wb.putEntitiesInRoom("cloakroom", "hook");
+        wb.putEntitiesInRoom("bar", "scrawled-message");
+        worldState.player.inventory.add(cloak);
+        worldState.player.currentRoom = foyer;
     }
 
     @SuppressWarnings("unchecked")
