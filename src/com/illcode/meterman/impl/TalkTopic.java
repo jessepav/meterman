@@ -1,5 +1,7 @@
 package com.illcode.meterman.impl;
 
+import java.util.List;
+
 /**
  * Represents a topic of discussion with an NPC
  * <p/>
@@ -20,13 +22,25 @@ public class TalkTopic
     /** What the NPC will say for this topic. */
     public String text;
 
+    /** If this topic is selected, these topics should be added to the topic list (may be null) */
+    public List<TalkTopic> addTopics;
+
+    /** If this topic is selected, these topics should be removed from the topic list (may be null) */
+    public List<TalkTopic> removeTopics;
+
     public TalkTopic() {
     }
 
-    public TalkTopic(String key, String label, String text) {
+    public TalkTopic(String key) {
+        this.key = key;
+    }
+
+    public TalkTopic(String key, String label, String text, List<TalkTopic> addTopics, List<TalkTopic> removeTopics) {
         this.key = key;
         this.label = label;
         this.text = text;
+        this.addTopics = addTopics;
+        this.removeTopics = removeTopics;
     }
 
     // This is used by ui.showListDialog()

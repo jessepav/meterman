@@ -131,6 +131,14 @@ class MainFrame implements ActionListener, ListSelectionListener
         }
     }
 
+    void dispose() {
+        GuiUtils.saveBoundsToPref(frame, "main-window-size");
+        frameImage = null;
+        entityImage = null;
+        setVisible(false);
+        frame.dispose();
+    }
+
     private void installKeyBindings() {
         JRootPane root = frame.getRootPane();
         InputMap inputMap = root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -155,14 +163,6 @@ class MainFrame implements ActionListener, ListSelectionListener
             inputMap.put(exitButtonKeystrokes[i], actionMapKey);
             actionMap.put(actionMapKey, new ButtonAction(exitButtons[i]));
         }
-    }
-
-    void dispose() {
-        GuiUtils.saveBoundsToPref(frame, "main-window-size");
-        frameImage = null;
-        entityImage = null;
-        setVisible(false);
-        frame.dispose();
     }
 
     void setFrameImage(BufferedImage image) {

@@ -239,6 +239,9 @@ public class WorldBuilder
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
+
+            
+            /*
             for (JsonObject.Member member : o) {
                 String key = member.getName();
                 JsonArray a = member.getValue().asArray();
@@ -247,6 +250,7 @@ public class WorldBuilder
                 if (!label.isEmpty() && !text.isEmpty())
                     topicMap.put(key, new TalkTopic(key, label, text));
             }
+            */
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
         }

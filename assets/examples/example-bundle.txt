@@ -97,8 +97,26 @@ A bearded hermit sits beside a flickering bonfire.
 [ underground-hermit-topics ]
 
 {
-    "hello" : ["Hello", "Hello stranger."],
-    "monster" : ["Monster in the Dark", "[[monster-in-dark-topic]]"]
+    "hello" : {
+        "label" : "Hello",
+        "text" : "Hello stranger.",
+        "addTopics" : ["underground", "monster"]
+    },
+    "underground" : {
+        "label" : "What's this underground?",
+        "text" : "The underground area is my refuge from the corrupt world.",
+        "addTopics" : ["name"],
+        "removeTopics" : ["hello", "underground"]
+    },
+    "name" : {
+        "label" : "What's your name?",
+        "text" : "My name is Superfly Hermit!",
+        "removeTopics" : ["name"]
+    },
+    "monster" : {
+        "label" : "Monster in the Dark",
+        "text" : "[[monster-in-dark-text]]"
+    }
 }
 
 [ monster-in-dark-topic ]
