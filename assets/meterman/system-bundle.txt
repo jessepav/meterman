@@ -51,3 +51,7 @@ It is too dark here to see anything.
 [ default-TalkingEntity-dialogText ]
 
 What do you want to ask about?
+
+[ default-noTopicsText ]
+
+There's nothing to talk about.

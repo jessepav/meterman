@@ -18,6 +18,9 @@ public class TalkingEntity extends BaseEntity
     /** The text we should show above the topic list in the UI list-dialog. */
     public String dialogText;
 
+    /** Text that should be shown if there are no topics to talk about. */
+    public String noTopicsText;
+
     // TalkingEntity doesn't use the topicMap itself, but it may be useful to subclasses
     // that want to do more advanced conversation systems.
     public Map<String,TalkTopic> topicMap;
@@ -61,15 +64,20 @@ public class TalkingEntity extends BaseEntity
     /** Processes the Talk action. Kept in a separate method so listeners
         and delegates can call it directly.*/
     public void processTalkAction() {
-        TalkTopic tt = ui.showListDialog(getName(), dialogText, currentTopics, true);
-        if (tt != null) {
+        if (currentTopics.isEmpty()) {
             ui.appendNewline();
-            ui.appendText(tt.text);
-            for (TalkTopic topic : tt.addTopics)
-                if (!currentTopics.contains(topic))
-                    currentTopics.add(topic);
-            for (TalkTopic topic : tt.removeTopics)
-                currentTopics.remove(topic);
+            ui.appendText(noTopicsText);
+        } else {
+            TalkTopic tt = ui.showListDialog(getName(), dialogText, currentTopics, true);
+            if (tt != null) {
+                ui.appendNewline();
+                ui.appendText(tt.text);
+                for (TalkTopic topic : tt.addTopics)
+                    if (!currentTopics.contains(topic))
+                        currentTopics.add(topic);
+                for (TalkTopic topic : tt.removeTopics)
+                    currentTopics.remove(topic);
+            }
         }
     }
 }
