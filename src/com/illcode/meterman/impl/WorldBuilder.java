@@ -2,6 +2,7 @@ package com.illcode.meterman.impl;
 
 import com.eclipsesource.json.*;
 import com.illcode.meterman.*;
+import com.illcode.meterman.ui.MetermanUI;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,12 +32,15 @@ public class WorldBuilder
     public WorldBuilder() {
     }
 
-    public WorldBuilder(WorldState worldState, TextBundle bundle) {
+    public void init(WorldState worldState, TextBundle bundle) {
         this.worldState = worldState;
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
         GameUtils.ensureBundleHasParent(bundle, Meterman.getSystemBundle());
+    }
+
+    public void install() {
         worldState.worldData.put(WORLDBUILDER_KEY, this);
     }
 
@@ -88,6 +92,7 @@ public class WorldBuilder
             e.name = getJsonString(o.get("name"));
             e.listName = getJsonString(o.get("listName"));
             e.description = getJsonString(o.get("description"));
+            e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntity()", ex);
@@ -287,20 +292,30 @@ public class WorldBuilder
     /**
      * If <tt>v</tt> is a normal JSON string, return its String value; if <tt>v</tt> is a string of
      * the form <tt>"[[passage-name]]"</tt> use it as a passage name in the text bundle. Otherwise
-     * return {@code defaultVal}.
+     * return {@code defaultString}.
      */
-    protected String getJsonString(JsonValue v, String defaultVal) {
+    protected String getJsonString(JsonValue v, String defaultString) {
         if (v == null || !v.isString())
-            return defaultVal;
+            return defaultString;
         String s = v.asString();
         if (s.startsWith("[[") && s.endsWith("]]")) {
             s = s.substring(2, s.length() - 2).trim();
             if (s.isEmpty())
-                return defaultVal;
+                return defaultString;
             else
                 return bundle.getPassage(s);
         } else {
             return s;
         }
+    }
+
+    /**
+     * If <tt>v</tt> is a string, return its value; otherwise return <tt>defaultString</tt>.
+     */
+    protected String jsonValueAsString(JsonValue v, String defaultString) {
+        if (v == null || !v.isString())
+            return defaultString;
+        else
+            return v.asString();
     }
 }

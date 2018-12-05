@@ -43,7 +43,9 @@ public class RiverboatGame implements Game
 
     private void setupWorldState(WorldState worldState) {
         bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.getSystemBundle());
-        WorldBuilder wb = new WorldBuilder(worldState, bundle);
+        WorldBuilder wb = new WorldBuilder();
+        wb.init(worldState, bundle);
+        wb.install();
 
         // Install the state object for part 1
         RiverboatStatePart1 statePart1 = new RiverboatStatePart1();

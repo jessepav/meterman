@@ -13,7 +13,8 @@ as the name of a bundle entry whose contents will be used for the property.
     "id" : "ferryman",
     "name" : "River Ferryman",
     "listName" : "Ferryman",
-    "description" : "[[ferryman-description]]"
+    "description" : "[[ferryman-description]]",
+    "imageName" : "ferryman",
 }
 
 [ferryman-description]
@@ -85,7 +86,8 @@ at the lights glowing across the water.
     "id" : "underground-hermit",
     "name" : "Bearded Hermit",
     "listName" : "Hermit",
-    "description" : "[[underground-hermit-description]]"
+    "description" : "[[underground-hermit-description]]",
+    "imageName" : "underground-hermit",
 }
 
 [ underground-hermit-description (flowed) ]

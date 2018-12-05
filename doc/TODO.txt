@@ -1,3 +1,10 @@
+Add keyboard shortcuts to the main frame for activating the exit buttons.
+
+Talk topics have two list fields: add topics and remove topics, which add and remove additional topics,
+respectively, from the entity's topics list when that topic is selected. This way whole conversation
+trees can be specified in JSON, so long as they don't depend on external state. Make a "conversing
+entity" that implements the conversation running. Its JSON has an "initial topics" array of topics.
+
 Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 
 == And then... ==

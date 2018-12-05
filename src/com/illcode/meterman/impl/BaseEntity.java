@@ -1,7 +1,9 @@
 package com.illcode.meterman.impl;
 
 import com.illcode.meterman.Entity;
+import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
+import com.illcode.meterman.ui.MetermanUI;
 
 import java.util.*;
 
@@ -23,6 +25,10 @@ public class BaseEntity implements Entity
     public Room room;
     public Map<String,Object> properties;
 
+    /** If not null, it will be set as the {@link MetermanUI#setEntityImage(String)} when this
+     *  BaseEntity is selected() */
+    public String imageName;
+
     private EntityDelegate delegate;
 
     public BaseEntity() {
@@ -35,6 +41,7 @@ public class BaseEntity implements Entity
         description = "(description)";
         attributes = new BitSet(64);
         properties = new HashMap<>();
+        imageName = MetermanUI.NO_IMAGE;
     }
 
     public boolean checkAttribute(int attribute) {
@@ -98,6 +105,8 @@ public class BaseEntity implements Entity
     public void selected() {
         if (delegate != null)
             delegate.selected(this);
+        if (imageName != null)
+            Meterman.ui.setEntityImage(imageName);
     }
 
     public Room getRoom() {
