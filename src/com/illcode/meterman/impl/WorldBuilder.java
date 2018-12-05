@@ -4,9 +4,7 @@ import com.eclipsesource.json.*;
 import com.illcode.meterman.*;
 import com.illcode.meterman.ui.MetermanUI;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import static com.illcode.meterman.Utils.logger;
@@ -238,16 +236,40 @@ public class WorldBuilder
         Map<String,TalkTopic> topicMap = new HashMap<>();
         String json = bundle.getPassage(passageName);
         try {
-            JsonObject o = Json.parse(json).asObject();
-            
+            JsonObject topicMapObj = Json.parse(json).asObject();
             // On the first pass we just gather up the keys, labels, and text, and put
             // the resulting TalkTopic instances into the topicMap.
-            for (JsonObject.Member member : o) {
+            for (JsonObject.Member member : topicMapObj) {
+                JsonObject topicObj = member.getValue().asObject();
+                TalkTopic tt = new TalkTopic();
+                tt.key = member.getName();
+                tt.label = getJsonString(topicObj.get("label"), "(label)");
+                tt.text = getJsonString(topicObj.get("text"), "(text)");
+                topicMap.put(tt.key, tt);
             }
-            
             // On the second pass we read the addTopics and removeTopics lists and
             // weave together the topic graph.
-            for (JsonObject.Member member : o) {
+            for (JsonObject.Member member : topicMapObj) {
+                JsonObject topicObj = member.getValue().asObject();
+                TalkTopic tt = topicMap.get(member.getName());
+                JsonValue v = topicObj.get("addTopics");
+                if (v != null && v.isArray()) {
+                    JsonArray arr = v.asArray();
+                    tt.addTopics = new ArrayList<>(arr.size());
+                    for (JsonValue topicKey : arr.values())
+                        tt.addTopics.add(topicMap.get(topicKey.asString()));
+                } else {
+                    tt.addTopics = Collections.emptyList();
+                }
+                v = topicObj.get("removeTopics");
+                if (v != null && v.isArray()) {
+                    JsonArray arr = v.asArray();
+                    tt.removeTopics = new ArrayList<>(arr.size());
+                    for (JsonValue topicKey : arr.values())
+                        tt.removeTopics.add(topicMap.get(topicKey.asString()));
+                } else {
+                    tt.removeTopics = Collections.emptyList();
+                }
             }
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadDoor()", ex);

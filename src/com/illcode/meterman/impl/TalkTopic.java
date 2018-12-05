@@ -6,8 +6,8 @@ import java.util.List;
  * Represents a topic of discussion with an NPC
  * <p/>
  * NOTE: since <tt>TalkTopic</tt>s are always retrieved from a {@link WorldBuilder#loadTopicMap(String)
- * topicMap}, and thus the same TalkTopic instance will be retrieved for a given key, we can compare and
- * hash <tt>TalkTopic</tt>s by identity, and don't need to write <tt>hashCode</tt> and <tt>equals</tt>
+ * topicMap}, and thus the same TalkTopic instance will always be retrieved for a given key, we can compare
+ * and hash <tt>TalkTopic</tt>s by identity, and don't need to write <tt>hashCode</tt> and <tt>equals</tt>
  * methods.
  */
 public class TalkTopic
@@ -22,25 +22,13 @@ public class TalkTopic
     /** What the NPC will say for this topic. */
     public String text;
 
-    /** If this topic is selected, these topics should be added to the topic list (may be null) */
+    /** If this topic is selected, these topics should be added to the topic list */
     public List<TalkTopic> addTopics;
 
-    /** If this topic is selected, these topics should be removed from the topic list (may be null) */
+    /** If this topic is selected, these topics should be removed from the topic list */
     public List<TalkTopic> removeTopics;
 
     public TalkTopic() {
-    }
-
-    public TalkTopic(String key) {
-        this.key = key;
-    }
-
-    public TalkTopic(String key, String label, String text, List<TalkTopic> addTopics, List<TalkTopic> removeTopics) {
-        this.key = key;
-        this.label = label;
-        this.text = text;
-        this.addTopics = addTopics;
-        this.removeTopics = removeTopics;
     }
 
     // This is used by ui.showListDialog()
