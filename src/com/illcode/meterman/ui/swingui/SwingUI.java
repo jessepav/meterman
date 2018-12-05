@@ -146,6 +146,11 @@ public class SwingUI implements MetermanUI
         mainFrame.mainTextArea.append("\n");
     }
 
+    public void appendTextLn(String text) {
+        appendText(text);
+        appendNewline();
+    }
+
     public void setObjectName(String name) {
         mainFrame.objectNameLabel.setText(name);
     }

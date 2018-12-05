@@ -376,7 +376,7 @@ public final class GameManager
             paragraphBuilder.setLength(0);
         }
         fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ROOM_DESCRIPTION);
-        ui.appendText(textBuilder.toString());
+        ui.appendTextLn(textBuilder.toString());
         textBuilder.setLength(0);
         nextTurn();
     }
@@ -397,7 +397,7 @@ public final class GameManager
     /** Called by the UI when the user clicks "Wait" */
     public void waitCommand() {
         ui.appendNewline();
-        ui.appendText(Meterman.getSystemBundle().getPassage("wait-message"));
+        ui.appendTextLn(Meterman.getSystemBundle().getPassage("wait-message"));
         nextTurn();
     }
 
@@ -408,14 +408,25 @@ public final class GameManager
     }
     
     /** Called by the UI when the user clicks an exit button */
-    public void exitSelected(int direction) {
-        movePlayer(getCurrentRoom().getExit(direction));
+    public void exitSelected(int position) {
+        Room toRoom = getCurrentRoom().getExit(position);
+        // "> GO TO <exit label>"
+        ui.appendNewline();
+        ui.appendTextLn(Utils.fmt("> %s %s",
+            SystemActions.GO_ACTION.toUpperCase(), toRoom.getExitLabel(position).toUpperCase()));
+
+        movePlayer(toRoom);
         nextTurn();
     }
 
     /** Called by the UI when the user clicks an action button (or selects an action
      *  from the combo box when there are many actions) */
     public void entityActionSelected(String action) {
+        // Make believe that this is a parser game, like Detectiveland does, ex:
+        // "> TAKE GIANT WATERMELON"
+        ui.appendNewline();
+        ui.appendTextLn(Utils.fmt("> %s %s", action.toUpperCase(), selectedEntity.getName().toUpperCase()));
+
         if (!fireBeforeAction(action, selectedEntity)) {
             if (!selectedEntity.processAction(action))
                 fireDefaultAction(action, selectedEntity);
@@ -519,7 +530,7 @@ public final class GameManager
     /** Called by the UI when it's time to save a game*/
     public void saveGameState(OutputStream out) {
         Meterman.persistence.saveWorldState(worldState, out);
-        ui.appendText("\n------- Game Saved -------\n");
+        ui.appendText("\n------- Game Saved -------\n\n");
     }
 
 

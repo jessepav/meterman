@@ -15,4 +15,5 @@ public class BasicActions extends SystemActions
     public static final String CLOSE_ACTION = Utils.getActionName("Close");
     public static final String UNLOCK_ACTION = Utils.getActionName("Unlock");
     public static final String LOCK_ACTION = Utils.getActionName("Lock");
+    public static final String TALK_ACTION = Utils.getActionName("Talk to");
 }

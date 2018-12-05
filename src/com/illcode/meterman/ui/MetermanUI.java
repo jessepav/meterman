@@ -106,6 +106,12 @@ public interface MetermanUI
     void appendNewline();
 
     /**
+     * Appends text to the main text area, followed by a newline.
+     * @param text text to append
+     */
+    void appendTextLn(String text);
+
+    /**
      * Sets the object name displayed above the description text area.
      * @param name object name
      */
