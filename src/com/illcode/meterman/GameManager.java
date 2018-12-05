@@ -361,14 +361,15 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
+        ui.appendNewline();
+        ui.appendTextLn("> " + SystemActions.LOOK_ACTION.toUpperCase());
         textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
         for (Entity e : getCurrentRoom().getRoomEntities())
             e.lookInRoom();
         if (commonTextBuilder.length() != 0) {
-            textBuilder.append('\n');
-            textBuilder.append(commonTextBuilder);
+            textBuilder.append('\n').append(commonTextBuilder).append('\n');
             commonTextBuilder.setLength(0);
         }
         if (paragraphBuilder.length() != 0) {
@@ -376,7 +377,7 @@ public final class GameManager
             paragraphBuilder.setLength(0);
         }
         fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ROOM_DESCRIPTION);
-        ui.appendTextLn(textBuilder.toString());
+        ui.appendText(textBuilder.toString());
         textBuilder.setLength(0);
         nextTurn();
     }
@@ -396,6 +397,8 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Wait" */
     public void waitCommand() {
+        ui.appendNewline();
+        ui.appendTextLn("> " + SystemActions.WAIT_ACTION.toUpperCase());
         ui.appendNewline();
         ui.appendTextLn(Meterman.getSystemBundle().getPassage("wait-message"));
         nextTurn();
