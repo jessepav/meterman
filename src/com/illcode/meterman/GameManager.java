@@ -129,8 +129,8 @@ public final class GameManager
         ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
-        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         entitySelected(null);
+        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         game.start(false);
     }
 
