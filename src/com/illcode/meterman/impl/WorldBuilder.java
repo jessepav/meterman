@@ -12,6 +12,10 @@ import static com.illcode.meterman.Utils.logger;
 /**
  * A class with utility methods to assist generating the {@link Game#getInitialWorldState() initial world state}
  * of a game, using the {@link BaseEntity} and {@link BaseRoom} implementations.
+ * <p/>
+ * It is <em>not</em> meant to be saved into the world state for persistence. However, you can add the
+ * {@link #getEntityIdMap() entity-id} and {@link #getRoomIdMap() room-id} maps to the world state
+ * if any game objects need to refer to them during gameplay.
  */
 public class WorldBuilder
 {
@@ -27,10 +31,7 @@ public class WorldBuilder
     protected String[] retrievedMultiStrings;
 
     // Zero-arg constructor for deserialization
-    public WorldBuilder() {
-    }
-
-    public void init(WorldState worldState, TextBundle bundle) {
+    public WorldBuilder(WorldState worldState, TextBundle bundle) {
         this.worldState = worldState;
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
@@ -38,22 +39,8 @@ public class WorldBuilder
         GameUtils.ensureBundleHasParent(bundle, Meterman.getSystemBundle());
     }
 
-    /** Store a reference to this WorldBuilder in {@code worldState.worldData} */
-    public void install() {
-        worldState.worldData.put(WORLDBUILDER_KEY, this);
-    }
-
-    /** Retrieve a WorldBuilder instance from the game's world-data. */
-    public static WorldBuilder getWorldBuilder() {
-        return (WorldBuilder) Meterman.gm.getWorldData().get(WORLDBUILDER_KEY);
-    }
-
-    public TextBundle getBundle() {
-        return bundle;
-    }
-
     /**
-     * Return an entity loaded or put into this WorldBuilder
+     * Return an entity loaded by or put into this WorldBuilder.
      * @param entityId unique entity id
      * @return BaseEntity with id = entityId
      */
@@ -62,7 +49,7 @@ public class WorldBuilder
     }
 
     /**
-     * Put an entity into this WorldBuilder
+     * Put an entity into this WorldBuilder's records.
      * @param e BaseEntity to put in
      */
     public void putEntity(BaseEntity e) {
@@ -70,7 +57,7 @@ public class WorldBuilder
     }
 
     /**
-     * Remove an entity from this WorldBuilder
+     * Remove an entity from this WorldBuilder's records.
      * @param entityId id of the BaseEntity to remove
      */
     public void removeEntity(String entityId) {
@@ -78,7 +65,7 @@ public class WorldBuilder
     }
 
     /**
-     * Return a room loaded or put into this WorldBuilder
+     * Return a room loaded by or put into this WorldBuilder.
      * @param roomId unique room id
      * @return BaseRoom with id = roomId
      */
@@ -87,7 +74,7 @@ public class WorldBuilder
     }
 
     /**
-     * Put a room into this WorldBuilder
+     * Put a room into this WorldBuilder's records.
      * @param r BaseRoom to put in
      */
     public void putRoom(BaseRoom r) {
@@ -95,11 +82,33 @@ public class WorldBuilder
     }
 
     /**
-     * Remove a room from this WorldBuilder
+     * Remove a room from this WorldBuilder's records.
      * @param roomId id of the BaseRoom to remove
      */
     public void removeRoom(String roomId) {
         roomIdMap.remove(roomId);
+    }
+
+    /**
+     * Returns a map from an entity ID to the corresponding BaseEntity.
+     * <p/>
+     * The map only has entries for those entities loaded by the WorldBuilder or
+     * manually inserted via {@link #putEntity(BaseEntity)}.
+     * @return entity-id map
+     */
+    public Map<String,BaseEntity> getEntityIdMap() {
+        return entityIdMap;
+    }
+
+    /**
+     * Returns a map from a room ID to the corresponding BaseRoom
+     * <p/>
+     * The map only has entries for those rooms loaded by the WorldBuilder or
+     * manually inserted via {@link #putRoom(BaseRoom)}.
+     * @return room-id map
+     */
+    public Map<String,BaseRoom> getRoomIdMap() {
+        return roomIdMap;
     }
 
     /**

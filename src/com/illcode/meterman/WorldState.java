@@ -17,7 +17,12 @@ public class WorldState
     /** The Player character */
     public Player player;
 
-    /** Extra data that objects can use to maintain and communicate state */
+    /**
+     * Extra data that objects can use to maintain and communicate state.
+     * <p/>
+     * Games should avoid putting any references to external objects (like the system bundle) into
+     * the worldData, because it often causes problems with proper serialization and deserialization.
+     */
     public Map<String,Object> worldData;
 
     /** The number of turns that have occurred in this world so far */

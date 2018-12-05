@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -37,6 +38,8 @@ public final class Meterman
     // in the default system bundle to customize messages.
     private static TextBundle systemBundle, gameBundle;
 
+    // Stores the system-default action name translations
+    static Map<String,String> systemActionNameTranslations;
 
     public static void main(String[] args) throws IOException {
         prefsPath = Paths.get("config/meterman.properties");
@@ -58,7 +61,9 @@ public final class Meterman
             return;
         }
 
-        Utils.loadActionNameTranslations(Utils.pathForAsset("meterman/system-action-translations.json"));
+        systemActionNameTranslations = Utils.loadActionNameTranslations(
+            Utils.pathForAsset("meterman/system-action-translations.json"));
+        Utils.resetActionNameTranslations();
 
         gm = new GameManager();
         switch (Utils.pref("ui", "swing")) {
@@ -123,7 +128,7 @@ public final class Meterman
     }
 
     /**
-     * Return a bundle representing system messages. This bundle may have passages shadowed by
+     * Return a bundle representing system text and messages. This bundle may have passages shadowed by
      * a game-specific bundle installed to customize messages.
      * @return bundle with system passages
      */
@@ -137,9 +142,6 @@ public final class Meterman
     /**
      * Installs a bundle as a game-specific bundle in front of the default system bundle, in order to
      * customize game messages.
-     * <p/>
-     * This method needs to be called in {@link Game#start(boolean)} for both new and loaded games, since
-     * game-specific bundle settings are not persisted.
      * @param b game-specific bundle, or null to remove any such bundle. If this bundle does not have the
      * default system bundle in its parent chain, the default system bundle will be placed in its parent
      * chain.

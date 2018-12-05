@@ -163,14 +163,14 @@ public class Door extends BaseEntity
         if (key == null)
             locked = false;
         if (locked) {
-            actions.add(UNLOCK_ACTION);
+            actions.add(getUnlockAction());
         } else { // okay, we're unlocked
             if (open) {
-                actions.add(CLOSE_ACTION);
+                actions.add(getCloseAction());
             } else { // closed but unlocked
-                actions.add(OPEN_ACTION);
+                actions.add(getOpenAction());
                 if (key != null)
-                    actions.add(LOCK_ACTION);
+                    actions.add(getLockAction());
             }
         }
         return actions;
@@ -180,7 +180,7 @@ public class Door extends BaseEntity
         int idx = ArrayUtils.indexOf(rooms, Meterman.gm.getCurrentRoom());
         if (idx == -1)
             return false;
-        if (action.equals(LOCK_ACTION) || action.equals(UNLOCK_ACTION)) {
+        if (action.equals(getLockAction()) || action.equals(getUnlockAction())) {
             // note that in these cases we already know that key != null
             if (!Meterman.gm.isInInventory(key)) {
                 Meterman.ui.appendNewline();
@@ -190,7 +190,7 @@ public class Door extends BaseEntity
                 gm.entityChanged(this);
             }
             return true;
-        } else if (action.equals(OPEN_ACTION) || action.equals(CLOSE_ACTION)) {
+        } else if (action.equals(getOpenAction()) || action.equals(getCloseAction())) {
             open = !open;
             if (open) {
                 rooms[0].exits[positions[0]] = rooms[1];

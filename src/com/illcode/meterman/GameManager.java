@@ -93,6 +93,7 @@ public final class GameManager
     public void newGame(Game game) {
         closeGame();
         this.game = game;
+        game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;
         worldData = worldState.worldData;
@@ -120,6 +121,7 @@ public final class GameManager
         closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
+        game.init();
         player = worldState.player;
         worldData = worldState.worldData;
 
@@ -170,6 +172,7 @@ public final class GameManager
         worldData = null;
         worldState = null;
         Meterman.setGameBundle(null);
+        Utils.resetActionNameTranslations();
         if (game != null) {
             game.dispose();
             game = null;
@@ -362,7 +365,7 @@ public final class GameManager
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
         ui.appendNewline();
-        ui.appendTextLn("> " + SystemActions.LOOK_ACTION.toUpperCase());
+        ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
         textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
@@ -398,7 +401,7 @@ public final class GameManager
     /** Called by the UI when the user clicks "Wait" */
     public void waitCommand() {
         ui.appendNewline();
-        ui.appendTextLn("> " + SystemActions.WAIT_ACTION.toUpperCase());
+        ui.appendTextLn("> " + SystemActions.getWaitAction().toUpperCase());
         ui.appendNewline();
         ui.appendTextLn(Meterman.getSystemBundle().getPassage("wait-message"));
         nextTurn();
@@ -416,7 +419,7 @@ public final class GameManager
         // "> GO TO <exit label>"
         ui.appendNewline();
         ui.appendTextLn(Utils.fmt("> %s %s",
-            SystemActions.GO_ACTION.toUpperCase(), toRoom.getExitLabel(position).toUpperCase()));
+            SystemActions.getGoAction().toUpperCase(), toRoom.getExitLabel(position).toUpperCase()));
 
         movePlayer(toRoom);
         nextTurn();

@@ -1,0 +1,6 @@
+[about-text]
+
+This is the Meterman implementation of the Cloak of Darkness specification
+
+   http://www.firthworks.com/roger/cloak/
+

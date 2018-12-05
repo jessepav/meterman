@@ -2,6 +2,8 @@ package com.illcode.meterman;
 
 import com.illcode.meterman.impl.WorldBuilder;
 
+import java.nio.file.Path;
+
 /**
  * An instance of a particular game.
  */
@@ -9,6 +11,17 @@ public interface Game
 {
     /** The name of the game, as displayed in the "New Game" UI */
     String getGameName();
+
+    /**
+     * Called when a game is started or loaded. A game should, in this method, load any resources (images,
+     * sound, bundles) it wants immediately or game-globally available.
+     * <p/>
+     * It should also install any game-specific action translations and set the game bundle.
+     *
+     * @see Utils#installActionNameTranslations(Path)
+     * @see Meterman#setGameBundle(TextBundle)
+     */
+    void init();
 
     /** Called when the user selects "About..." in the UI  */
     void about();
@@ -33,18 +46,13 @@ public interface Game
      * Called when the GameManager has set up the world model, either by calling
      * {@link #getInitialWorldState()} or by restoring a saved {@code WorldState},
      * and is ready to being the game.
-     * <p/>
-     * A game should, in this method, allocate any resources (images, sound) it
-     * wants immediately or game-globally available.
-     *
      * @param newGame true if this is a new game; false if the game has been loaded
      */
     void start(boolean newGame);
 
     /**
      * Free any allocated resources, other than images and sounds, which will be freed
-     * automatically. Called when the GameManager is unloading the
-     * current game instance.
+     * automatically. Called when the GameManager is unloading the current game instance.
      */
     void dispose();
 }

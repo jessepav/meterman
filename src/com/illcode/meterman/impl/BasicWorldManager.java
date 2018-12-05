@@ -63,41 +63,41 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     public void processEntityActions(Entity e, List<String> actions) {
         if (e.checkAttribute(TAKEABLE)) {
             if (gm.isInInventory(e))
-                actions.add(DROP_ACTION);
+                actions.add(getDropAction());
             else
-                actions.add(TAKE_ACTION);
+                actions.add(getTakeAction());
         }
         if (e.checkAttribute(WEARABLE) && gm.isInInventory(e)) {
             if (gm.isWorn(e))
-                actions.add(TAKEOFF_ACTION);
+                actions.add(getTakeOffAction());
             else
-                actions.add(WEAR_ACTION);
+                actions.add(getWearAction());
         }
         if (e.checkAttribute(EQUIPPABLE) && gm.isInInventory(e)) {
             if (gm.isEquipped(e))
-                actions.add(UNEQUIP_ACTION);
+                actions.add(getUnequipAction());
             else
-                actions.add(EQUIP_ACTION);
+                actions.add(getEquipAction());
         }
     }
 
     public boolean processAction(String action, Entity e, boolean beforeAction) {
-        if (action.equals(DROP_ACTION)) {
+        if (action.equals(getDropAction())) {
             gm.moveEntity(e, e.getRoom());
             return true;
-        } else if (action.equals(TAKE_ACTION)) {
+        } else if (action.equals(getTakeAction())) {
             gm.takeEntity(e);
             return true;
-        } else if (action.equals(TAKEOFF_ACTION)) {
+        } else if (action.equals(getTakeOffAction())) {
             gm.setWorn(e, false);
             return true;
-        } else if (action.equals(WEAR_ACTION)) {
+        } else if (action.equals(getWearAction())) {
             gm.setWorn(e, true);
             return true;
-        } else if (action.equals(UNEQUIP_ACTION)) {
+        } else if (action.equals(getUnequipAction())) {
             gm.setEquipped(e, false);
             return true;
-        } else if (action.equals(EQUIP_ACTION)) {
+        } else if (action.equals(getEquipAction())) {
             gm.setEquipped(e, true);
             return true;
         } else {

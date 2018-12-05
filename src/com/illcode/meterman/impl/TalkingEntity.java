@@ -1,12 +1,13 @@
 package com.illcode.meterman.impl;
 
+import com.illcode.meterman.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static com.illcode.meterman.Meterman.ui;
-import static com.illcode.meterman.impl.BasicActions.TALK_ACTION;
 
 /**
  * An entity that supports "conversations" in the form of {@link TalkTopic}S.
@@ -34,7 +35,7 @@ public class TalkingEntity extends BaseEntity
     public void init() {
         super.init();
         actions = new ArrayList<>(6);
-        actions.add(TALK_ACTION);
+        actions.add(BasicActions.getTalkAction());
         topicMap = Collections.emptyMap();
         currentTopics = new ArrayList<>();
         dialogText = "(dialog text)";
@@ -51,7 +52,7 @@ public class TalkingEntity extends BaseEntity
         if (delegate != null)
             return delegate.processAction(this, action);
 
-        if (action.equals(TALK_ACTION)) {
+        if (action.equals(BasicActions.getTalkAction())) {
             processTalkAction();
             return true;
         } else {

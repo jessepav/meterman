@@ -66,7 +66,7 @@ public final class Utils
     }
 
     /**
-     * Loads action name translations from a JSON file. The JSON data should be an object,
+     * Installs action name translations from a JSON file. The JSON data should be an object,
      * whose names are the canonical action names ("Look", etc.) and the values the translated
      * names. An example:
      * <pre>{@code
@@ -77,7 +77,24 @@ public final class Utils
      * }</pre>
      * @param p path to JSON file
      */
-    public static void loadActionNameTranslations(Path p) {
+    public static void installActionNameTranslations(Path p) {
+        installActionNameTranslations(loadActionNameTranslations(p));
+    }
+
+    /** Installs action name translations from a Map.
+     *  @see #installActionNameTranslations(Path) */
+    public static void installActionNameTranslations(Map<String,String> m) {
+        actionNameMap.putAll(m);
+    }
+
+    /**
+     * Loads and returns an action name translation map from a JSON file.
+     * @param p path to JSON file
+     * @return translation map
+     * @see #installActionNameTranslations(Path)
+     */
+    public static Map<String,String> loadActionNameTranslations(Path p) {
+        Map<String,String> map = new HashMap<>();
         int n = 0;
         try (Reader r = Files.newBufferedReader(p, StandardCharsets.UTF_8)) {
             JsonValue v = Json.parse(r);
@@ -86,7 +103,7 @@ public final class Utils
                 for (JsonObject.Member m : o) {
                     JsonValue value = m.getValue();
                     if (value.isString()) {
-                        actionNameMap.put(m.getName(), value.asString());
+                        map.put(m.getName(), value.asString());
                         n++;
                     }
                 }
@@ -95,6 +112,15 @@ public final class Utils
             logger.log(Level.WARNING, "Utils.loadActionNameTranslations()", e);
         }
         logger.fine(fmt("Loaded %d action name translations from %s", n, p.getFileName().toString()));
+        return map;
+    }
+
+    /**
+     * Remove any game-specific action name translations, and retain only the system translations.
+     */
+    public static void resetActionNameTranslations() {
+        actionNameMap.clear();
+        installActionNameTranslations(Meterman.systemActionNameTranslations);
     }
 
     /**
