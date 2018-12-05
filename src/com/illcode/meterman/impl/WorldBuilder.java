@@ -82,18 +82,186 @@ public class WorldBuilder
         return e;
     }
 
+    /**
+     * Loads an entity from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+    {
+        "id" : "ferryman",
+        "name" : "River Ferryman",
+        "listName" : "Ferryman",
+        "description" : "[[ferryman-description]]",
+        "imageName" : "ferryman",
+    }
+     * }</pre>
+     * @param e BaseEntity into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
     public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
-            e.id = getJsonString(o.get("id"));
-            e.name = getJsonString(o.get("name"));
-            e.listName = getJsonString(o.get("listName"));
-            e.description = getJsonString(o.get("description"));
+            e.id = getJsonString(o.get("id"), passageName);
+            e.name = getJsonString(o.get("name"), passageName);
+            e.listName = getJsonString(o.get("listName"), passageName);
+            e.description = getJsonString(o.get("description"), passageName);
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
-            logger.log(Level.WARNING, "JSON error, loadEntity()", ex);
+            logger.log(Level.WARNING, "JSON error, readEntityDataFromBundle()", ex);
+            return null;
+        }
+    }
+
+    public TalkingEntity loadTalkingEntity(String passageName) {
+        TalkingEntity te = new TalkingEntity();
+        te.init();
+        readTalkingEntityDataFromBundle(te, passageName);
+        putEntity(te);
+        return te;
+    }
+
+    /**
+     * Loads a talking entity from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+    {
+        "id" : "underground-hermit",
+        "name" : "Bearded Hermit",
+        "listName" : "Hermit",
+        "description" : "[[underground-hermit-description]]",
+        "imageName" : "underground-hermit",
+        "dialogText" : "The hermit waits for you to say something.",
+        "topicMap" : "underground-hermit-topics",
+        "currentTopics" : ["hello"]
+    }
+     * }</pre>
+     * @param te TalkingEntity into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
+    public JsonObject readTalkingEntityDataFromBundle(TalkingEntity te, String passageName) {
+        JsonObject o = readEntityDataFromBundle(te, passageName);
+        if (o == null)
+            return null;
+        try {
+            te.dialogText = retrieveTextOrDefault(o, "dialogText", "default-TalkingEntity-dialogText");
+            te.topicMap = loadTopicMap(o.get("topicMap").asString());
+            JsonValue v = o.get("currentTopics");
+            if (v != null && v.isArray()) {
+                for (JsonValue topic : v.asArray().values())
+                    te.currentTopics.add(te.topicMap.get(topic.asString()));
+            }
+            return o;
+        } catch (UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, readTalkingEntityDataFromBundle()", ex);
+            return null;
+        }
+    }
+
+    public Map<String,TalkTopic> loadTopicMap(String passageName) {
+        Map<String,TalkTopic> topicMap = new HashMap<>();
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonObject topicMapObj = Json.parse(json).asObject();
+            // On the first pass we just gather up the keys, labels, and text, and put
+            // the resulting TalkTopic instances into the topicMap.
+            for (JsonObject.Member member : topicMapObj) {
+                JsonObject topicObj = member.getValue().asObject();
+                TalkTopic tt = new TalkTopic();
+                tt.key = member.getName();
+                tt.label = getJsonString(topicObj.get("label"), "(label)");
+                tt.text = getJsonString(topicObj.get("text"), "(text)");
+                topicMap.put(tt.key, tt);
+            }
+            // On the second pass we read the addTopics and removeTopics lists and
+            // weave together the topic graph.
+            for (JsonObject.Member member : topicMapObj) {
+                JsonObject topicObj = member.getValue().asObject();
+                TalkTopic tt = topicMap.get(member.getName());
+                JsonValue v = topicObj.get("addTopics");
+                if (v != null && v.isArray()) {
+                    JsonArray arr = v.asArray();
+                    tt.addTopics = new ArrayList<>(arr.size());
+                    for (JsonValue topicKey : arr.values())
+                        tt.addTopics.add(topicMap.get(topicKey.asString()));
+                } else {
+                    tt.addTopics = Collections.emptyList();
+                }
+                v = topicObj.get("removeTopics");
+                if (v != null && v.isArray()) {
+                    JsonArray arr = v.asArray();
+                    tt.removeTopics = new ArrayList<>(arr.size());
+                    for (JsonValue topicKey : arr.values())
+                        tt.removeTopics.add(topicMap.get(topicKey.asString()));
+                } else {
+                    tt.removeTopics = Collections.emptyList();
+                }
+            }
+        } catch (ParseException|UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
+        }
+        return topicMap;
+    }
+
+    public Door loadDoor(String passageName) {
+        Door d = new Door();
+        d.init();
+        readDoorDataFromBundle(d, passageName);
+        putEntity(d);
+        return d;
+    }
+
+    /**
+     * Loads a door from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+        {
+            "id" : "river-edge-grating",
+            "name" : "Iron Grating",
+            "listName" : "Grating",
+            "imageName" : "river-edge-grating",
+            "descriptions" : [
+                "A strong, oddly fresh iron grating is in the soil 30 meters from the bank.",
+                "Above you is an iron grating."
+            ],
+            "lockedMessages" : [
+                "The grating is secured by a padlock.",
+                "A padlock can be seen just through the bars."
+            ],
+            "unlockedMessages" : [
+                "A padlock lies opened on the grating.",
+                "An open padlock can be seen through the bars."
+            ],
+            "noKeyMessages" : [
+                "You do not have the key for the padlock."
+            ],
+            "openMessages" : [
+                "The grate is open.",
+                "You can see the sky through the open grate."
+            ]
+        }
+     * }</pre>
+     * @param d Door into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
+    public JsonObject readDoorDataFromBundle(Door d, String passageName) {
+        JsonObject o = readEntityDataFromBundle(d, passageName);
+        if (o == null)
+            return null;
+        try {
+            retrieveMultiTextOrDefault(o, "descriptions", 2, "default-door-description");
+            d.setDescriptions(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            retrieveMultiTextOrDefault(o, "lockedMessages", 2, "default-door-locked");
+            d.setLockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            retrieveMultiTextOrDefault(o, "unlockedMessages", 2, "default-door-unlocked");
+            d.setUnlockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-nokey");
+            d.setNoKeyMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-open");
+            d.setOpenMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
+            return o;
+        } catch (ParseException | UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, readDoorDataFromBundle()", ex);
             return null;
         }
     }
@@ -106,6 +274,20 @@ public class WorldBuilder
         return r;
     }
 
+    /**
+     * Loads a room from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+       {
+           "id" : "river-edge",
+           "name" : "River's Edge",
+           "exitName" : "River Edge",
+           "description" : "Here the woods give way to the bank of the River Jelly."
+       }
+     * }</pre>
+     * @param r BaseRoom into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
     public JsonObject readRoomDataFromBundle(BaseRoom r, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
@@ -116,7 +298,7 @@ public class WorldBuilder
             r.description = getJsonString(o.get("description"));
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
-            logger.log(Level.WARNING, "JSON error, loadRoom()", ex);
+            logger.log(Level.WARNING, "JSON error, readRoomDataFromBundle()", ex);
             return null;
         }
     }
@@ -129,10 +311,28 @@ public class WorldBuilder
         return dr;
     }
 
-    public void readDarkRoomDataFromBundle(DarkRoom dr, String passageName) {
+    /**
+     * Loads a dark room from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+        {
+            "id" : "dark-passage1",
+            "name" : "Dark Passage",
+            "exitName" : "Dark Passage",
+            "description" : "A stony underground passage."
+            "darkName" : "Dark Underground Passage",
+            "darkExitName" : "Darkness",
+            "darkDescription" : "The air is still and slightly acrid in this dark passage.",
+            "dark" : true,
+        }
+     * }</pre>
+     * @param dr DarkRoom into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
+    public JsonObject readDarkRoomDataFromBundle(DarkRoom dr, String passageName) {
         JsonObject o = readRoomDataFromBundle(dr, passageName);
         if (o == null)
-            return;
+            return null;
         try {
             dr.darkName = retrieveTextOrDefault(o, "darkName", "default-darkName");
             dr.darkExitName = retrieveTextOrDefault(o, "darkExitName", "default-darkExitName");
@@ -140,38 +340,10 @@ public class WorldBuilder
             JsonValue v = o.get("dark");
             if (v != null && v.isBoolean() && v.asBoolean())
                 dr.setAttribute(Attributes.DARK);
+            return o;
         } catch (UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, readDarkRoomDataFromBundle()", ex);
-        }
-    }
-
-    public Door loadDoor(String passageName) {
-        Door d = new Door();
-        d.init();
-        readDoorDataFromBundle(d, passageName);
-        putEntity(d);
-        return d;
-    }
-
-    public void readDoorDataFromBundle(Door d, String passageName) {
-        String json = bundle.getPassage(passageName);
-        try {
-            JsonObject o = Json.parse(json).asObject();
-            d.id = getJsonString(o.get("id"));
-            d.name = getJsonString(o.get("name"));
-            d.listName = getJsonString(o.get("listName"));
-            retrieveMultiTextOrDefault(o, "descriptions", 2, "default-door-description");
-            d.setDescriptions(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "lockedMessages", 2, "default-door-locked");
-            d.setLockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "unlockedMessages", 2, "default-door-unlocked");
-            d.setUnlockedMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-nokey");
-            d.setNoKeyMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-open");
-            d.setOpenMessages(retrieveMultiStrings[0], retrieveMultiStrings[1]);
-        } catch (ParseException |UnsupportedOperationException ex) {
-            logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
+            return null;
         }
     }
 
@@ -232,51 +404,6 @@ public class WorldBuilder
         }
     }
 
-    public Map<String,TalkTopic> loadTopicMap(String passageName) {
-        Map<String,TalkTopic> topicMap = new HashMap<>();
-        String json = bundle.getPassage(passageName);
-        try {
-            JsonObject topicMapObj = Json.parse(json).asObject();
-            // On the first pass we just gather up the keys, labels, and text, and put
-            // the resulting TalkTopic instances into the topicMap.
-            for (JsonObject.Member member : topicMapObj) {
-                JsonObject topicObj = member.getValue().asObject();
-                TalkTopic tt = new TalkTopic();
-                tt.key = member.getName();
-                tt.label = getJsonString(topicObj.get("label"), "(label)");
-                tt.text = getJsonString(topicObj.get("text"), "(text)");
-                topicMap.put(tt.key, tt);
-            }
-            // On the second pass we read the addTopics and removeTopics lists and
-            // weave together the topic graph.
-            for (JsonObject.Member member : topicMapObj) {
-                JsonObject topicObj = member.getValue().asObject();
-                TalkTopic tt = topicMap.get(member.getName());
-                JsonValue v = topicObj.get("addTopics");
-                if (v != null && v.isArray()) {
-                    JsonArray arr = v.asArray();
-                    tt.addTopics = new ArrayList<>(arr.size());
-                    for (JsonValue topicKey : arr.values())
-                        tt.addTopics.add(topicMap.get(topicKey.asString()));
-                } else {
-                    tt.addTopics = Collections.emptyList();
-                }
-                v = topicObj.get("removeTopics");
-                if (v != null && v.isArray()) {
-                    JsonArray arr = v.asArray();
-                    tt.removeTopics = new ArrayList<>(arr.size());
-                    for (JsonValue topicKey : arr.values())
-                        tt.removeTopics.add(topicMap.get(topicKey.asString()));
-                } else {
-                    tt.removeTopics = Collections.emptyList();
-                }
-            }
-        } catch (ParseException|UnsupportedOperationException ex) {
-            logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
-        }
-        return topicMap;
-    }
-
     protected String retrieveTextOrDefault(JsonObject o, String key, String defaultPassageName) {
         JsonValue v = o.get(key);
         if (v == null)
@@ -289,17 +416,17 @@ public class WorldBuilder
         if (retrieveMultiStrings == null || retrieveMultiStrings.length < numStrings)
             retrieveMultiStrings = new String[numStrings];
         JsonValue v = o.get(key);
-        if (v == null) {
+        if (v == null || !v.isArray()) {
             Arrays.fill(retrieveMultiStrings, 0, numStrings, bundle.getPassage(defaultPassageName));
         } else {
-            JsonArray a = v.asArray();
-            if (a.size() == 0) {
+            JsonArray arr = v.asArray();
+            if (arr.size() == 0) {
                 Arrays.fill(retrieveMultiStrings, 0, numStrings, "");
-            } else if (a.size() < numStrings) {
-                Arrays.fill(retrieveMultiStrings, 0, numStrings, getJsonString(a.get(0)));
+            } else if (arr.size() < numStrings) {
+                Arrays.fill(retrieveMultiStrings, 0, numStrings, getJsonString(arr.get(0)));
             } else {
                 for (int i = 0; i < numStrings; i++)
-                    retrieveMultiStrings[i] = getJsonString(a.get(i));
+                    retrieveMultiStrings[i] = getJsonString(arr.get(i));
             }
         }
     }

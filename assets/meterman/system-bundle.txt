@@ -47,3 +47,7 @@ A dark place
 [ default-darkDescription ]
 
 It is too dark here to see anything.
+
+[ default-TalkingEntity-dialogText ]
+
+What do you want to ask about?

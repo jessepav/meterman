@@ -51,12 +51,5 @@ public class RiverboatGame implements Game
         RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
         statePart1.init();
         statePart1.install();
-
-        // Create the UndergroundHermit sitting by the fire
-        UndergroundHermit hermit = new UndergroundHermit();
-        hermit.init();
-        wb.readEntityDataFromBundle(hermit, "underground-hermit-info");
-        hermit.setTopicMap(wb.loadTopicMap("underground-hermit-topics"));
-
     }
 }

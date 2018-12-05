@@ -29,7 +29,7 @@ public class BaseEntity implements Entity
      *  BaseEntity is selected() */
     public String imageName;
 
-    private EntityDelegate delegate;
+    protected EntityDelegate delegate;
 
     public BaseEntity() {
     }

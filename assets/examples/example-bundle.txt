@@ -37,6 +37,7 @@ at the lights glowing across the water.
     "id" : "river-edge-grating",
     "name" : "Iron Grating",
     "listName" : "Grating",
+    "imageName" : "river-edge-grating",
     "descriptions" : [
         "A strong, oddly fresh iron grating is in the soil 30 meters from the bank.",
         "Above you is an iron grating."
@@ -88,6 +89,9 @@ at the lights glowing across the water.
     "listName" : "Hermit",
     "description" : "[[underground-hermit-description]]",
     "imageName" : "underground-hermit",
+    "dialogText" : "The hermit waits for you to say something.",
+    "topicMap" : "underground-hermit-topics",
+    "currentTopics" : ["hello"]
 }
 
 [ underground-hermit-description (flowed) ]
