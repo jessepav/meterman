@@ -105,6 +105,15 @@ public interface Entity
     boolean processAction(String action);
 
     /**
+     * Normally the GameManager prints a parser-like message when an action is performed, like
+     * {@code "> TAKE CLOAK"}. An entity can request that this parser message be suppressed if,
+     * for instance, it wants to print its own.
+     * @param action the action that is being performed
+     * @return true to suppress parser message
+     */
+    boolean suppressParserMessage(String action);
+
+    /**
      * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.
      */
     Map<String,Object> getProperties();

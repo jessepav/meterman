@@ -24,6 +24,7 @@ public class BaseEntity implements Entity
     public BitSet attributes;
     public Room room;
     public Map<String,Object> properties;
+    public boolean suppressParserMessage;
 
     /** If not null, it will be set as the {@link MetermanUI#setEntityImage(String)} when this
      *  BaseEntity is selected() */
@@ -127,6 +128,13 @@ public class BaseEntity implements Entity
     public boolean processAction(String action) {
         if (delegate != null)
             return delegate.processAction(this, action);
+        else
+            return false;
+    }
+
+    public boolean suppressParserMessage(String action) {
+        if (delegate != null)
+            return delegate.suppressParserMessage(action);
         else
             return false;
     }

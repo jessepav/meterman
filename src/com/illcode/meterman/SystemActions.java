@@ -13,4 +13,8 @@ public class SystemActions
     public static String getWaitAction() {
         return Utils.getActionName("Wait");
     }
+
+    public static String getAboutAction() {
+        return Utils.getActionName("About");
+    }
 }

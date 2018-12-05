@@ -108,7 +108,7 @@ public final class GameManager
         ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         game.start(true);
         getCurrentRoom().entered();
-        lookCommand();
+        performLook(false);
         getCurrentRoom().setAttribute(Attributes.VISITED);
     }
 
@@ -233,7 +233,7 @@ public final class GameManager
             e.enterScope();
         fireAfterPlayerMovement(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
-        lookCommand();
+        performLook(false);
         toRoom.setAttribute(Attributes.VISITED);
         refreshRoomUI();
     }
@@ -366,13 +366,26 @@ public final class GameManager
 
     /** Called by the UI when the user selects the "About..." menu item.*/
     public void aboutMenuClicked() {
+        ui.appendNewline();
+        ui.appendTextLn("> " + SystemActions.getAboutAction().toUpperCase());
+        ui.appendNewline();
         game.about();
     }
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
-        ui.appendNewline();
-        ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
+        performLook(true);
+    }
+
+    /**
+     * Actually performs the look command, optionally showing a parser-like prompt message.
+     * @param showParserMessage true to show parser-like message
+     */
+    private void performLook(boolean showParserMessage) {
+        if (showParserMessage) {
+            ui.appendNewline();
+            ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
+        }
         textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
@@ -436,11 +449,12 @@ public final class GameManager
     /** Called by the UI when the user clicks an action button (or selects an action
      *  from the combo box when there are many actions) */
     public void entityActionSelected(String action) {
-        // Make believe that this is a parser game, like Detectiveland does, ex:
-        // "> TAKE GIANT WATERMELON"
-        ui.appendNewline();
-        ui.appendTextLn(Utils.fmt("> %s %s", action.toUpperCase(), selectedEntity.getName().toUpperCase()));
-
+        if (!selectedEntity.suppressParserMessage(action)) {
+            // Make believe that this is a parser game, like Detectiveland does, ex:
+            // "> TAKE GIANT WATERMELON"
+            ui.appendNewline();
+            ui.appendTextLn(Utils.fmt("> %s %s", action.toUpperCase(), selectedEntity.getName().toUpperCase()));
+        }
         if (!fireBeforeAction(action, selectedEntity)) {
             if (!selectedEntity.processAction(action))
                 fireDefaultAction(action, selectedEntity);

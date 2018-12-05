@@ -44,4 +44,8 @@ public class EntityDelegateAdapter implements EntityDelegate
     public boolean processAction(BaseEntity e, String action) {
         return false;
     }
+
+    public boolean suppressParserMessage(String action) {
+        return false;
+    }
 }
