@@ -66,7 +66,7 @@ new FormModel {
 							"wrapStyleWord": true
 							"editable": false
 							"text": "This is the main text flow"
-							"font": &Font0 new java.awt.Font( "SansSerif", 0, 13 )
+							"font": new java.awt.Font( "Serif", 0, 15 )
 							"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -77,6 +77,7 @@ new FormModel {
 						name: "objectNameLabel"
 						"text": "(object name label)"
 						"foreground": #Color0
+						"font": new java.awt.Font( "Serif", 0, 16 )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 						"gridX": 1
 						"gridY": 5
@@ -91,7 +92,7 @@ new FormModel {
 							"wrapStyleWord": true
 							"editable": false
 							"text": "This is the description of the selected object"
-							"font": #Font0
+							"font": new java.awt.Font( "Serif", 0, 15 )
 							"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
@@ -122,6 +123,7 @@ new FormModel {
 							"prototypeCellValue": "01234567890123456789"
 							"background": #Color2
 							"selectionMode": 0
+							"font": new java.awt.Font( "Serif", 0, 16 )
 							auxiliary() {
 								"JavaCodeGenerator.typeParameters": "String"
 							}
@@ -144,6 +146,7 @@ new FormModel {
 							"prototypeCellValue": "Abraded Alligator Clips"
 							"background": #Color2
 							"selectionMode": 0
+							"font": new java.awt.Font( "Serif", 0, 16 )
 							auxiliary() {
 								"JavaCodeGenerator.typeParameters": "String"
 							}
