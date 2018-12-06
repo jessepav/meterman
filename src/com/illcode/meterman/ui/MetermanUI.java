@@ -148,8 +148,11 @@ public interface MetermanUI
     /**
      * Adds an entity to the list of entities in the player's inventory.
      * @param e entity to add
+     * @param modifiers string to append to the list display for the entity, to
+     *          indicate status like worn or equipped. Will be <tt>null</tt>
+     *          if there are no modifiers.
      */
-    void addInventoryEntity(Entity e);
+    void addInventoryEntity(Entity e, String modifiers);
 
     /**
      * Removes an entity from the list of entities in the player's inventory.

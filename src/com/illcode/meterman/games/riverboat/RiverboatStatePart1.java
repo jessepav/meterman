@@ -14,11 +14,11 @@ public class RiverboatStatePart1
         monsterSeen = false;
     }
 
-    public void install(Map<String,Object> worldData) {
+    public void saveTo(Map<String,Object> worldData) {
         worldData.put(RIVERBOAT_STATE_PART1_KEY, this);
     }
 
-    public static RiverboatStatePart1 getRiverboatStatePart1(Map<String,Object> worldData) {
+    public static RiverboatStatePart1 retrieveFrom(Map<String,Object> worldData) {
         return (RiverboatStatePart1) worldData.get(RIVERBOAT_STATE_PART1_KEY);
     }
 }

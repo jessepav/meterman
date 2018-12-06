@@ -26,7 +26,7 @@ public class BaseRoom implements Room
     public LinkedList<Entity> entities;
     public HashMap<String,Object> properties;
 
-    private RoomDelegate delegate;
+    protected RoomDelegate delegate;
 
     public BaseRoom() {
     }
@@ -68,12 +68,10 @@ public class BaseRoom implements Room
     }
 
     public String getDescription() {
-        if (delegate != null) {
-            String s = delegate.getDescription(this);
-            if (s != null)
-                return s;
-        }
-        return description;
+        if (delegate != null)
+            return delegate.getDescription(this);
+        else
+            return description;
     }
 
     public Room getExit(int direction) {
@@ -90,17 +88,22 @@ public class BaseRoom implements Room
     }
 
     public List<Entity> getRoomEntities() {
-        return entities;
+        if (delegate != null)
+            return delegate.getRoomEntities(this);
+        else
+            return entities;
     }
 
-    public void entered() {
+    public void entered(Room fromRoom) {
         if (delegate != null)
-            delegate.entered(this);
+            delegate.entered(this, fromRoom);
     }
 
-    public void exiting() {
+    public boolean exiting(Room toRoom) {
         if (delegate != null)
-            delegate.exiting(this);
+            return delegate.exiting(this, toRoom);
+        else
+            return false;
     }
 
     public Map<String,Object> getProperties() {

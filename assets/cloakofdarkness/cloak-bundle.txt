@@ -60,7 +60,59 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "description" : "..."
 }
 
+[ dark-bar-junk1 ]
+
+{
+    "id" : "dark-bar-junk1",
+    "name" : "Mounded Shape",
+    "description" : "A strange mound of objects, which you can't make out clearly in the dark."
+}
+
+[ dark-bar-junk2 ]
+
+{
+    "id" : "dark-bar-junk2",
+    "name" : "Vague Cube",
+    "description" : "It is too dark to see exactly what this large cube is."
+}
+
+[ dark-bar-junk3 ]
+
+{
+    "id" : "dark-bar-junk3",
+    "name" : "Draped Form",
+    "description" : "In the shadowy space of the dark bar, you can't see what is under the cloth drape."
+}
+
 [ no-go-patio (flowed) ]
 
 The Phatom of the Opera is on the patio--you decide not to
 go outside after all.
+
+[ cloak-hung-description ]
+
+It is hanging on the hook.
+
+[ hang-cloak-parser-message ]
+
+> HANG CLOAK ON HOOK
+
+[ hang-cloak-message ]
+
+You hang the strange cloak on the hook.
+
+[ unhang-cloak-message ]
+
+You take the strange cloak off the hook.
+
+[ dark-bar-action-warning ]
+
+It is probably best not to disturb mysterious things in the dark.
+
+[ winning-message ]
+
+Scrawled in the sawdust is a a message: "You have won."
+
+[ losing-message ]
+
+Scrawled in the sawdust is a a message: "You have lost."

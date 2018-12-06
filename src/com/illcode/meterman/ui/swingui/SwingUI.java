@@ -183,9 +183,12 @@ public class SwingUI implements MetermanUI
         mainFrame.inventoryListModel.clear();
     }
 
-    public void addInventoryEntity(Entity e) {
+    public void addInventoryEntity(Entity e, String modifiers) {
         inventoryEntities.add(e);
-        mainFrame.inventoryListModel.addElement(e.getListName());
+        String s = e.getListName();
+        if (modifiers != null)
+            s += " " + modifiers;
+        mainFrame.inventoryListModel.addElement(s);
     }
 
     public void removeInventoryEntity(Entity e) {

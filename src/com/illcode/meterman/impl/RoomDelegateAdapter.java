@@ -1,20 +1,28 @@
 package com.illcode.meterman.impl;
 
+import com.illcode.meterman.Entity;
+import com.illcode.meterman.Room;
+
+import java.util.List;
+
 /**
- * An empty RoomDelegate implementation that can be subclassed to override
- * specific methods.
+ * An empty RoomDelegate implementation that can be subclassed to override specific methods.
  */
 public class RoomDelegateAdapter implements RoomDelegate
 {
     public String getDescription(BaseRoom r) {
-        return null;
+        return r.description;
     }
 
-    public void entered(BaseRoom r) {
+    public void entered(BaseRoom r, Room fromRoom) {
         // empty
     }
 
-    public void exiting(BaseRoom r) {
-        // empty
+    public boolean exiting(BaseRoom r, Room toRoom) {
+        return false;
+    }
+
+    public List<Entity> getRoomEntities(BaseRoom r) {
+        return r.entities;
     }
 }

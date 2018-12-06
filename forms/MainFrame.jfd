@@ -20,7 +20,7 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 					"$columnSpecs": "default:grow"
-					"$rowSpecs": "default, relgap, fill:default:grow, unrelgap, default, linegap, fill:default:grow(0.4)"
+					"$rowSpecs": "default, relgap, fill:default:grow, unrelgap, default, linegap, fill:default:grow(0.19999999999999998)"
 				} ) {
 					name: "textPanel"
 					"background": sfield java.awt.Color darkGray

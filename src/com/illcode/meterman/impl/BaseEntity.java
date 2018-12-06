@@ -113,7 +113,7 @@ public class BaseEntity implements Entity
     }
 
     public void setRoom(Room room) {
-        room = room;
+        this.room = room;
     }
 
     public List<String> getActions() {

@@ -107,7 +107,7 @@ public final class GameManager
         entitySelected(null);
         ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         game.start(true);
-        getCurrentRoom().entered();
+        getCurrentRoom().entered(null);
         performLook(false);
         getCurrentRoom().setAttribute(Attributes.VISITED);
     }
@@ -222,11 +222,12 @@ public final class GameManager
         // Here we go...
         if (fireBeforePlayerMovement(fromRoom, toRoom))
             return;  // we were blocked by a listener
+        if (fromRoom.exiting(toRoom))
+            return;  // blocked by the room itself
         for (Entity e : fromRoom.getRoomEntities())
             e.exitingScope();
-        fromRoom.exiting();
         player.currentRoom = toRoom;
-        toRoom.entered();
+        toRoom.entered(fromRoom);
         for (Entity e : player.inventory)
             e.setRoom(toRoom);
         for (Entity e : toRoom.getRoomEntities())
@@ -368,13 +369,13 @@ public final class GameManager
     public void aboutMenuClicked() {
         ui.appendNewline();
         ui.appendTextLn("> " + SystemActions.getAboutAction().toUpperCase());
-        ui.appendNewline();
         game.about();
     }
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
         performLook(true);
+        nextTurn();
     }
 
     /**
@@ -386,7 +387,6 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
         }
-        textBuilder.append("\n");
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
         for (Entity e : getCurrentRoom().getRoomEntities())
@@ -402,7 +402,6 @@ public final class GameManager
         fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ROOM_DESCRIPTION);
         ui.appendText(textBuilder.toString());
         textBuilder.setLength(0);
-        nextTurn();
     }
 
     /**
@@ -422,7 +421,6 @@ public final class GameManager
     public void waitCommand() {
         ui.appendNewline();
         ui.appendTextLn("> " + SystemActions.getWaitAction().toUpperCase());
-        ui.appendNewline();
         ui.appendTextLn(Meterman.getSystemBundle().getPassage("wait-message"));
         nextTurn();
     }
@@ -441,7 +439,6 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn(Utils.fmt("> %s %s",
                 SystemActions.getGoAction().toUpperCase(), toRoom.getExitName().toUpperCase()));
-            ui.appendNewline();
         }
         movePlayer(toRoom);
         nextTurn();
@@ -537,15 +534,15 @@ public final class GameManager
         ui.clearInventoryEntities();
         for (Entity item : player.equipped) {
             if (remainingItems.remove(item))
-                ui.addInventoryEntity(item);
+                ui.addInventoryEntity(item, "(e)");
         }
         for (Entity item : player.worn) {
             if (remainingItems.remove(item))
-                ui.addInventoryEntity(item);
+                ui.addInventoryEntity(item, "(w)");
         }
         for (Entity item : player.inventory) {
             if (remainingItems.remove(item))
-                ui.addInventoryEntity(item);
+                ui.addInventoryEntity(item, null);
         }
         if (isInInventory(savedSE))
             ui.selectEntity(savedSE);

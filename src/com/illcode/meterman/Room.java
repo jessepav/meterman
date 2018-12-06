@@ -59,13 +59,17 @@ public interface Room
 
     /**
      * Called when the player has entered the room.
+     * @param fromRoom the room (possibly null) from which the player entered
      */
-    void entered();
+    void entered(Room fromRoom);
 
     /**
      * Called as the player is exiting the room (but is still there)
+     * @param toRoom the room the player is attempting to move to.
+     * @return true to block the player from exiting, false to allow the exit (note that
+     *          the exit may fail for other reasons)
      */
-    void exiting();
+    boolean exiting(Room toRoom);
 
     /**
      * Returns a modifiable Map that can be used to store properties useful for custom processing.

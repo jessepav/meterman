@@ -13,7 +13,7 @@ import static com.illcode.meterman.Attributes.DARK;
 /**
  * A Room that handles {@link Attributes#DARK darkness} by returning a different name,
  * exit name, and description if the room is dark and there is no light source. It
- * will also conceal any entities in a dark room.
+ * will also conceal any entities in it if dark.
  */
 public class DarkRoom extends BaseRoom
 {
@@ -52,10 +52,13 @@ public class DarkRoom extends BaseRoom
 
     // You cannot see what's in the room if it's dark
     public List<Entity> getRoomEntities() {
+        if (delegate != null)
+            return delegate.getRoomEntities(this);
+
         if (isDark())
             return Collections.emptyList();
         else
-            return super.getRoomEntities();
+            return entities;
     }
 
     public boolean isDark() {

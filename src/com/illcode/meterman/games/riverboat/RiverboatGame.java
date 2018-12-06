@@ -57,7 +57,7 @@ public class RiverboatGame implements Game
         // Install the state object for part 1
         RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
         statePart1.init();
-        statePart1.install(worldState.worldData);
+        statePart1.saveTo(worldState.worldData);
     }
 
     /**

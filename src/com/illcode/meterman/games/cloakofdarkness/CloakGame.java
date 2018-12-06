@@ -1,10 +1,7 @@
 package com.illcode.meterman.games.cloakofdarkness;
 
 import com.illcode.meterman.*;
-import com.illcode.meterman.impl.BaseEntity;
-import com.illcode.meterman.impl.BaseRoom;
-import com.illcode.meterman.impl.DarkRoom;
-import com.illcode.meterman.impl.WorldBuilder;
+import com.illcode.meterman.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +62,12 @@ public class CloakGame implements Game
         BaseEntity cloak = wb.loadEntity("cloak");
         BaseEntity hook = wb.loadEntity("hook");
         BaseEntity message = wb.loadEntity("scrawled-message");
+        wb.loadEntity("dark-bar-junk1");
+        wb.loadEntity("dark-bar-junk2");
+        wb.loadEntity("dark-bar-junk3");
+
+        cloak.setAttribute(Attributes.WEARABLE);
+        cloak.setAttribute(Attributes.TAKEABLE);
 
         // The patio is a "fake" room that the player will not be allowed to move to
         BaseRoom patio = new BaseRoom();
@@ -79,18 +82,32 @@ public class CloakGame implements Game
 
         wb.putEntitiesInRoom("cloakroom", "hook");
         wb.putEntitiesInRoom("bar", "scrawled-message");
-        worldState.player.inventory.add(cloak);
-        worldState.player.currentRoom = foyer;
 
-        CloakManager cloakManager = new CloakManager();
-        cloakManager.init(wb.getEntityIdMap(), wb.getRoomIdMap());
-        cloakManager.saveTo(worldState.worldData);
-        cloakManager.register();
+        Player player = worldState.player;
+        player.inventory.add(cloak);
+        player.worn.add(cloak);
+        player.currentRoom = foyer;
+        for (Entity e : player.inventory)
+            e.setRoom(player.currentRoom);
+
+        BasicWorldManager basicWorldManager = new BasicWorldManager();
+        basicWorldManager.saveTo(worldState.worldData);
+        basicWorldManager.register();
+
+        CloakState cloakState = new CloakState();
+        cloakState.init();
+        cloakState.saveTo(worldState.worldData);
 
         CloakDelegate cloakDelegate = new CloakDelegate();
-        cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap());
+        cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap(), cloakState);
+        // Delegate entities
         hook.setDelegate(cloakDelegate);
         cloak.setDelegate(cloakDelegate);
+        message.setDelegate(cloakDelegate);
+        // and rooms
+        foyer.setDelegate(cloakDelegate);
+        cloakroom.setDelegate(cloakDelegate);
+        bar.setDelegate(cloakDelegate);
     }
 
     @SuppressWarnings("unchecked")
