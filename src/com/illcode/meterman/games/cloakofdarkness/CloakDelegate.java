@@ -17,15 +17,15 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
     private Map<String,BaseRoom> roomIdMap;
 
     private TextBundle b;
-
     private CloakState state;
+
     private BaseEntity cloak, hook, message;
     private BaseRoom cloakroom, foyer, patio;
     private DarkRoom bar;
 
-    private List<String> actions;
-    private List<Entity> darkBarEntities;
-    private List<String> darkBarActions;
+    private List<String> actions;   // used in getActions()
+    private List<Entity> darkBarEntities;  // entities found in the bar when it's dark
+    private List<String> darkBarActions;  // actions available for those darkBarEntities
 
     void init(Map<String,BaseEntity> entityIdMap, Map<String,BaseRoom> roomIdMap, CloakState cloakState) {
         actions = new ArrayList<>(8);
