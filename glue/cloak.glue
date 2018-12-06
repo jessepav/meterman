@@ -1,0 +1,24 @@
+[ name ]
+
+Cloak of Darkness
+
+[ description ]
+
++--------------------------------------+
+
+
+  Our implementation of the Cloak of
+  Darkness specification used to test
+  new IF systems.
+
+
+
++--------------------------------------+
+
+[ assets-path ]
+
+cloakofdarkness
+
+[ create-game-code ]
+
+new com.illcode.meterman.games.cloakofdarkness.CloakGame();

@@ -12,7 +12,7 @@ public class RiverboatGame implements Game
 {
     private static final String NAME = "The Riverboat";
 
-    private TextBundle bundle;
+    private static TextBundle bundle;
     
     public RiverboatGame() {
     }
@@ -22,7 +22,9 @@ public class RiverboatGame implements Game
     }
 
     public void init() {
-
+        Utils.setGameAssetsPath("riverboat");
+        bundle = TextBundle.loadBundle(Utils.pathForGameAsset("riverboat-bundle.txt"));
+        Meterman.setGameBundle(bundle);
     }
 
     public WorldState getInitialWorldState() {
@@ -49,7 +51,6 @@ public class RiverboatGame implements Game
     }
 
     private void setupWorldState(WorldState worldState) {
-        bundle = TextBundle.loadBundle(Utils.pathForAsset("riverboat/riverboat-bundle.txt"), Meterman.getSystemBundle());
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
         worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
         worldState.worldData.put("roomIdMap", wb.getRoomIdMap());

@@ -159,6 +159,7 @@ public final class GameManager
         worldState = null;
         Meterman.setGameBundle(null);
         Utils.resetActionNameTranslations();
+        Utils.setGameAssetsPath(null);
         if (game != null) {
             game.dispose();
             game = null;

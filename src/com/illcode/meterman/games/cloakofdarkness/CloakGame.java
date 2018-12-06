@@ -6,8 +6,6 @@ import com.illcode.meterman.impl.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.illcode.meterman.ui.UIConstants.*;
-
 public class CloakGame implements Game
 {
     private static final String NAME = "Cloak of Darkness";
@@ -22,11 +20,12 @@ public class CloakGame implements Game
     }
 
     public void init() {
-        Utils.installActionNameTranslations(Utils.pathForAsset("cloakofdarkness/cloak-action-translations.json"));
-        bundle = TextBundle.loadBundle(Utils.pathForAsset("cloakofdarkness/cloak-bundle.txt"));
+        Utils.setGameAssetsPath("cloakofdarkness");
+        Utils.installActionNameTranslations(Utils.pathForGameAsset("cloak-action-translations.json"));
+        bundle = TextBundle.loadBundle(Utils.pathForGameAsset("cloak-bundle.txt"));
         Meterman.setGameBundle(bundle);  // which also sets the bundle's parent to the system bundle
-        Meterman.ui.loadImage("cloak", Utils.pathForAsset("cloakofdarkness/cloak.png"));
-        Meterman.ui.loadImage("phantom-frame-image", Utils.pathForAsset("cloakofdarkness/phantom-frame-image.png"));
+        Meterman.ui.loadImage("cloak", Utils.pathForGameAsset("cloak.png"));
+        Meterman.ui.loadImage("phantom-frame-image", Utils.pathForGameAsset("phantom-frame-image.png"));
     }
 
     public void about() {

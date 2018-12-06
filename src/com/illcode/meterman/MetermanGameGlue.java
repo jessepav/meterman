@@ -1,7 +1,7 @@
 package com.illcode.meterman;
 
 /**
- * The interface that games will implement in BeanShell to be integrated into
+ * The interface used in the discovery of <tt>Game</tt>S which will be integrated into
  * the Meterman system and shown in the "New Game" list.
  */
 public interface MetermanGameGlue {

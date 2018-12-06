@@ -17,8 +17,8 @@ public final class Utils
 {
     public static Logger logger;
     private static Random random;
-    private static Path assetsPath;
-    private static FileSystem zipfs;
+    private static Path assetsPath, systemAssetsPath, gameAssetsPath;
+    private static FileSystem systemZipFs, gameZipFs;
 
     private static Map<String,String> actionNameMap;
 
@@ -27,14 +27,31 @@ public final class Utils
     }
 
     public static void dispose() {
-        if (zipfs != null) {
-            try {
-                zipfs.close();
-            } catch (IOException e) {
-                logger.log(Level.WARNING, "Utils.dispose()", e);
-            }
-        }
+        closeSystemZipFs();
+        closeGameZipFs();
         actionNameMap = null;
+    }
+
+    public static void closeSystemZipFs() {
+        if (systemZipFs != null) {
+            try {
+                systemZipFs.close();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Utils.closeSystemZipFs()", e);
+            }
+            systemZipFs = null;
+        }
+    }
+
+    public static void closeGameZipFs() {
+        if (gameZipFs != null) {
+            try {
+                gameZipFs.close();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Utils.closeGameZipFs()", e);
+            }
+            gameZipFs = null;
+        }
     }
 
     /**
@@ -124,38 +141,72 @@ public final class Utils
     }
 
     /**
+     * Sets the base assets path against which the system and game assets paths will be resolved.
+     * @param assetsPath
+     */
+    public static void setAssetsPath(Path assetsPath) {
+        Utils.assetsPath = assetsPath;
+    }
+
+    /** Sets the system assets path. This can be a directory or a ZIP file.
+     * @param path path, relative to {@link #setAssetsPath(Path) assetsPath} */
+    public static void setSystemAssetsPath(String path) {
+        closeSystemZipFs();
+        if (path != null) {
+            systemAssetsPath = assetsPath.resolve(path);
+            if (StringUtils.endsWithIgnoreCase(path, ".zip")) {
+                try {
+                    systemZipFs = FileSystems.newFileSystem(systemAssetsPath, null);
+                    systemAssetsPath = systemZipFs.getPath("/");
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Utils.setSystemAssetsPath()", e);
+                    systemAssetsPath = null;
+                }
+            }
+        } else {
+            systemAssetsPath = null;
+        }
+    }
+
+    /** Sets the game assets path. This can be a directory or a ZIP file.
+     * @param path path, relative to {@link #setAssetsPath(Path) assetsPath} */
+    public static void setGameAssetsPath(String path) {
+        closeGameZipFs();
+        if (path != null) {
+            gameAssetsPath = assetsPath.resolve(path);
+            if (StringUtils.endsWithIgnoreCase(path, ".zip")) {
+                try {
+                    gameZipFs = FileSystems.newFileSystem(gameAssetsPath, null);
+                    gameAssetsPath = gameZipFs.getPath("/");
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Utils.setGameAssetsPath()", e);
+                    gameAssetsPath = null;
+                }
+            }
+        } else {
+            gameAssetsPath = null;
+        }
+    }
+
+    /**
      * Returns a Path representing the given asset, resolved against the game assets path.
      * @param asset path (relative to the game assets path) of the asset we want
      * @return the resolved path
      */
-    public static Path pathForAsset(String asset) {
-        if (assetsPath == null) {
-            String p = Utils.pref("assets-path", "assets");
-            if (StringUtils.endsWithIgnoreCase(p, ".zip")) {
-                try {
-                    zipfs = FileSystems.newFileSystem(Paths.get(p), null);
-                } catch (IOException e) {
-                    logger.log(Level.WARNING, "Utils.pathForAsset()", e);
-                    return null;
-                }
-                assetsPath = zipfs.getPath("/");
-            } else {
-                assetsPath = Paths.get(p);
-            }
-        }
-        return assetsPath.resolve(asset);
+    public static Path pathForGameAsset(String asset) {
+        return gameAssetsPath.resolve(asset);
     }
 
     /**
      * Returns a Path representing the given asset, resolved against the system assets path.
      * <p/>
      * This method is for the Meterman system classes only: games should call
-     * {@link #pathForAsset(String)} instead.
+     * {@link #pathForGameAsset(String)} instead.
      * @param path (relative to the system assets path) of the asset we want
      * @return the resolved path
      */
     public static Path pathForSystemAsset(String asset) {
-        return pathForAsset(asset);
+        return systemAssetsPath.resolve(asset);
     }
 
     /**

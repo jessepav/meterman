@@ -19,7 +19,7 @@ import static com.illcode.meterman.Utils.logger;
 
 public final class Meterman
 {
-    public static Path prefsPath, savesPath;
+    public static Path prefsPath, savesPath, assetsPath, gluePath;
     static Properties prefs;
 
     /** The GameManager running the current game */
@@ -55,14 +55,28 @@ public final class Meterman
         if (Files.notExists(savesPath))
             Files.createDirectories(savesPath);
 
-        systemBundle = TextBundle.loadBundle(Utils.pathForSystemAsset(Utils.pref("system-bundle", "meterman/system-bundle.txt")));
+        assetsPath = Paths.get(Utils.pref("assets-path", "assets"));
+        if (Files.notExists(assetsPath)) {
+            logger.severe("Assets path doesn't exist!");
+            return;
+        }
+        Utils.setAssetsPath(assetsPath);
+        Utils.setSystemAssetsPath(Utils.pref("system-assets-path", "meterman"));
+
+        gluePath = Paths.get(Utils.pref("glue-path", "glue"));
+        if (Files.notExists(gluePath)) {
+            logger.severe("Glue path doesn't exist!");
+            return;
+        }
+
+        systemBundle = TextBundle.loadBundle(Utils.pathForSystemAsset("system-bundle.txt"));
         if (systemBundle == null) {
             logger.severe("Invalid system bundle path in config!");
             return;
         }
 
         systemActionNameTranslations = Utils.loadActionNameTranslations(
-            Utils.pathForSystemAsset("meterman/system-action-translations.json"));
+            Utils.pathForSystemAsset("system-action-translations.json"));
         Utils.resetActionNameTranslations();
 
         gm = new GameManager();

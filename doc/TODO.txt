@@ -20,7 +20,7 @@ The glue is what makes dynamic discovery easy (easy as in using what I already k
 Meterman starts, it will run each BeanShell script in "glue", each of which should implement
 a discovery interface:
 
-  public interface MetermanGamePack {
+  public interface MetermanGameGlue {
       String getName();
       String getDescription();
       String getAssetsPath();
