@@ -16,7 +16,6 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
     private Map<String,BaseEntity> entityIdMap;
     private Map<String,BaseRoom> roomIdMap;
 
-    private TextBundle b;
     private CloakState state;
 
     private BaseEntity cloak, hook, message;
@@ -32,7 +31,6 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         this.entityIdMap = entityIdMap;
         this.roomIdMap = roomIdMap;
         this.state = cloakState;
-        b = Meterman.getSystemBundle();
         cloak = entityIdMap.get("cloak");
         hook = entityIdMap.get("hook");
         message = entityIdMap.get("scrawled-message");
@@ -58,13 +56,13 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         if (e == cloak) {
             String s = e.description;
             if (state.cloakHung)
-                s += " " + b.getPassage("cloak-hung-description");
+                s += " " + bundle().getPassage("cloak-hung-description");
             return s;
         } else if (e == message) {
             if (state.numDarkBarActions < 3)
-                return b.getPassage("winning-message");
+                return bundle().getPassage("winning-message");
             else
-                return b.getPassage("losing-message");
+                return bundle().getPassage("losing-message");
         } else {
             return e.description;
         }
@@ -90,16 +88,16 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         if (e == cloak && action.equals(BasicActions.getTakeAction())) {
             if (state.cloakHung) {
                 state.cloakHung = false;  // can't be hung if we took it!
-                ui.appendTextLn(b.getPassage("unhang-cloak-message"));
+                ui.appendTextLn(bundle().getPassage("unhang-cloak-message"));
             }
             return false;  // but let the regular machinery operate as usual
         } else if (action.equals(getHangOnHookAction()) || action.equals(getHangCloakAction())) {
             gm.moveEntity(cloak, cloakroom);  // drop it, if in inventory
             state.cloakHung = true;
-            ui.appendTextLn(b.getPassage("hang-cloak-message"));
+            ui.appendTextLn(bundle().getPassage("hang-cloak-message"));
             return true;
         } else if (darkBarEntities.contains(e)) {
-            ui.appendTextLn(b.getPassage("dark-bar-action-warning"));
+            ui.appendTextLn(bundle().getPassage("dark-bar-action-warning"));
             state.numDarkBarActions++;
             return true;
         } else {
@@ -110,7 +108,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
     public boolean suppressParserMessage(String action) {
         if (action.equals(getHangOnHookAction()) || action.equals(getHangCloakAction())) {
             ui.appendNewline();
-            ui.appendTextLn(b.getPassage("hang-cloak-parser-message"));
+            ui.appendTextLn(bundle().getPassage("hang-cloak-parser-message"));
             return true;
         } else {
             return false;
@@ -135,7 +133,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
             else
                 bar.setAttribute(Attributes.DARK);
         } else if (r == foyer && toRoom == patio) {
-            ui.appendTextLn(b.getPassage("no-go-patio"));
+            ui.appendTextLn(bundle().getPassage("no-go-patio"));
             return true;
         }
         return false;
@@ -146,6 +144,10 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
             return darkBarEntities;
         else
             return r.entities;
+    }
+
+    private TextBundle bundle() {
+        return Meterman.getSystemBundle();
     }
 
     //endregion
