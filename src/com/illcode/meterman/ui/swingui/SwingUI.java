@@ -117,6 +117,10 @@ public class SwingUI implements MetermanUI
         mainFrame.setFrameImage(img);
     }
 
+    public String getFrameImage() {
+        return currentFrameImage;
+    }
+
     public void setEntityImage(String imageName) {
         if (currentEntityImage.equals(imageName))
             return;
@@ -127,6 +131,10 @@ public class SwingUI implements MetermanUI
         else
             img = imageMap.get(imageName);
         mainFrame.setEntityImage(img);
+    }
+
+    public String getEntityImage() {
+        return currentEntityImage;
     }
 
     public void setRoomName(String name) {

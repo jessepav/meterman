@@ -33,8 +33,8 @@ the classpath, so we don't have to deal with that issue, which is one of the maj
 of the real plugin frameworks.
 
 When I finish setting up the game "plugin" system, I'll migrate the current games out of the
-Meterman module into a separate directory (and Github project), so I can work on each one
-individually.
+Meterman source tree into a separate directory (and separate IDEA module), so I can work on
+each one individually.
 
 == Things I won't do ==
 

@@ -77,12 +77,26 @@ public interface MetermanUI
     void setFrameImage(String imageName);
 
     /**
+     * Get the name of the current frame image. This can be useful if a game object
+     * wants to save the current image name so that it can restore it later.
+     * @return the name of the current frame image.
+     */
+    String getFrameImage();
+
+    /**
      * Sets the entity image that will be drawn inset in the frame image. The recommended size for entity
      * images is 140x140 pixels, or an integer fraction of that, in which case the image will be scaled up;
      * the image itself should have a border to visually separate it from the frame image.
      * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
      */
     void setEntityImage(String imageName);
+
+    /**
+     * Get the name of the current entity image. This can be useful if a game object
+     * wants to save the current image name so that it can restore it later.
+     * @return the name of the current entity image.
+     */
+    String getEntityImage();
 
     /**
      * Sets the room name displayed in the UI
