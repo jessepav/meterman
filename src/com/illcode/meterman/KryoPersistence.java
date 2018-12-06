@@ -3,9 +3,15 @@ package com.illcode.meterman;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import de.javakaffee.kryoserializers.ArraysAsListSerializer;
+import de.javakaffee.kryoserializers.BitSetSerializer;
+import de.javakaffee.kryoserializers.RegexSerializer;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.regex.Pattern;
 
 /**
  * Uses Kryo to serialize world state.
@@ -19,6 +25,9 @@ public final class KryoPersistence implements Persistence
 
     public void init() {
         kryo = new Kryo();
+        kryo.register(BitSet.class, new BitSetSerializer());
+        kryo.register(Pattern.class, new RegexSerializer());
+        kryo.register(Arrays.asList("").getClass(), new ArraysAsListSerializer());
         kryo.setReferences(true);  // properly serialize multiple references and cyclic graphs
     }
 
