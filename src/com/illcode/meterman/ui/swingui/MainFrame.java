@@ -3,7 +3,7 @@ package com.illcode.meterman.ui.swingui;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.SystemActions;
 import com.illcode.meterman.Utils;
-import com.illcode.meterman.games.GamesList;
+import com.illcode.meterman.GamesList;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 import com.jformdesigner.model.FormModel;

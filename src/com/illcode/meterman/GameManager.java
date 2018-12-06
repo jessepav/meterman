@@ -1,7 +1,6 @@
 package com.illcode.meterman;
 
 import com.illcode.meterman.event.*;
-import com.illcode.meterman.games.GamesList;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 

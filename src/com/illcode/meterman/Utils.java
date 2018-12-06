@@ -124,8 +124,8 @@ public final class Utils
     }
 
     /**
-     * Returns a Path representing the given asset, resolved against the base assets path.
-     * @param asset path (relative to the base assets path) of the asset we want
+     * Returns a Path representing the given asset, resolved against the game assets path.
+     * @param asset path (relative to the game assets path) of the asset we want
      * @return the resolved path
      */
     public static Path pathForAsset(String asset) {
@@ -144,6 +144,18 @@ public final class Utils
             }
         }
         return assetsPath.resolve(asset);
+    }
+
+    /**
+     * Returns a Path representing the given asset, resolved against the system assets path.
+     * <p/>
+     * This method is for the Meterman system classes only: games should call
+     * {@link #pathForAsset(String)} instead.
+     * @param path (relative to the system assets path) of the asset we want
+     * @return the resolved path
+     */
+    public static Path pathForSystemAsset(String asset) {
+        return pathForAsset(asset);
     }
 
     /**

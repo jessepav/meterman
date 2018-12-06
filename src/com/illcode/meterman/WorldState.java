@@ -1,8 +1,5 @@
 package com.illcode.meterman;
 
-import com.illcode.meterman.games.GamesList;
-
-import java.util.List;
 import java.util.Map;
 
 /**

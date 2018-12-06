@@ -1,4 +1,4 @@
-package com.illcode.meterman.games;
+package com.illcode.meterman;
 
 import com.illcode.meterman.Game;
 import com.illcode.meterman.TextBundle;
@@ -55,7 +55,7 @@ public class GamesList
      */
     public static String getGameDescription(String gameName) {
         if (descriptionBundle == null)
-            descriptionBundle = TextBundle.loadBundle(Utils.pathForAsset("game-description-bundle.txt"));
+            descriptionBundle = TextBundle.loadBundle(Utils.pathForSystemAsset("game-description-bundle.txt"));
         return descriptionBundle.getPassage(gameName);
     }
 }

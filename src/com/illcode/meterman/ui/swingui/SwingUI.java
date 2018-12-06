@@ -45,7 +45,7 @@ public class SwingUI implements MetermanUI
         setStatusLabel(UIConstants.CENTER_LABEL, "");
         setStatusLabel(UIConstants.RIGHT_LABEL, "");
 
-        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForAsset("meterman/default-frame-image.png"));
+        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForSystemAsset("meterman/default-frame-image.png"));
         currentFrameImage = NO_IMAGE;
         currentEntityImage = NO_IMAGE;
     }

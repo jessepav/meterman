@@ -6,6 +6,35 @@ Implement Cloak of Darkness (see firthworks.com description)
 
 Write the Riverboat, modifying the engine as needed to enable required features.
 
+== Things to do in the future ==
+
+Implement a mechanism to load games dynamically from JAR (code) and ZIP (resources). We
+could use a Java plugin framework like JPF or pf4j, but that requires more structure than
+I may want. Alternately, we could install a game by
+
+    1. Putting GameName.jar file in the "jar" subdirectory.
+    2. Putting GameName-assets.zip in the "assets" subdirectory.
+    3. Putting GameName-glue.bsh in the "glue" subdirectory.
+
+The glue is what makes dynamic discovery easy (easy as in using what I already know). When
+Meterman starts, it will run each BeanShell script in "glue", each of which should implement
+a discovery interface:
+
+  public interface MetermanGamePack {
+      String getName();
+      String getDescription();
+      String getAssetsPath();
+      Game createGame();
+  }
+
+This is basically what the current GamesList class does, with its hardcoded list of games.
+The script or launcher that runs Meterman will have already added all the jars in "jar" to
+the classpath, so we don't have to deal with that issue, which is one of the major facilities
+of the real plugin frameworks.
+
+When I finish setting up the game "plugin" system, I'll migrate the current games out of the
+Meterman module into a separate directory (and Github project), so I can work on each one
+individually.
 
 == Things I won't do ==
 
