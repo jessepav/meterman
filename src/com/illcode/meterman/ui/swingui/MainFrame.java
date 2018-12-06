@@ -287,11 +287,17 @@ class MainFrame implements ActionListener, ListSelectionListener
         } else if (source == quitMenuItem) {
             close();
         } else if (source == musicCheckBoxMenuItem) {
-            Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
+            boolean enabled = musicCheckBoxMenuItem.isSelected();
+            Meterman.sound.setMusicEnabled(enabled);
+            Utils.setPref("music", Boolean.toString(enabled));
         } else if (source == soundCheckBoxMenuItem) {
-            Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
+            boolean enabled = soundCheckBoxMenuItem.isSelected();
+            Meterman.sound.setSoundEnabled(enabled);
+            Utils.setPref("sound", Boolean.toString(enabled));
         } else if (source == alwaysLookCheckBoxMenuItem) {
-            Meterman.gm.setAlwaysLook(alwaysLookCheckBoxMenuItem.isSelected());
+            boolean alwaysLook = alwaysLookCheckBoxMenuItem.isSelected();
+            Meterman.gm.setAlwaysLook(alwaysLook);
+            Utils.setPref("always-look", Boolean.toString(alwaysLook));
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
         }

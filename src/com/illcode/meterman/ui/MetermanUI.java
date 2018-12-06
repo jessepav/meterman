@@ -53,7 +53,7 @@ public interface MetermanUI
     void openURL(String url);
 
     /**
-     * Load an image into the UI.
+     * Load an image into the UI. JPEG and PNG (with bitmask transparency) are supported.
      * @param name name by which the image will be referred to in the {@code setXXXImage()} methods.
      * @param p path of the image file.
      */
@@ -70,15 +70,16 @@ public interface MetermanUI
 
     /**
      * Sets the image displayed in the main UI frame. The recommended size for
-     * frame images is 150x400 pixels.
+     * frame images is 150x400 pixels, or an integer fraction of that, in which
+     * case the image will be scaled up.
      * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
      */
     void setFrameImage(String imageName);
 
     /**
-     * Sets the entity image that will be drawn inset in the frame image.
-     * The recommended size for entity images is 140x140 pixels; the image
-     * itself should have a border to visually separate it from the frame image.
+     * Sets the entity image that will be drawn inset in the frame image. The recommended size for entity
+     * images is 140x140 pixels, or an integer fraction of that, in which case the image will be scaled up;
+     * the image itself should have a border to visually separate it from the frame image.
      * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
      */
     void setEntityImage(String imageName);

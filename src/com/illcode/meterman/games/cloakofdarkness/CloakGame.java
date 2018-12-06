@@ -26,6 +26,7 @@ public class CloakGame implements Game
         bundle = TextBundle.loadBundle(Utils.pathForAsset("cloakofdarkness/cloak-bundle.txt"));
         Meterman.setGameBundle(bundle);  // which also sets the bundle's parent to the system bundle
         Meterman.ui.loadImage("cloak", Utils.pathForAsset("cloakofdarkness/cloak.png"));
+        Meterman.ui.loadImage("phantom-frame-image", Utils.pathForAsset("cloakofdarkness/phantom-frame-image.png"));
     }
 
     public void about() {
@@ -45,6 +46,7 @@ public class CloakGame implements Game
     }
 
     public void start(boolean newGame) {
+        Meterman.ui.setFrameImage("phantom-frame-image");
     }
 
     public void dispose() {
