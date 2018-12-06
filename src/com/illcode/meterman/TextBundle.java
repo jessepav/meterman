@@ -1,7 +1,6 @@
 package com.illcode.meterman;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.BufferedReader;
@@ -17,8 +16,7 @@ import java.util.regex.Pattern;
 import static com.illcode.meterman.Utils.logger;
 
 /**
- * A TextBundle is a container for named text passages, also supporting variable subtitution, and parent
- * bundle chaining.
+ * A TextBundle is a container for named text passages, supporting parent bundle chaining.
  * <p/>
  * Here is an example bundle illustrating the file format:
  * <pre>{@code
@@ -74,9 +72,6 @@ public final class TextBundle
 
     private Map<String, String> passageMap;
 
-    private StrSubstitutor sub;
-    private Map<String,String> subMap;
-
     private TextBundle parent;
 
     public TextBundle() {
@@ -90,9 +85,6 @@ public final class TextBundle
     public TextBundle(TextBundle parent) {
         this.parent = parent;
         passageMap = new HashMap<>();
-        subMap = new HashMap<>();
-        sub = new StrSubstitutor(subMap);
-        sub.setValueDelimiter('|');
     }
 
     public TextBundle getParent() {
@@ -101,47 +93,6 @@ public final class TextBundle
 
     public void setParent(TextBundle parent) {
         this.parent = parent;
-    }
-
-    /**
-     * Text bundle supports variable substition, using
-     * <a href="https://jessepav.github.io/java-api-docs/commons-lang3-3.4/apidocs/org/apache/commons/lang3/text/StrSubstitutor.html">
-     * Apache StrSubstitutor</a> with a default value delimeter of {@code '|'}
-     * @param varname variable name
-     * @param val the value of the variable when performing substitions
-     */
-    public void addSubstitution(String varname, String val) {
-        subMap.put(varname, val);
-    }
-
-    /**
-     * Adds all substitutions from a given Map
-     * @param subs map from which to take substitutions
-     */
-    public void addSubstitutions(Map<String,String> subs) {
-        subMap.putAll(subs);
-    }
-
-    /**
-     * Sets the internal substitution map to those in a given Map
-     * @param subs map whose entries will replace our internal substituions
-     */
-    public void setSubstitutions(Map<String,String> subs) {
-        subMap.clear();
-        subMap.putAll(subs);
-    }
-
-    /**
-     * Remove a variable from our map of substitutions.
-     * @param varname variable name
-     */
-    public void removeSubstitution(String varname) {
-        subMap.remove(varname);
-    }
-
-    /** Clear all variable substitutions. */
-    public void clearSubstitutions() {
-        subMap.clear();
     }
 
     /** Returns true if this bundle, or any bundle up its parent chain, contains a passage
@@ -163,7 +114,7 @@ public final class TextBundle
     public String getPassage(String name) {
         String s = passageMap.get(name);
         if (s != null)
-            return sub.replace(s);
+            return s;
         else if (parent != null)
             return parent.getPassage(name);
         else
@@ -189,7 +140,7 @@ public final class TextBundle
         String text = whiteSpacePattern.matcher(s).replaceAll(" ");
         if (col > 0)
             text = WordUtils.wrap(text, col);
-        return sub.replace(text);
+        return text;
     }
 
     /**
