@@ -3,6 +3,7 @@ package com.illcode.meterman.impl;
 import com.eclipsesource.json.*;
 import com.illcode.meterman.*;
 import com.illcode.meterman.ui.MetermanUI;
+import com.illcode.meterman.ui.UIConstants;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -16,6 +17,17 @@ import static com.illcode.meterman.Utils.logger;
  * It is <em>not</em> meant to be saved into the world state for persistence. However, you can add the
  * {@link #getEntityIdMap() entity-id} and {@link #getRoomIdMap() room-id} maps to the world state
  * if any game objects need to refer to them during gameplay.
+ * <p/>
+ * If you use the four "mass effect" methods to load your rooms and entities, the order of
+ * calls with usually be
+ * <ol>
+ *     <li>{@link #loadRooms(String)}</li>
+ *     <li>{@link #loadEntities(String)}</li>
+ *     <li>{@link #loadRoomConnections(String)}</li>
+ *     <li>{@link #loadEntityPlacements(String)}</li>
+ * </ol>
+ * In this case, only delegates and managers will need to be manually wired together in a Game's
+ * {@code getInitialWorldState()} method.
  */
 public class WorldBuilder
 {
@@ -542,6 +554,174 @@ public class WorldBuilder
             Entity e = getEntity(id);
             if (e != null && !r.entities.contains(e))
                 r.entities.add(e);
+        }
+    }
+
+    /**
+     * Loads rooms listed in a JSON definition in a bundle passage. A definition entry looks like this:
+     * <pre>{@code
+     *   [
+     *      passageName1, passageName2, ...
+     *   ]
+     * }</pre>
+     * (you need to format the JSON array in this way because if it's on one line it will
+     * be treated as a bundle passage name)
+     * <p/>
+     * Certain suffixes may be attacked to a passage name for special treatment:
+     * <ul>
+     *     <li>Suffix <tt>:dark</tt> - loaded as a {@link #loadDarkRoom(String) DarkRoom}</li>
+     * </ul>
+     * For each passage name listed, we will call {@link #loadRoom(String)}.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     */
+    public void loadRooms(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonArray passageList = Json.parse(json).asArray();
+            for (JsonValue v : passageList) {
+                String p = v.asString();
+                if (p.endsWith(":dark"))
+                    loadDarkRoom(p.substring(0, p.length() - 5));
+                else
+                    loadRoom(p);
+            }
+        } catch (ParseException|UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadRooms()", ex);
+        }
+    }
+
+    /**
+     * Loads entities listed in a JSON definition in a bundle passage. A definition entry looks like this:
+     * <pre>{@code
+     *   [
+     *      passageName1, passageName2, ...
+     *   ]
+     * }</pre>
+     * (you need to format the JSON array in this way because if it's on one line it will
+     * be treated as a bundle passage name)
+     * <p/>
+     * Certain suffixes may be attacked to a passage name for special treatment:
+     * <ul>
+     *     <li>Suffix <tt>:door</tt> - loaded as a {@link #loadDoor(String) Door}</li>
+     *     <li>Suffix <tt>:talking</tt> - loaded as a {@link #loadTalkingEntity(String)} TalkingEntity</li>
+     * </ul>
+     * For each passage name listed, we will call {@link #loadEntity(String)}.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     */
+    public void loadEntities(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonArray passageList = Json.parse(json).asArray();
+            for (JsonValue v : passageList) {
+                String p = v.asString();
+                if (p.endsWith(":door"))
+                    loadDoor(p.substring(0, p.length() - 5));
+                else if (p.endsWith(":talking"))
+                    loadTalkingEntity(p.substring(0, p.length() - 8));
+                else
+                    loadEntity(p);
+            }
+        } catch (ParseException|UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadEntities()", ex);
+        }
+    }
+
+    /**
+     * Places entities into rooms based on a JSON definition given in a passage bundle.
+     * A definition entry looks like this:
+     * <pre>{@code
+     * [
+     *     [roomId1, entityId1, entityId2, ...],
+     *     [roomId2, entityId1, entityId2, ...],
+     *     ...
+     * ]
+     * }</pre>
+     * All rooms and entities referenced must already have been loaded prior to calling
+     * this method.
+     * @param passageName
+     */
+    public void loadEntityPlacements(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonArray placementList = Json.parse(json).asArray();
+            for (JsonValue v : placementList) {
+                JsonArray arr = v.asArray();
+                int n = arr.size();
+                BaseRoom r = getRoom(arr.get(0).asString());
+                for (int i = 1; i < n; i++) {
+                    Entity e = getEntity(arr.get(i).asString());
+                    if (e != null && !r.entities.contains(e))
+                        r.entities.add(e);
+                }
+            }
+        } catch (ParseException|UnsupportedOperationException|IndexOutOfBoundsException ex) {
+            logger.log(Level.WARNING, "JSON error, loadEntityPlacements()", ex);
+        }
+    }
+
+    /**
+     * Loads a room-connection defintion from JSON in a bundle passage, and connects the rooms
+     * given in the defintion. A defintion entry looks like this:
+     * <pre>{@code
+     * [
+     *    [roomId1, pos1, roomId2, pos2],
+     *    [roomId1, pos1, roomId2],
+     *    [doorId, roomId1, pos1, roomId2, pos2, keyId, locked, open],
+     *    ...
+     * ]
+     * }</pre>
+     * The different lengths of arrays correspond to {@link #connectRooms(String, int, String, int)},
+     * {@link #connectRoomOneWay(String, int, String)}, and
+     * {@link #connectRoomsWithDoor(String, String, int, String, int, String, boolean, boolean)},
+     * respectively.
+     * <p/>
+     * The "pos" parameters take one of these string values:
+     * <blockquote><tt>
+     *      "NW", "N", "NE", "X1",<br/>
+     *      "W", "MID", "E", "X2",<br/>
+     *      "SW", "S", "SE", "X3"
+     * </blockquote></tt>
+     * No real input validation is performed, so write your JSON correctly!
+     * <p/>
+     * All rooms referenced in the connection list must have already been loaded prior to
+     * calling this method.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     */
+    public void loadRoomConnections(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonArray connectionList = Json.parse(json).asArray();
+            for (JsonValue v : connectionList) {
+                JsonArray arr = v.asArray();
+                switch (arr.size()) {
+                case 4:
+                    String roomId1 = arr.get(0).asString();
+                    int pos1 = UIConstants.buttonTextToPosition(arr.get(1).asString());
+                    String roomId2 = arr.get(2).asString();
+                    int pos2 = UIConstants.buttonTextToPosition(arr.get(3).asString());
+                    connectRooms(roomId1, pos1, roomId2, pos2);
+                    break;
+                case 3:
+                    roomId1 = arr.get(0).asString();
+                    pos1 = UIConstants.buttonTextToPosition(arr.get(1).asString());
+                    roomId2 = arr.get(2).asString();
+                    connectRoomOneWay(roomId1, pos1, roomId2);
+                    break;
+                case 8:
+                    String doorId = arr.get(0).asString();
+                    roomId1 = arr.get(1).asString();
+                    pos1 = UIConstants.buttonTextToPosition(arr.get(2).asString());
+                    roomId2 = arr.get(3).asString();
+                    pos2 = UIConstants.buttonTextToPosition(arr.get(4).asString());
+                    String keyId = arr.get(5).asString();
+                    boolean locked = arr.get(6).asBoolean();
+                    boolean open = arr.get(7).asBoolean();
+                    connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2, keyId, locked, open);
+                    break;
+                }
+            }
+        } catch (ParseException|UnsupportedOperationException|IndexOutOfBoundsException ex) {
+            logger.log(Level.WARNING, "JSON error, loadRoomConnections()", ex);
         }
     }
 

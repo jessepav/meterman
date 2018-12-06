@@ -4,6 +4,33 @@ This is the Meterman implementation of the Cloak of Darkness specification
 
    http://www.firthworks.com/roger/cloak/
 
+[ cloak-rooms ]
+
+[
+    "foyer", "bar:dark", "cloakroom", "patio"
+]
+
+[ cloak-entities ]
+
+[
+    "cloak", "hook", "scrawled-message", "dark-bar-junk1", "dark-bar-junk2", "dark-bar-junk3"
+]
+
+[ room-connections ]
+
+[
+    ["foyer", "S", "bar", "N"],
+    ["foyer", "W", "cloakroom", "E"],
+    ["foyer", "N", "patio"]
+]
+
+[ entity-placements ]
+
+[
+    ["cloakroom", "hook"],
+    ["bar", "scrawled-message"]
+]
+
 [ foyer ]
 
 {
@@ -31,6 +58,14 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "id" : "cloakroom",
     "name" : "Cloakroom",
     "description" : "..."
+}
+
+[ patio ]
+
+{
+    "id" : "patio",
+    "name" : "Patio",
+    "description" : "Fake Patio"
 }
 
 [ cloak ]

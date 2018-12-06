@@ -58,39 +58,20 @@ public class CloakGame implements Game
         worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
         worldState.worldData.put("roomIdMap", wb.getRoomIdMap());
 
-        BaseRoom foyer = wb.loadRoom("foyer");
-        DarkRoom bar = wb.loadDarkRoom("bar");
-        BaseRoom cloakroom = wb.loadRoom("cloakroom");
-        BaseEntity cloak = wb.loadEntity("cloak");
-        BaseEntity hook = wb.loadEntity("hook");
-        BaseEntity message = wb.loadEntity("scrawled-message");
-        wb.loadEntity("dark-bar-junk1");
-        wb.loadEntity("dark-bar-junk2");
-        wb.loadEntity("dark-bar-junk3");
+        wb.loadRooms("cloak-rooms");
+        wb.loadEntities("cloak-entities");
+        wb.loadRoomConnections("room-connections");
+        wb.loadEntityPlacements("entity-placements");
 
+        BaseEntity cloak = wb.getEntity("cloak");
         cloak.setAttribute(Attributes.WEARABLE);
         cloak.setAttribute(Attributes.TAKEABLE);
 
-        // The patio is a "fake" room that the player will not be allowed to move to
-        BaseRoom patio = new BaseRoom();
-        patio.init();
-        patio.id = "patio";
-        patio.name = patio.exitName = "Patio";
-        wb.putRoom(patio);
-
-        wb.connectRooms("foyer", S_BUTTON, "bar", N_BUTTON);
-        wb.connectRooms("foyer", W_BUTTON, "cloakroom", E_BUTTON);
-        wb.connectRoomOneWay("foyer", N_BUTTON, "patio");
-
-        wb.putEntitiesInRoom("cloakroom", "hook");
-        wb.putEntitiesInRoom("bar", "scrawled-message");
-
         Player player = worldState.player;
-        player.inventory.add(cloak);
         player.worn.add(cloak);
-        player.currentRoom = foyer;
-        for (Entity e : player.inventory)
-            e.setRoom(player.currentRoom);
+        player.currentRoom = wb.getRoom("foyer");
+        // Note that the GameManager will fix up the consistency of inventory items when
+        // a new game starts.
 
         BasicWorldManager basicWorldManager = new BasicWorldManager();
         basicWorldManager.saveTo(worldState.worldData);
@@ -102,14 +83,12 @@ public class CloakGame implements Game
 
         CloakDelegate cloakDelegate = new CloakDelegate();
         cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap(), cloakState);
-        // Delegate entities
-        hook.setDelegate(cloakDelegate);
-        cloak.setDelegate(cloakDelegate);
-        message.setDelegate(cloakDelegate);
-        // and rooms
-        foyer.setDelegate(cloakDelegate);
-        cloakroom.setDelegate(cloakDelegate);
-        bar.setDelegate(cloakDelegate);
+        // Delegate entities...
+        for (String entityId : new String[] {"hook", "cloak", "scrawled-message"})
+            wb.getEntity(entityId).setDelegate(cloakDelegate);
+        // ...and rooms
+        for (String roomId : new String[] {"foyer", "cloakroom", "bar"})
+            wb.getRoom(roomId).setDelegate(cloakDelegate);
     }
 
     @SuppressWarnings("unchecked")

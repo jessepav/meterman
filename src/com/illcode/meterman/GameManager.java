@@ -99,6 +99,7 @@ public final class GameManager
         worldState = game.getInitialWorldState();
         player = worldState.player;
         worldData = worldState.worldData;
+        ensurePlayerInventoryConsistent();
 
         // We store our listener lists in the worldState so that they're persisted
         storeListenerListsInWorldData();
@@ -111,6 +112,18 @@ public final class GameManager
         getCurrentRoom().entered(null);
         performLook(false);
         getCurrentRoom().setAttribute(Attributes.VISITED);
+    }
+
+    /** Make sure the player's inventory entities have integrity with the world. */
+    private void ensurePlayerInventoryConsistent() {
+        for (Entity e : player.worn)
+            if (!player.inventory.contains(e))
+                player.inventory.add(e);
+        for (Entity e : player.equipped)
+            if (!player.inventory.contains(e))
+                player.inventory.add(e);
+        for (Entity e : player.inventory)
+            e.setRoom(player.currentRoom);
     }
 
     /**
