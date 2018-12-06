@@ -90,6 +90,7 @@ public final class Meterman
 
         sound.setSoundEnabled(Utils.booleanPref("sound", true));
         sound.setMusicEnabled(Utils.booleanPref("music", true));
+        gm.setAlwaysLook(Utils.booleanPref("always-look", true));
 
         if (ui.run())
             shutdown();

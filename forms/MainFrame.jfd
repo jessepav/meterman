@@ -488,6 +488,13 @@ new FormModel {
 					"mnemonic": 83
 					"foreground": #Color4
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
+						name: "alwaysLookCheckBoxMenuItem"
+						"text": "Always Look when Entering Room"
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator7"
+					} )
+					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "musicCheckBoxMenuItem"
 						"text": "Music"
 					} )

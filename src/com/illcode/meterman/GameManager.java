@@ -46,6 +46,8 @@ public final class GameManager
 
     private Entity selectedEntity;  // currently selected entity, or null if none
 
+    private boolean alwaysLook; // see setAlwaysLook()
+
     public GameManager() {
     }
 
@@ -234,7 +236,8 @@ public final class GameManager
             e.enterScope();
         fireAfterPlayerMovement(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
-        performLook(false);
+        if (alwaysLook || !toRoom.checkAttribute(Attributes.VISITED))
+            performLook(false);
         toRoom.setAttribute(Attributes.VISITED);
         refreshRoomUI();
     }
@@ -559,6 +562,16 @@ public final class GameManager
         ui.appendText("\n------- Game Saved -------\n\n");
     }
 
+    /** Set whether we should always "Look" when entering a room, even if it's
+     *  been visited before. */
+    public void setAlwaysLook(boolean alwaysLook) {
+        this.alwaysLook = alwaysLook;
+    }
+
+    /** @see #setAlwaysLook(boolean) */
+    public boolean isAlwaysLook() {
+        return alwaysLook;
+    }
 
     //region Event Listener methods
     /**

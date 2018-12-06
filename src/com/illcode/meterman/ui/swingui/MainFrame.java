@@ -37,7 +37,7 @@ class MainFrame implements ActionListener, ListSelectionListener
 
     JFrame frame;
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, quitMenuItem, aboutMenuItem;
-    JCheckBoxMenuItem musicCheckBoxMenuItem, soundCheckBoxMenuItem;
+    JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem;
     JPanel imagePanel;
     JLabel roomNameLabel, objectNameLabel;
     JButton lookButton, waitButton;
@@ -72,6 +72,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             loadMenuItem = cr.getMenuItem("loadMenuItem");
             quitMenuItem = cr.getMenuItem("quitMenuItem");
             aboutMenuItem = cr.getMenuItem("aboutMenuItem");
+            alwaysLookCheckBoxMenuItem = cr.getCheckBoxMenuItem("alwaysLookCheckBoxMenuItem");
             musicCheckBoxMenuItem = cr.getCheckBoxMenuItem("musicCheckBoxMenuItem");
             soundCheckBoxMenuItem = cr.getCheckBoxMenuItem("soundCheckBoxMenuItem");
             imagePanel = cr.getPanel("imagePanel");
@@ -109,7 +110,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             inventoryList.setModel(inventoryListModel);
 
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
-                quitMenuItem, aboutMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem, lookButton, waitButton})
+                quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
+                lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -288,6 +290,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             Meterman.sound.setMusicEnabled(musicCheckBoxMenuItem.isSelected());
         } else if (source == soundCheckBoxMenuItem) {
             Meterman.sound.setSoundEnabled(soundCheckBoxMenuItem.isSelected());
+        } else if (source == alwaysLookCheckBoxMenuItem) {
+            Meterman.gm.setAlwaysLook(alwaysLookCheckBoxMenuItem.isSelected());
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
         }
@@ -322,6 +326,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     public void startup() {
         soundCheckBoxMenuItem.setSelected(Meterman.sound.isSoundEnabled());
         musicCheckBoxMenuItem.setSelected(Meterman.sound.isMusicEnabled());
+        alwaysLookCheckBoxMenuItem.setSelected(Meterman.gm.isAlwaysLook());
 
         ui.clearActions();
         ui.clearExits();
