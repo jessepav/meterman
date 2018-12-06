@@ -441,6 +441,7 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn(Utils.fmt("> %s %s",
                 SystemActions.getGoAction().toUpperCase(), toRoom.getExitName().toUpperCase()));
+            ui.appendNewline();
         }
         movePlayer(toRoom);
         nextTurn();

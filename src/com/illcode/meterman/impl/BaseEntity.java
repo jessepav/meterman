@@ -70,12 +70,10 @@ public class BaseEntity implements Entity
     }
 
     public String getDescription() {
-        if (delegate != null) {
-            String s = delegate.getDescription(this);
-            if (s != null)
-                return s;
-        }
-        return description;
+        if (delegate != null)
+            return delegate.getDescription(this);
+        else
+            return description;
     }
 
     public void lookInRoom() {

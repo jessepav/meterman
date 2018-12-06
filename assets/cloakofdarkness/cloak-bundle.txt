@@ -20,7 +20,7 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "exitName" : "Bar",
     "description" : "...",
     "darkName" : "Darkened Bar",
-    "darkExitName" : "Dark Bar",
+    "darkExitName" : "Shadowy Bar",
     "darkDescription" : "...",
     "dark" : true
 }
@@ -59,3 +59,8 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "listName" : "Message",
     "description" : "..."
 }
+
+[ no-go-patio (flowed) ]
+
+The Phatom of the Opera is on the patio--you decide not to
+go outside after all.

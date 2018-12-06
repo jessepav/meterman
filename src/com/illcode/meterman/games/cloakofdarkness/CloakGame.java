@@ -32,7 +32,6 @@ public class CloakGame implements Game
     }
 
     public void about() {
-        Meterman.ui.appendNewline();
         Meterman.ui.appendTextLn(bundle.getPassage("about-text"));
     }
 
@@ -67,14 +66,31 @@ public class CloakGame implements Game
         BaseEntity hook = wb.loadEntity("hook");
         BaseEntity message = wb.loadEntity("scrawled-message");
 
+        // The patio is a "fake" room that the player will not be allowed to move to
+        BaseRoom patio = new BaseRoom();
+        patio.init();
+        patio.id = "patio";
+        patio.name = patio.exitName = "Patio";
+        wb.putRoom(patio);
+
         wb.connectRooms("foyer", S_BUTTON, "bar", N_BUTTON);
         wb.connectRooms("foyer", W_BUTTON, "cloakroom", E_BUTTON);
-        foyer.exitLabels[N_BUTTON] = "Patio";  // fake exit
+        wb.connectRoomOneWay("foyer", N_BUTTON, "patio");
 
         wb.putEntitiesInRoom("cloakroom", "hook");
         wb.putEntitiesInRoom("bar", "scrawled-message");
         worldState.player.inventory.add(cloak);
         worldState.player.currentRoom = foyer;
+
+        CloakManager cloakManager = new CloakManager();
+        cloakManager.init(wb.getEntityIdMap(), wb.getRoomIdMap());
+        cloakManager.saveTo(worldState.worldData);
+        cloakManager.register();
+
+        CloakDelegate cloakDelegate = new CloakDelegate();
+        cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap());
+        hook.setDelegate(cloakDelegate);
+        cloak.setDelegate(cloakDelegate);
     }
 
     @SuppressWarnings("unchecked")

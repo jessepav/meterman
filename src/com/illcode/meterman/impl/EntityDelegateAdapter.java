@@ -1,5 +1,7 @@
 package com.illcode.meterman.impl;
 
+import com.illcode.meterman.Meterman;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 public class EntityDelegateAdapter implements EntityDelegate
 {
     public String getDescription(BaseEntity e) {
-        return null;
+        return e.description;
     }
 
     public void lookInRoom(BaseEntity e) {
@@ -34,7 +36,8 @@ public class EntityDelegateAdapter implements EntityDelegate
     }
 
     public void selected(BaseEntity e) {
-        // empty
+        if (e.imageName != null)
+            Meterman.ui.setEntityImage(e.imageName);
     }
 
     public List<String> getActions(BaseEntity e) {
