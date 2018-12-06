@@ -12,7 +12,7 @@ public class CloakGame implements Game
 {
     private static final String NAME = "Cloak of Darkness";
 
-    private TextBundle bundle;
+    static TextBundle bundle;
 
     public CloakGame() {
     }

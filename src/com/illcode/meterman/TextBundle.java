@@ -22,29 +22,16 @@ import static com.illcode.meterman.Utils.logger;
  * <p/>
  * Here is an example bundle illustrating the file format:
  * <pre>{@code
-[intro]
-
-This is a "text bundle" (handled by the TextBundle class). It's an easy
-way to store and reference passages of text.
+[passage-name]
 
 Each passage is headed by a "passage name" between square brackets
 ("intro", in this case) and comprises the first non-blank line to the
 last non-blank line, inclusive.
 
-
-[passage-2]
-
 The passages can be retrieved complete with line breaks and whitespace
-preserved
-
-+-------------------------------------------+
-|                                           |
-|         Like this beautiful box           |
-|                                           |
-+-------------------------------------------+
-
-Or with all whitespace and newlines collapsed.
-
+preserved, with all whitespace and newlines collapsed, word-wrapped to
+a specified column, or "flowed" so that paragraph breaks are preserved
+by newlines within a paragraph are replaced by spaces.
 
 [#Information Passage]
 
@@ -58,8 +45,16 @@ automatically, as though calls to getPassage() were calls to getPassageFlowed().
 Note that the name of the passage will be the original passage name without
 "(flowed)" and with whitespace trimmed off of both ends. Thus this passage
 would have a name of "Multiline Passage".
-
  * }</pre>
+ *
+ * <em>NOTE</em>: <tt>TextBundle</tt> instances should not be stored as fields in any
+ * class that will become part of the game's {@link WorldState}, because it won't
+ * persist properly. So how should game classes use bundles? The Game's {@link Game#init()}
+ * method should load the bundle and put it somewhere its objects can find it:
+ * <ul>
+ *     <li>As the game bundle, via {@link Meterman#setGameBundle(TextBundle)}</li>
+ *     <li>In a static field of the Game implementation class itself.</li>
+ * </ul>
  */
 public final class TextBundle
 {

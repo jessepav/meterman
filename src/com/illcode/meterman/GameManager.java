@@ -566,6 +566,7 @@ public final class GameManager
     /** Called by the UI when it's time to load a saved game*/
     public void loadGameState(InputStream in) {
         loadGame(Meterman.persistence.loadWorldState(in));
+        ui.appendText("\n------- Game Loaded -------\n\n");
     }
 
     /** Called by the UI when it's time to save a game*/
