@@ -22,6 +22,8 @@ public class GamesList
     private static Map<String,PieceOfGlue> gamesMap;
 
     public static Game getGame(String gameName) {
+        if (gamesMap == null)
+            loadGamesMap();
         return gamesMap.get(gameName).createGame();
     }
 
