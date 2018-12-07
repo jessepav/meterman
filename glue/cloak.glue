@@ -19,6 +19,6 @@ Cloak of Darkness
 
 cloakofdarkness
 
-[ create-game-code ]
+[ game-class ]
 
-new com.illcode.meterman.games.cloakofdarkness.CloakGame();
+com.illcode.meterman.games.cloakofdarkness.CloakGame

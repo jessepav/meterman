@@ -1,14 +1,16 @@
 package com.illcode.meterman;
 
-import com.illcode.meterman.Game;
-import com.illcode.meterman.TextBundle;
-import com.illcode.meterman.Utils;
 import com.illcode.meterman.games.cloakofdarkness.CloakGame;
 import com.illcode.meterman.games.riverboat.RiverboatGame;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.logging.Level;
+
+import static com.illcode.meterman.Utils.logger;
 
 /**
  * A class containing the names of all the games packaged with Meterman,
@@ -16,46 +18,80 @@ import java.util.List;
  */
 public class GamesList
 {
-    private static final String RIVERBOAT_NAME = "The Riverboat";
-    private static final String CLOAK_NAME = "Cloak of Darkness";
-
     private static List<String> gameNames;
-
-    private static TextBundle descriptionBundle;
+    private static Map<String,PieceOfGlue> gamesMap;
 
     public static Game getGame(String gameName) {
-        switch (gameName) {
-        case RIVERBOAT_NAME:
-            return new RiverboatGame();
-        case CLOAK_NAME:
-            return new CloakGame();
-        default:
-            return null;
-        }
+        return gamesMap.get(gameName).createGame();
     }
 
     public static List<String> getGameNames() {
         if (gameNames == null) {
-            gameNames = new LinkedList<>();
-            // If we dynamically load games from .jar files, we could query and add them here.
-            gameNames.add(RIVERBOAT_NAME);
-            gameNames.add(CLOAK_NAME);
+            if (gamesMap == null)
+                loadGamesMap();
+            gameNames = new ArrayList<>(gamesMap.keySet());
         }
         return gameNames;
     }
 
     /**
      * Return a description of a game.
-     * <p/>
-     * Game descriptions are found in the <tt>game-description-bundle.txt</tt> TextBundle
-     * in the assets directory.
      * @param gameName game name, or <tt>"select-game"</tt> to retrieve text prompting the
      *                 user to select a game.
      * @return game description
      */
     public static String getGameDescription(String gameName) {
-        if (descriptionBundle == null)
-            descriptionBundle = TextBundle.loadBundle(Utils.pathForSystemAsset("game-description-bundle.txt"));
-        return descriptionBundle.getPassage(gameName);
+        if (gamesMap == null)
+            loadGamesMap();
+        return gamesMap.get(gameName).description;
+    }
+
+    private static void loadGamesMap() {
+        gamesMap = new HashMap<>();
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(Meterman.gluePath)) {
+            for (Path p : dirStream) {
+                String filename = p.getFileName().toString().toLowerCase();
+                if (filename.endsWith(".glue")) {
+                    TextBundle b = TextBundle.loadBundle(p);
+                    PieceOfGlue glue = new PieceOfGlue();
+                    glue.name = b.getPassage("name");
+                    glue.description = b.getPassage("description");
+                    glue.assetsPath = b.getPassage("assets-path");
+                    glue.gameClassName = b.getPassage("game-class");
+                    gamesMap.put(glue.name, glue);
+                }
+            }
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "GamesList.createGame()", e);
+        }
+    }
+
+    private static class PieceOfGlue implements MetermanGameGlue {
+        String name;
+        String description;
+        String assetsPath;
+        String gameClassName;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getAssetsPath() {
+            return assetsPath;
+        }
+
+        public Game createGame() {
+            try {
+                Class<?> gameClass = Class.forName(gameClassName);
+                return (Game) gameClass.newInstance();
+            } catch (Exception ex) {
+                logger.log(Level.WARNING, "GamesList.createGame()", ex);
+                return null;
+            }
+        }
     }
 }

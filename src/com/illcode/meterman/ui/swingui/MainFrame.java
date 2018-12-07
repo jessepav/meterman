@@ -250,7 +250,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             String gameName = Utils.getPref("single-game-name");
             if (gameName == null) {
                 ui.listDialog.list.addListSelectionListener(this);
-                gameName = ui.showListDialog("New Game", GamesList.getGameDescription("select-game"),
+                gameName = ui.showListDialog("New Game",
+                    Meterman.getSystemBundle().getPassage("select-game-description"),
                     GamesList.getGameNames(), true);
                 ui.listDialog.list.removeListSelectionListener(this);
             }
@@ -323,9 +324,12 @@ class MainFrame implements ActionListener, ListSelectionListener
             ui.inventoryEntitySelected(inventoryList.getSelectedIndex());
         } else if (source == ui.listDialog.list) {  // used only when starting a new game
             String selectedGame = ui.listDialog.list.getSelectedValue();
+            String dialogText;
             if (selectedGame == null)
-                selectedGame = "select-game";
-            ui.listDialog.textArea.setText(GamesList.getGameDescription(selectedGame));
+                dialogText = Meterman.getSystemBundle().getPassage("select-game-description");
+            else
+                dialogText = GamesList.getGameDescription(selectedGame);
+            ui.listDialog.textArea.setText(dialogText);
         }
     }
 

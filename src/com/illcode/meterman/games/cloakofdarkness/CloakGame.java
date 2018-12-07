@@ -29,7 +29,7 @@ public class CloakGame implements Game
     }
 
     public void about() {
-        Meterman.ui.appendTextLn(bundle.getPassage("about-text"));
+        Meterman.ui.showTextDialog("Cloak of Darkness", bundle.getPassage("about-text"), "OK");
     }
 
     public WorldState getInitialWorldState() {
