@@ -231,6 +231,21 @@ public final class TextBundle
     public void putPassage(String name, String text) {
         passageMap.put(name, text);
     }
+    
+    /**
+     * Put all of the passages from a given Map into this text bundle.
+     * @param passages passages to add
+     */
+    public void putPassages(Map<String,String> passages) {
+        passageMap.putAll(passages);
+    }
+    
+    /**
+     * Remove all passages from this text bundle.
+     */
+    public void clearPassages() {
+        passageMap.clear();
+    }
 
     /**
      * Load a TextBundle from a given Path. The format of text bundles is given in
