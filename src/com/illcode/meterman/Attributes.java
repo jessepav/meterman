@@ -45,5 +45,59 @@ public final class Attributes
     /** This room is naturally dark.
      *  @see DarkRoom */
     public static final int DARK = 1;
+    
+    /**
+     * Return a string representation of a given attribute.
+     * @param attribute the attribute
+     * @return string representation, or "unknown" if the attribute is unknown.
+     */
+    public static String attributeToString(int attribute) {
+        switch (attribute) {
+        case CONCEALED:
+            return "concealed";
+        case TAKEABLE:
+            return "takeable";
+        case WEARABLE:
+            return "wearable";
+        case EQUIPPABLE:
+            return "equippable";
+        case LIGHTSOURCE:
+            return "lightsource";
+        case DARK:
+            return "dark";
+        case VISITED:
+            return "visited";
+        default:
+            return "unknown";
+        }
+    }
+    
+    /**
+     * Return the attribute corresponding to a given string representation.
+     * @param s string representation
+     * @return attribute corresponding to <tt>s</tt>, or -1 if <tt>s</tt> doesn't correspond
+     *         to a known attribute.
+     */
+    public static int stringToAttribute(String s) {
+        s = s.toLowerCase();
+        switch (s) {
+        case "concealed":
+            return CONCEALED;
+        case "takeable":
+            return TAKEABLE;
+        case "wearable":
+            return WEARABLE;
+        case "equippable":
+            return EQUIPPABLE;
+        case "lightsource":
+            return LIGHTSOURCE;
+        case "visited":
+            return VISITED;
+        case "dark":
+            return DARK;
+        default:
+            return -1;
+        }
+    }
 
 }
