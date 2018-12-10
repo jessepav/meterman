@@ -471,7 +471,8 @@ public final class GameManager
         }
         if (!fireBeforeAction(action, selectedEntity)) {
             if (!selectedEntity.processAction(action))
-                fireDefaultAction(action, selectedEntity);
+                if (!fireDefaultAction(action, selectedEntity))
+                    ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         }
         nextTurn();
     }
