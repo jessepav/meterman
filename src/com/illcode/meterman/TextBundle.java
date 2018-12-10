@@ -105,7 +105,7 @@ public final class TextBundle
      * @param varname variable name
      * @param val the value of the variable when performing substitions
      */
-    public void addSubstitution(String varname, String val) {
+    public void putSubstitution(String varname, String val) {
         subMap.put(varname, val);
     }
 
@@ -113,7 +113,7 @@ public final class TextBundle
      * Adds all substitutions from a given Map
      * @param subs map from which to take substitutions
      */
-    public void addSubstitutions(Map<String,String> subs) {
+    public void putAllSubstitutions(Map<String,String> subs) {
         subMap.putAll(subs);
     }
 
@@ -184,7 +184,7 @@ public final class TextBundle
         String text = whiteSpacePattern.matcher(s).replaceAll(" ");
         if (col > 0)
             text = WordUtils.wrap(text, col);
-        return sub.replace(text);
+        return text;
     }
 
     /**
@@ -236,7 +236,7 @@ public final class TextBundle
      * Put all of the passages from a given Map into this text bundle.
      * @param passages passages to add
      */
-    public void putPassages(Map<String,String> passages) {
+    public void putAllPassages(Map<String,String> passages) {
         passageMap.putAll(passages);
     }
     
