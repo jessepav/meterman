@@ -29,6 +29,7 @@
         <element id="dir-copy" path="$PROJECT_DIR$/jars" />
       </element>
       <element id="file-copy" path="$PROJECT_DIR$/scripts/run-dist-jar.bat" output-file-name="run-meterman.bat" />
+      <element id="file-copy" path="$PROJECT_DIR$/scripts/run-dist-jar.sh" output-file-name="run-meterman.sh" />
     </root>
   </artifact>
 </component>

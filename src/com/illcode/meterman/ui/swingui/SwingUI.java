@@ -8,12 +8,15 @@ import com.illcode.meterman.ui.UIConstants;
 
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class SwingUI implements MetermanUI
 {
@@ -63,6 +66,11 @@ public class SwingUI implements MetermanUI
     public boolean run() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                } catch (Exception ex) {
+                    Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
+                }
                 mainFrame.setVisible(true);
                 realized = true;
                 mainFrame.startup();
