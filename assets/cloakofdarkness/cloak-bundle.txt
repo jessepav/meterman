@@ -49,7 +49,7 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "darkName" : "Darkened Bar",
     "darkExitName" : "Shadowy Bar",
     "darkDescription" : "...",
-    "dark" : true
+    "attributes" : ["dark"]
 }
 
 [ cloakroom ]

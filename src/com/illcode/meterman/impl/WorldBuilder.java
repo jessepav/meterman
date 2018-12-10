@@ -153,13 +153,16 @@ public class WorldBuilder
             "name" : "River Ferryman",
             "listName" : "Ferryman",
             "description" : "[[ferryman-description]]",
-            "imageName" : "ferryman"
+            "imageName" : "ferryman",
+            "attributes" : ["concealed", "lightsource"],
         }
      * }</pre>
-     * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.
+     * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.<br/>
+     * <tt>attributes</tt> is optional.
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
+     * @see Attributes#stringToEntityAttribute(java.lang.String)
      */
     public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
@@ -170,6 +173,11 @@ public class WorldBuilder
             e.listName = getJsonString(o.get("listName"), e.name);
             e.description = getJsonString(o.get("description"));
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
+            JsonValue v = o.get("attributes");
+            if (v != null) {
+                for (JsonValue attrVal : v.asArray().values())
+                    e.setAttribute(Attributes.stringToEntityAttribute(attrVal.asString()));
+            }
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, readEntityDataFromBundle()", ex);
@@ -392,13 +400,16 @@ public class WorldBuilder
            "id" : "river-edge",
            "name" : "River's Edge",
            "exitName" : "River Edge",
-           "description" : "Here the woods give way to the bank of the River Jelly."
+           "description" : "Here the woods give way to the bank of the River Jelly.",
+           "attributes" : ["dark", "visited"]
        }
      * }</pre>
-     * <tt>exitName</tt> is optional, and if not present the value of <tt>name</tt> will be used.
+     * <tt>exitName</tt> is optional, and if not present the value of <tt>name</tt> will be used.<br/>
+     * <tt>attributes</tt> is optional.
      * @param r BaseRoom into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
+     * @see Attributes#stringToRoomAttribute(java.lang.String)
      */
     public JsonObject readRoomDataFromBundle(BaseRoom r, String passageName) {
         String json = bundle.getPassage(passageName);
@@ -408,6 +419,11 @@ public class WorldBuilder
             r.name = getJsonString(o.get("name"));
             r.exitName = getJsonString(o.get("exitName"), r.name);
             r.description = getJsonString(o.get("description"));
+            JsonValue v = o.get("attributes");
+            if (v != null) {
+                for (JsonValue attrVal : v.asArray().values())
+                    r.setAttribute(Attributes.stringToRoomAttribute(attrVal.asString()));
+            }
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, readRoomDataFromBundle()", ex);
@@ -439,7 +455,7 @@ public class WorldBuilder
             "darkName" : "Dark Underground Passage",
             "darkExitName" : "Darkness",
             "darkDescription" : "The air is still and slightly acrid in this dark passage.",
-            "dark" : true
+            "attributes" : ["dark"]
         }
      * }</pre>
      * @param dr DarkRoom into which to store the data
@@ -454,9 +470,6 @@ public class WorldBuilder
             dr.darkName = retrieveTextOrDefault(o, "darkName", "default-darkName");
             dr.darkExitName = retrieveTextOrDefault(o, "darkExitName", "default-darkExitName");
             dr.darkDescription = retrieveTextOrDefault(o, "darkDescription", "default-darkDescription");
-            JsonValue v = o.get("dark");
-            if (v != null && v.isBoolean() && v.asBoolean())
-                dr.setAttribute(Attributes.DARK);
             return o;
         } catch (UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, readDarkRoomDataFromBundle()", ex);
