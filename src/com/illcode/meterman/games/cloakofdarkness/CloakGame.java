@@ -33,19 +33,6 @@ public class CloakGame implements Game
         WorldState worldState = new WorldState();
         worldState.init(NAME);
 
-        setupWorldState(worldState);
-        return worldState;
-    }
-
-    public void start(boolean newGame) {
-        Meterman.ui.setFrameImage("phantom-frame-image");
-    }
-
-    public void dispose() {
-
-    }
-
-    private void setupWorldState(WorldState worldState) {
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
         wb.saveTo(worldState.worldData);
 
@@ -71,6 +58,16 @@ public class CloakGame implements Game
         // ...and rooms
         for (String roomId : new String[] {"foyer", "cloakroom", "bar"})
             wb.getRoom(roomId).setDelegate(cloakDelegate);
+
+        return worldState;
+    }
+
+    public void start(boolean newGame) {
+        Meterman.ui.setFrameImage("phantom-frame-image");
+    }
+
+    public void dispose() {
+
     }
 
     public void debugCommand(String command) {

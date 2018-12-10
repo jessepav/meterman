@@ -153,10 +153,14 @@ You take the strange cloak off the hook.
 
 It is probably best not to disturb mysterious things in the dark.
 
-[ winning-message ]
+[ endgame-message ]
 
-Scrawled in the sawdust is a a message: "You have won."
+Scrawled in the sawdust is a a message: "You have ${winlose}."
 
-[ losing-message ]
+[ win-message ]
 
-Scrawled in the sawdust is a a message: "You have lost."
+won
+
+[ lose-message ]
+
+lost

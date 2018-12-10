@@ -61,10 +61,12 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
                 s += " " + bundle.getPassage("cloak-hung-description");
             return s;
         } else if (e == message) {
-            if (state.numDarkBarActions < 3)
-                return bundle.getPassage("winning-message");
-            else
-                return bundle.getPassage("losing-message");
+            // I use bundle.putSubstitution() here just to show its operation.
+            bundle.putSubstitution("winlose", bundle.getPassage(
+                state.numDarkBarActions < 3 ? "win-message" : "lose-message"));
+            String s = bundle.getPassage("endgame-message");
+            bundle.clearSubstitutions();
+            return s;
         } else {
             return e.description;
         }
