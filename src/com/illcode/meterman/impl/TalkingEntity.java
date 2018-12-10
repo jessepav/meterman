@@ -60,12 +60,15 @@ public class TalkingEntity extends BaseEntity
         }
     }
 
-    /** Processes the Talk action. Kept in a separate method so listeners
-        and delegates can call it directly.*/
-    public void processTalkAction() {
+    /**
+     * Processes the Talk action. Kept in a separate method so listeners and delegates can call it directly.
+     * @return the {@link TalkTopic} selected (may be null)
+     */
+    public TalkTopic processTalkAction() {
         if (currentTopics.isEmpty()) {
             ui.appendNewline();
             ui.appendTextLn(noTopicsText);
+            return null;
         } else {
             TalkTopic tt = ui.showListDialog(getName(), dialogText, currentTopics, true);
             if (tt != null) {
@@ -77,6 +80,7 @@ public class TalkingEntity extends BaseEntity
                 for (TalkTopic topic : tt.removeTopics)
                     currentTopics.remove(topic);
             }
+            return tt;
         }
     }
 }
