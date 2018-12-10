@@ -83,4 +83,7 @@ public class RiverboatGame implements Game
         return ((Map<String,BaseRoom>) Meterman.gm.getWorldData().get("roomIdMap")).get(roomId);
     }
 
+    public void debugCommand(String command) {
+
+    }
 }

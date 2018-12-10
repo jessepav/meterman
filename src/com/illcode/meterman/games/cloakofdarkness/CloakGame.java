@@ -3,9 +3,6 @@ package com.illcode.meterman.games.cloakofdarkness;
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CloakGame implements Game
 {
     private static final String NAME = "Cloak of Darkness";
@@ -34,11 +31,7 @@ public class CloakGame implements Game
 
     public WorldState getInitialWorldState() {
         WorldState worldState = new WorldState();
-        worldState.gameName = NAME;
-        worldState.player = new Player();
-        worldState.player.init();
-        worldState.worldData = new HashMap<>();
-        worldState.numTurns = 0;
+        worldState.init(NAME);
 
         setupWorldState(worldState);
         return worldState;
@@ -60,16 +53,7 @@ public class CloakGame implements Game
         wb.loadEntities("cloak-entities");
         wb.loadRoomConnections("room-connections");
         wb.loadEntityPlacements("entity-placements");
-
-        BaseEntity cloak = wb.getEntity("cloak");
-        cloak.setAttribute(Attributes.WEARABLE);
-        cloak.setAttribute(Attributes.TAKEABLE);
-
-        Player player = worldState.player;
-        player.worn.add(cloak);
-        player.currentRoom = wb.getRoom("foyer");
-        // Note that the GameManager will fix up the consistency of inventory items when
-        // a new game starts.
+        wb.loadPlayerState("player-state");
 
         BasicWorldManager basicWorldManager = new BasicWorldManager();
         basicWorldManager.saveTo(worldState.worldData);
@@ -89,13 +73,7 @@ public class CloakGame implements Game
             wb.getRoom(roomId).setDelegate(cloakDelegate);
     }
 
-    @SuppressWarnings("unchecked")
-    public static Map<String,BaseEntity> retrieveEntityIdMap(Map<String,Object> worldData) {
-        return (Map<String,BaseEntity>) worldData.get("entityIdMap");
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Map<String,BaseRoom> retrieveRoomIdMap(Map<String,Object> worldData) {
-        return (Map<String,BaseRoom>) worldData.get("roomIdMap");
+    public void debugCommand(String command) {
+        Utils.logger.fine("Debug Command: " + command);
     }
 }

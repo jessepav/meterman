@@ -14,13 +14,14 @@ import static com.illcode.meterman.Utils.logger;
  * A class with utility methods to assist generating the {@link Game#getInitialWorldState() initial world state}
  * of a game, using the {@link BaseEntity} and {@link BaseRoom} implementations.
  * <p/>
- * If you use the four "mass effect" methods to load your rooms and entities, the order of
+ * If you use the "mass effect" methods to load your rooms and entities, the order of
  * calls with usually be
  * <ol>
  *     <li>{@link #loadRooms(String)}</li>
  *     <li>{@link #loadEntities(String)}</li>
  *     <li>{@link #loadRoomConnections(String)}</li>
  *     <li>{@link #loadEntityPlacements(String)}</li>
+ *     <li>{@link #loadPlayerState(String)}</li>
  * </ol>
  * In this case, only delegates and managers will need to be manually wired together in a Game's
  * {@code getInitialWorldState()} method.
@@ -329,31 +330,35 @@ public class WorldBuilder
      * Loads a door from a bundle passage that contains JSON data in the format of this example:
      * <pre>{@code
         {
-            "id" : "river-edge-grating",
-            "name" : "Iron Grating",
-            "listName" : "Grating",
-            "imageName" : "river-edge-grating",
+            "id" : "id",
+            "name" : "name",
+            "listName" : "listName",
+            "imageName" : "imageName",
             "descriptions" : [
-                "A strong, oddly fresh iron grating is in the soil 30 meters from the bank.",
-                "Above you is an iron grating."
+                "Description as seen from room #1",
+                "Description as seen from room #2"
             ],
             "lockedMessages" : [
-                "The grating is secured by a padlock.",
-                "A padlock can be seen just through the bars."
+                "Additional description shown from room #1 when the door is locked",
+                "Additional description shown from room #2 when the door is locked"
             ],
             "unlockedMessages" : [
-                "A padlock lies opened on the grating.",
-                "An open padlock can be seen through the bars."
-            ],
-            "noKeyMessages" : [
-                "You do not have the key for the padlock."
+                "Additional description shown from room #1 when the door is closed but unlocked",
+                "Additional description shown from room #2 when the door is closed but unlocked"
             ],
             "openMessages" : [
-                "The grate is open.",
-                "You can see the sky through the open grate."
+                "Additional description shown from room #1 when the door is open.",
+                "Additional description shown from room #2 when the door is open."
+            ],
+            "noKeyMessages" : [
+                "Message displayed when the player attempts to unlock the door from room #1 without the key",
+                "Message displayed when the player attempts to unlock the door from room #2 without the key"
             ]
         }
      * }</pre>
+     * For each of the above arrays, you can have only one string item, in which case it will be used
+     * for both rooms. If the entry is missing completely, a default string from the system bundle
+     * will be used.
      * @param d Door into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -537,7 +542,7 @@ public class WorldBuilder
      * @param pos1 the exit position in the first room to connect to the second room
      * @param roomId2 id of the second room
      * @param pos2 the exit position in the second room to connect to the first room
-     * @param keyId the id of the key entity
+     * @param keyId the id of the key entity, or null for no key
      * @param locked whether the door should be locked (set first)
      * @param open whether the door should be open (set second, can override locked)
      */
@@ -550,7 +555,7 @@ public class WorldBuilder
         r2.entities.add(d);
         d.setRooms(r1, r2);
         d.setPositions(pos1, pos2);
-        d.setKey(getEntity(keyId));
+        d.setKey(keyId == null ? null : getEntity(keyId));
         d.setLocked(locked);
         d.setOpen(open);
         // Exit labels don't work with rooms that are connected by a door
@@ -593,7 +598,7 @@ public class WorldBuilder
      * <ul>
      *     <li>Suffix <tt>:dark</tt> - loaded as a {@link #loadDarkRoom(String) DarkRoom}</li>
      * </ul>
-     * For each passage name listed, we will call {@link #loadRoom(String)}.
+     * For each passage name listed, we will call the appropriate variant of {@link #loadRoom(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found
      */
     public void loadRooms(String passageName) {
@@ -627,7 +632,7 @@ public class WorldBuilder
      *     <li>Suffix <tt>:door</tt> - loaded as a {@link #loadDoor(String) Door}</li>
      *     <li>Suffix <tt>:talking</tt> - loaded as a {@link #loadTalkingEntity(String)} TalkingEntity</li>
      * </ul>
-     * For each passage name listed, we will call {@link #loadEntity(String)}.
+     * For each passage name listed, we will call the appropriate variant of {@link #loadEntity(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found
      */
     public void loadEntities(String passageName) {
@@ -735,7 +740,8 @@ public class WorldBuilder
                     pos1 = UIConstants.buttonTextToPosition(arr.get(2).asString());
                     roomId2 = arr.get(3).asString();
                     pos2 = UIConstants.buttonTextToPosition(arr.get(4).asString());
-                    String keyId = arr.get(5).asString();
+                    JsonValue keyVal = arr.get(5);
+                    String keyId = keyVal.isNull() ? null : keyVal.asString();
                     boolean locked = arr.get(6).asBoolean();
                     boolean open = arr.get(7).asBoolean();
                     connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2, keyId, locked, open);
@@ -744,6 +750,48 @@ public class WorldBuilder
             }
         } catch (ParseException|UnsupportedOperationException|IndexOutOfBoundsException ex) {
             logger.log(Level.WARNING, "JSON error, loadRoomConnections()", ex);
+        }
+    }
+
+    /**
+     * Loads the initial player room and inventory list from a JSON definition given in a bundle passage.
+     * The definition looks like this:
+     * <pre>{@code
+     * {
+     *     "currentRoom" : roomId,
+     *     "inventory" : [entityId1, entityId2, ...],
+     *     "worn" : [entityId1, entityId2, ...],
+     *     "equipped" : [entityId1, entityId2, ...]
+     * }
+     * }</pre>
+     * <tt>currentRoom</tt> is mandatory, the rest are optional.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     */
+    public void loadPlayerState(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonObject o = Json.parse(json).asObject();
+            Player player = worldState.player;
+            player.currentRoom = getRoom(o.get("currentRoom").asString());
+            final String[] listKeys = {"inventory", "worn", "equipped"};
+            final List<List<Entity>> playerLists = new ArrayList<>(3);
+            playerLists.add(player.inventory);
+            playerLists.add(player.worn);
+            playerLists.add(player.equipped);
+            for (int i = 0; i < listKeys.length; i++) {
+                JsonValue v = o.get(listKeys[i]);
+                if (v != null) {
+                    JsonArray arr = v.asArray();
+                    List<Entity> l = playerLists.get(i);
+                    for (JsonValue itemVal : arr.values())
+                        l.add(getEntity(itemVal.asString()));
+                }
+            }
+            // We don't need to fix up the consistency of these lists (for instance, make sure that
+            // all worn items are in inventory) or set the rooms of the inventory entities because
+            // when the game starts, GameManager#ensurePlayerInventoryConsistent() will do this.
+        } catch (ParseException | UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, loadPlayerState()", ex);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.illcode.meterman;
 
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -23,11 +24,17 @@ public class WorldState
     /** The Player character */
     public Player player;
 
-    /**
-     * Extra data that objects can use to maintain and communicate state.
-     */
+    /** Extra data that objects can use to maintain and communicate state. */
     public Map<String,Object> worldData;
 
     /** The number of turns that have occurred in this world so far */
     public int numTurns;
+
+    public void init(String gameName) {
+        this.gameName = gameName;
+        player = new Player();
+        player.init();
+        worldData = new HashMap<>();
+        numTurns = 0;
+    }
 }

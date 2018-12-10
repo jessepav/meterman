@@ -8,6 +8,16 @@ Write the Riverboat, modifying the engine as needed to enable required features.
 
 == Things to do in the future ==
 
+Breadth first search algorithm for pathfinding between rooms.
+
+
+== Things I may or may not do ==
+
+Add an Image Dialog (w header and subtitle text area).
+
+Add an option in the startup screen to download and install games from the web.
+
+"Special action manager", that allows the user to type an action name to send to the selected object.
 
 == Things I won't do ==
 

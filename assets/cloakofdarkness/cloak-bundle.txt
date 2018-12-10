@@ -75,7 +75,8 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "name" : "Strange Cloak",
     "listName" : "Cloak",
     "description" : "...",
-    "imageName" : "cloak"
+    "imageName" : "cloak",
+    "attributes" : ["wearable", "takeable"]
 }
 
 [ hook ]
@@ -118,6 +119,14 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "name" : "Draped Form",
     "description" : "In the shadowy space of the dark bar, you can't see what is under the cloth drape."
 }
+
+[ player-state ]
+
+{
+    "currentRoom" : "foyer",
+    "worn" : ["cloak"]
+}
+
 
 [ no-go-patio (flowed) ]
 

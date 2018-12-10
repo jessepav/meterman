@@ -57,4 +57,12 @@ public interface Game
      * automatically. Called when the GameManager is unloading the current game instance.
      */
     void dispose();
+
+    /**
+     * The UI provides a facility for the implementor to enter debug commands, which will
+     * be passed along to the game using this method. These commands can be used to,
+     * for instance, jump to a later part of the game, move entities around, etc.
+     * @param command debug command
+     */
+    void debugCommand(String command);
 }

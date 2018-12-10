@@ -57,6 +57,7 @@ class PromptDialog implements ActionListener
         textField.setText(initialText);
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
+        textField.requestFocusInWindow();
         dialog.setVisible(true);  // blocks until hidden
         return textField.getText();
     }

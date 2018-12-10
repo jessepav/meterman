@@ -1,9 +1,6 @@
 package com.illcode.meterman.ui.swingui;
 
-import com.illcode.meterman.Meterman;
-import com.illcode.meterman.SystemActions;
-import com.illcode.meterman.Utils;
-import com.illcode.meterman.GamesList;
+import com.illcode.meterman.*;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 import com.jformdesigner.model.FormModel;
@@ -30,6 +27,9 @@ class MainFrame implements ActionListener, ListSelectionListener
 {
     static final int NUM_EXIT_BUTTONS = 12;
     static final int NUM_ACTION_BUTTONS = 8;
+
+    private static final KeyStroke DEBUG_KEYSTROKE =
+        KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.CTRL_MASK);
 
     static KeyStroke[] exitButtonKeystrokes;
 
@@ -164,6 +164,25 @@ class MainFrame implements ActionListener, ListSelectionListener
             String actionMapKey = "exitButton:" + UIConstants.buttonPositionToText(i);
             inputMap.put(exitButtonKeystrokes[i], actionMapKey);
             actionMap.put(actionMapKey, new ButtonAction(exitButtons[i]));
+        }
+
+        root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(DEBUG_KEYSTROKE, "debugCommand");
+        root.getActionMap().put("debugCommand", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    debugTriggered();
+                } catch (Exception ex) {
+                    logger.log(Level.FINE, "debugTriggered()", ex);
+                }
+            }});
+    }
+
+    private void debugTriggered() {
+        Game g = Meterman.gm.getGame();
+        if (g != null) {
+            String command = ui.showPromptDialog("Debug Command",
+                "What is your debug command, oh Implementor?", "Command", "");
+            g.debugCommand(command);
         }
     }
 

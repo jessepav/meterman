@@ -26,8 +26,8 @@ public class Door extends BaseEntity
     private String[] descriptions;
     private String[] lockedMessages;
     private String[] unlockedMessages;
-    private String[] noKeyMessages;
     private String[] openMessages;
+    private String[] noKeyMessages;
 
     private Entity key;
     private boolean locked;
@@ -91,16 +91,16 @@ public class Door extends BaseEntity
         unlockedMessages[1] = msg2;
     }
 
+    public void setOpenMessages(String msg1, String msg2) {
+        openMessages[0] = msg1;
+        openMessages[1] = msg2;
+    }
+
     /** Sets the message shown when the player attempts to lock or unlock the door without
      *  holding the key, in room 1 and 2 respectively. */
     public void setNoKeyMessages(String msg1, String msg2) {
         noKeyMessages[0] = msg1;
         noKeyMessages[1] = msg2;
-    }
-
-    public void setOpenMessages(String msg1, String msg2) {
-        openMessages[0] = msg1;
-        openMessages[1] = msg2;
     }
 
     /**
