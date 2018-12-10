@@ -155,7 +155,7 @@ It is probably best not to disturb mysterious things in the dark.
 
 [ endgame-message ]
 
-Scrawled in the sawdust is a a message: "You have ${winlose}."
+Scrawled in the sawdust is a message: "You have ${wonlost}."
 
 [ win-message ]
 
