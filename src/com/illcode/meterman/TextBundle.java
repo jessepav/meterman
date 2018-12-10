@@ -46,15 +46,6 @@ Note that the name of the passage will be the original passage name without
 "(flowed)" and with whitespace trimmed off of both ends. Thus this passage
 would have a name of "Multiline Passage".
  * }</pre>
- *
- * <em>NOTE</em>: <tt>TextBundle</tt> instances should not be stored as fields in any
- * class that will become part of the game's {@link WorldState}, because it won't
- * persist properly. So how should game classes use bundles? The Game's {@link Game#init()}
- * method should load the bundle and put it somewhere its objects can find it:
- * <ul>
- *     <li>As the game bundle, via {@link Meterman#setGameBundle(TextBundle)}</li>
- *     <li>In a static field of the Game implementation class itself.</li>
- * </ul>
  */
 public final class TextBundle
 {
@@ -86,6 +77,15 @@ public final class TextBundle
         this.parent = parent;
         passageMap = new HashMap<>();
         subMap = new HashMap<>();
+        sub = new StrSubstitutor(subMap);
+        sub.setValueDelimiter('|');
+    }
+
+    // Primarily to be used for persistence
+    TextBundle(Map<String,String> passageMap, Map<String,String> subMap, TextBundle parent) {
+        this.parent = parent;
+        this.passageMap = passageMap;
+        this.subMap = subMap;
         sub = new StrSubstitutor(subMap);
         sub.setValueDelimiter('|');
     }
@@ -245,6 +245,21 @@ public final class TextBundle
      */
     public void clearPassages() {
         passageMap.clear();
+    }
+
+    // Primarily to be used for persistence
+    Map<String,String> getPassageMap() {
+        return passageMap;
+    }
+
+    // Primarily to be used for persistence
+    void setPassageMap(Map<String,String> passageMap) {
+        this.passageMap = passageMap;
+    }
+
+    // Primarily to be used for persistence
+    Map<String,String> getSubMap() {
+        return subMap;
     }
 
     /**

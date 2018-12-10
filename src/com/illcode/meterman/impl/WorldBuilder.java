@@ -14,10 +14,6 @@ import static com.illcode.meterman.Utils.logger;
  * A class with utility methods to assist generating the {@link Game#getInitialWorldState() initial world state}
  * of a game, using the {@link BaseEntity} and {@link BaseRoom} implementations.
  * <p/>
- * It is <em>not</em> meant to be saved into the world state for persistence. However, you can add the
- * {@link #getEntityIdMap() entity-id} and {@link #getRoomIdMap() room-id} maps to the world state
- * if any game objects need to refer to them during gameplay.
- * <p/>
  * If you use the four "mass effect" methods to load your rooms and entities, the order of
  * calls with usually be
  * <ol>
@@ -43,12 +39,25 @@ public class WorldBuilder
     protected String[] retrievedMultiStrings;
 
     // Zero-arg constructor for deserialization
+    public WorldBuilder() {
+    }
+
     public WorldBuilder(WorldState worldState, TextBundle bundle) {
         this.worldState = worldState;
         this.bundle = bundle;
         entityIdMap = new HashMap<>(400);
         roomIdMap = new HashMap<>(100);
         GameUtils.ensureBundleHasParent(bundle, Meterman.getSystemBundle());
+    }
+
+    /** Save this instance into a world-data map. */
+    public void saveTo(Map<String,Object> worldData) {
+        worldData.put(WORLDBUILDER_KEY, this);
+    }
+
+    /** Retrieve the WorldBuilder instance stored by {@link #saveTo(Map)} from worldData. */
+    public static WorldBuilder retrieveFrom(Map<String,Object> worldData) {
+        return (WorldBuilder) worldData.get(WORLDBUILDER_KEY);
     }
 
     /**

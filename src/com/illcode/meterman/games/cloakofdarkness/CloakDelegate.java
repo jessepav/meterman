@@ -10,7 +10,6 @@ import java.util.Map;
 import static com.illcode.meterman.Meterman.gm;
 import static com.illcode.meterman.Meterman.ui;
 import static com.illcode.meterman.games.cloakofdarkness.CloakActions.*;
-import static com.illcode.meterman.games.cloakofdarkness.CloakGame.bundle;
 
 public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 {
@@ -18,6 +17,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
     private Map<String,BaseRoom> roomIdMap;
 
     private CloakState state;
+    private TextBundle bundle;
 
     private BaseEntity cloak, hook, message;
     private BaseRoom cloakroom, foyer, patio;
@@ -27,11 +27,12 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
     private List<Entity> darkBarEntities;  // entities found in the bar when it's dark
     private List<String> darkBarActions;  // actions available for those darkBarEntities
 
-    void init(Map<String,BaseEntity> entityIdMap, Map<String,BaseRoom> roomIdMap, CloakState cloakState) {
+    void init(Map<String,BaseEntity> entityIdMap, Map<String,BaseRoom> roomIdMap, TextBundle bundle, CloakState cloakState) {
         actions = new ArrayList<>(8);
         this.entityIdMap = entityIdMap;
         this.roomIdMap = roomIdMap;
         this.state = cloakState;
+        this.bundle = bundle;
         cloak = entityIdMap.get("cloak");
         hook = entityIdMap.get("hook");
         message = entityIdMap.get("scrawled-message");

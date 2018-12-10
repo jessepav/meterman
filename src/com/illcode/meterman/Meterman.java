@@ -36,7 +36,7 @@ public final class Meterman
 
     // The default system text bundle, and a game-specific bundle that can shadow passages
     // in the default system bundle to customize messages.
-    private static TextBundle systemBundle, gameBundle;
+    static TextBundle systemBundle, gameBundle;
 
     // Stores the system-default action name translations
     static Map<String,String> systemActionNameTranslations;

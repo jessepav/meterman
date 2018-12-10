@@ -10,7 +10,7 @@ public class CloakGame implements Game
 {
     private static final String NAME = "Cloak of Darkness";
 
-    static TextBundle bundle;
+    TextBundle bundle;
 
     public CloakGame() {
     }
@@ -54,8 +54,7 @@ public class CloakGame implements Game
 
     private void setupWorldState(WorldState worldState) {
         WorldBuilder wb = new WorldBuilder(worldState, bundle);
-        worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
-        worldState.worldData.put("roomIdMap", wb.getRoomIdMap());
+        wb.saveTo(worldState.worldData);
 
         wb.loadRooms("cloak-rooms");
         wb.loadEntities("cloak-entities");
@@ -81,7 +80,7 @@ public class CloakGame implements Game
         cloakState.saveTo(worldState.worldData);
 
         CloakDelegate cloakDelegate = new CloakDelegate();
-        cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap(), cloakState);
+        cloakDelegate.init(wb.getEntityIdMap(), wb.getRoomIdMap(), bundle, cloakState);
         // Delegate entities...
         for (String entityId : new String[] {"hook", "cloak", "scrawled-message"})
             wb.getEntity(entityId).setDelegate(cloakDelegate);

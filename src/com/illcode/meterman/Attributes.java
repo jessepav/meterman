@@ -47,11 +47,11 @@ public final class Attributes
     public static final int DARK = 1;
     
     /**
-     * Return a string representation of a given attribute.
+     * Return a string representation of a given entity attribute.
      * @param attribute the attribute
      * @return string representation, or "unknown" if the attribute is unknown.
      */
-    public static String attributeToString(int attribute) {
+    public static String entityAttributeToString(int attribute) {
         switch (attribute) {
         case CONCEALED:
             return "concealed";
@@ -63,6 +63,18 @@ public final class Attributes
             return "equippable";
         case LIGHTSOURCE:
             return "lightsource";
+        default:
+            return "unknown";
+        }
+    }
+
+    /**
+     * Return a string representation of a given room attribute.
+     * @param attribute the attribute
+     * @return string representation, or "unknown" if the attribute is unknown.
+     */
+    public static String roomAttributeToString(int attribute) {
+        switch (attribute) {
         case DARK:
             return "dark";
         case VISITED:
@@ -71,14 +83,15 @@ public final class Attributes
             return "unknown";
         }
     }
+
     
     /**
-     * Return the attribute corresponding to a given string representation.
+     * Return the entity attribute corresponding to a given string representation.
      * @param s string representation
      * @return attribute corresponding to <tt>s</tt>, or -1 if <tt>s</tt> doesn't correspond
      *         to a known attribute.
      */
-    public static int stringToAttribute(String s) {
+    public static int stringToEntityAttribute(String s) {
         s = s.toLowerCase();
         switch (s) {
         case "concealed":
@@ -91,6 +104,20 @@ public final class Attributes
             return EQUIPPABLE;
         case "lightsource":
             return LIGHTSOURCE;
+        default:
+            return -1;
+        }
+    }
+
+    /**
+     * Return the room attribute corresponding to a given string representation.
+     * @param s string representation
+     * @return attribute corresponding to <tt>s</tt>, or -1 if <tt>s</tt> doesn't correspond
+     *         to a known attribute.
+     */
+    public static int stringToRoomAttribute(String s) {
+        s = s.toLowerCase();
+        switch (s) {
         case "visited":
             return VISITED;
         case "dark":
