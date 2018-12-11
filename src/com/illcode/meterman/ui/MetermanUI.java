@@ -239,7 +239,7 @@ public interface MetermanUI
      * @param header header surmounted above the text passage
      * @param text text passage (line-breaks kept intact)
      * @param prompt prompt displayed in front of the field
-     * @param initialText
+     * @param initialText the text initially set in the text field
      * @return the text entered by the user
      */
     String showPromptDialog(String header, String text, String prompt, String initialText);
@@ -254,4 +254,14 @@ public interface MetermanUI
      * @return the item selected, or null if no item selected.
      */
     <T> T showListDialog(String header, String text, List<T> items, boolean showCancelButton);
+
+    /**
+     * Shows a dialog displaying an image.
+     * @param header header surmounted above the text passage
+     * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
+     * @param imageScale the factor (>= 1) by which the image will be scaled before being shown
+     * @param text text passage (line-breaks kept intact) shown below the image
+     * @param buttonLabel label of the button to dismiss dialog
+     */
+    void showImageDialog(String header, String imageName, int imageScale, String text, String buttonLabel);
 }

@@ -9,7 +9,6 @@ import com.illcode.meterman.ui.UIConstants;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ public class SwingUI implements MetermanUI
     TextDialog textDialog;
     PromptDialog promptDialog;
     ListDialog listDialog;
+    ImageDialog imageDialog;
 
     private List<Entity> roomEntities, inventoryEntities;
 
@@ -43,6 +43,7 @@ public class SwingUI implements MetermanUI
         textDialog = new TextDialog(mainFrame.frame);
         promptDialog = new PromptDialog(mainFrame.frame);
         listDialog = new ListDialog(mainFrame.frame);
+        imageDialog = new ImageDialog(mainFrame.frame);
 
         setStatusLabel(UIConstants.LEFT_LABEL, "");
         setStatusLabel(UIConstants.CENTER_LABEL, "");
@@ -57,6 +58,7 @@ public class SwingUI implements MetermanUI
         unloadAllImages();
         defaultFrameImage.flush();
         defaultFrameImage = null;
+        imageDialog.dispose();
         listDialog.dispose();
         promptDialog.dispose();
         textDialog.dispose();
@@ -275,6 +277,10 @@ public class SwingUI implements MetermanUI
 
     public <T> T showListDialog(String header, String text, List<T> items, boolean showCancelButton) {
         return listDialog.showListDialog(header, text, items, showCancelButton);
+    }
+
+    public void showImageDialog(String header, String imageName, int imageScale, String text, String buttonLabel) {
+        imageDialog.show(header, imageMap.get(imageName), text, buttonLabel);
     }
 
     /** Called by MainFrame when an entity is selected from the room list. We translate
