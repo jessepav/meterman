@@ -82,10 +82,13 @@ public class GameUtils
      * @param capitalize whether to capitalize the definite article
      */
     public static String defName(Entity e, boolean capitalize) {
+        String name = e.getName();
+        if (name == null || name.isEmpty())
+            return "";
         if (e.checkAttribute(Attributes.PROPER_NAME))
-            return e.getName();
+            return name;
         String defArt = capitalize ? "The " : "the ";
-        return defArt + e.getName();
+        return defArt + name;
     }
 
     /**
@@ -119,7 +122,7 @@ public class GameUtils
         }
         if (capitalize)
             indefArt = WordUtils.capitalize(indefArt);
-        return indefArt + " " + e.getName();
+        return indefArt + " " + name;
     }
 
     /**
