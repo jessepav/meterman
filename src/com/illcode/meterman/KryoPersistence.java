@@ -5,7 +5,6 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import de.javakaffee.kryoserializers.ArraysAsListSerializer;
-import de.javakaffee.kryoserializers.BitSetSerializer;
 import de.javakaffee.kryoserializers.RegexSerializer;
 
 import java.io.InputStream;
@@ -28,11 +27,14 @@ public final class KryoPersistence implements Persistence
 
     public void init() {
         kryo = new Kryo();
+        // My serializers
         kryo.register(BitSet.class, new BitSetSerializer());
+        kryo.register(TextBundle.class, new TextBundleSerializer());
+        // Serializers from kryo-serializers
         kryo.register(Pattern.class, new RegexSerializer());
         kryo.register(Arrays.asList("").getClass(), new ArraysAsListSerializer());
-        kryo.register(TextBundle.class, new TextBundleSerializer());
-        kryo.setReferences(true);  // properly serialize multiple references and cyclic graphs
+        // properly serialize multiple references and cyclic graphs
+        kryo.setReferences(true);
     }
 
     public void dispose() {
@@ -81,6 +83,23 @@ public final class KryoPersistence implements Persistence
             else
                 parent = kryo.readObjectOrNull(input, TextBundle.class);
             return new TextBundle(passageMap, subMap, parent);
+        }
+    }
+
+    private static class BitSetSerializer extends Serializer<BitSet> {
+        public BitSet copy(Kryo kryo, BitSet original) {
+            return BitSet.valueOf(original.toLongArray());
+        }
+
+        public void write(Kryo kryo, Output output, BitSet bitSet) {
+            long[] longs = bitSet.toLongArray();
+            output.writeInt(longs.length, true);
+            output.writeLongs(longs);
+        }
+
+        public BitSet read(Kryo kryo, Input input, Class<BitSet> type) {
+            int len = input.readInt(true);
+            return BitSet.valueOf(input.readLongs(len));
         }
     }
 }
