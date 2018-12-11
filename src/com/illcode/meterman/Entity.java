@@ -106,12 +106,13 @@ public interface Entity
 
     /**
      * Normally the GameManager prints a parser-like message when an action is performed, like
-     * {@code "> TAKE CLOAK"}. An entity can request that this parser message be suppressed if,
-     * for instance, it wants to print its own.
+     * {@code "> TAKE CLOAK"}. An entity can request that this parser message replaced with its
+     * own message, or suppressed entirely.
      * @param action the action that is being performed
-     * @return true to suppress parser message
+     * @return null to allow the normal parser message flow to continue, <tt>""</tt> to suppress the
+     *         parser message entirely, or a non-empty string to replace the default parser message.
      */
-    boolean suppressParserMessage(String action);
+    String replaceParserMessage(String action);
 
     /**
      * Returns a modifiable Map that can be used to store arbitrary data useful for custom processing.

@@ -109,13 +109,11 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         }
     }
 
-    public boolean suppressParserMessage(String action) {
+    public String replaceParserMessage(BaseEntity e, String action) {
         if (action.equals(getHangOnHookAction()) || action.equals(getHangCloakAction())) {
-            ui.appendNewline();
-            ui.appendTextLn(bundle.getPassage("hang-cloak-parser-message"));
-            return true;
+            return bundle.getPassage("hang-cloak-parser-message");
         } else {
-            return false;
+            return null;
         }
     }
 

@@ -130,11 +130,11 @@ public class BaseEntity implements Entity
             return false;
     }
 
-    public boolean suppressParserMessage(String action) {
+    public String replaceParserMessage(String action) {
         if (delegate != null)
-            return delegate.suppressParserMessage(action);
+            return delegate.replaceParserMessage(this, action);
         else
-            return false;
+            return null;
     }
 
     public Map<String,Object> getProperties() {

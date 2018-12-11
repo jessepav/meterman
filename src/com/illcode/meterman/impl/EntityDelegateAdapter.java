@@ -48,7 +48,7 @@ public class EntityDelegateAdapter implements EntityDelegate
         return false;
     }
 
-    public boolean suppressParserMessage(String action) {
-        return false;
+    public String replaceParserMessage(BaseEntity e, String action) {
+        return null;
     }
 }

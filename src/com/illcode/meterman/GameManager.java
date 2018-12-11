@@ -32,6 +32,7 @@ public final class GameManager
     private LinkedList<EntityActionsProcessor> entityActionsProcessors;
     private LinkedList<EntitySelectionListener> entitySelectionListeners;
     private LinkedList<DescriptionTextProcessor> descriptionTextProcessors;
+    private LinkedList<ParserMessageProcessor> parserMessageProcessors;
 
     // To be used in composing text before sending it off to the UI.
     // Methods that use textBuilder should call .setLength(0) when finished to leave it empty.
@@ -59,6 +60,7 @@ public final class GameManager
         entityActionsProcessors = new LinkedList<>();
         entitySelectionListeners = new LinkedList<>();
         descriptionTextProcessors = new LinkedList<>();
+        parserMessageProcessors = new LinkedList<>();
         textBuilder = new StringBuilder(2048);
         commonTextBuilder = new StringBuilder(1024);
         paragraphBuilder = new StringBuilder(1024);
@@ -78,6 +80,7 @@ public final class GameManager
         entityActionsProcessors = null;
         entitySelectionListeners = null;
         descriptionTextProcessors = null;
+        parserMessageProcessors = null;
         textBuilder = null;
         commonTextBuilder = null;
         paragraphBuilder = null;
@@ -176,6 +179,7 @@ public final class GameManager
         worldData.put("entityActionsProcessors", entityActionsProcessors);
         worldData.put("entitySelectionListeners", entitySelectionListeners);
         worldData.put("descriptionTextProcessors", descriptionTextProcessors);
+        worldData.put("parserMessageProcessors", parserMessageProcessors);
     }
 
     @SuppressWarnings("unchecked")
@@ -188,6 +192,7 @@ public final class GameManager
         entityActionsProcessors = (LinkedList<EntityActionsProcessor>) worldData.get("entityActionsProcessors");
         entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
         descriptionTextProcessors = (LinkedList<DescriptionTextProcessor>) worldData.get("descriptionTextProcessors");
+        parserMessageProcessors = (LinkedList<ParserMessageProcessor>) worldData.get("parserMessageProcessors");
     }
 
     private void clearListenerLists() {
@@ -199,6 +204,7 @@ public final class GameManager
         entityActionsProcessors.clear();
         entitySelectionListeners.clear();
         descriptionTextProcessors.clear();
+        parserMessageProcessors.clear();
     }
 
     public Game getGame() {
@@ -463,11 +469,14 @@ public final class GameManager
     /** Called by the UI when the user clicks an action button (or selects an action
      *  from the combo box when there are many actions) */
     public void entityActionSelected(String action) {
-        if (!selectedEntity.suppressParserMessage(action)) {
-            // Make believe that this is a parser game, like Detectiveland does, ex:
-            // "> TAKE GIANT WATERMELON"
+        String msg = selectedEntity.replaceParserMessage(action);
+        if (msg == null)
+            msg = fireProcessingParserMessage(selectedEntity, action);
+        if (msg == null)
+            msg = Utils.fmt("> %s %s", action.toUpperCase(), selectedEntity.getName().toUpperCase());
+        if (!msg.isEmpty()) {
             ui.appendNewline();
-            ui.appendTextLn(Utils.fmt("> %s %s", action.toUpperCase(), selectedEntity.getName().toUpperCase()));
+            ui.appendTextLn(msg);
         }
         if (!fireBeforeAction(action, selectedEntity)) {
             if (!selectedEntity.processAction(action))
@@ -829,16 +838,17 @@ public final class GameManager
      * Add a DescriptionTextProcessor
      * @param l listener to add
      */
-    public void addLookListener(DescriptionTextProcessor l) {
-
+    public void addDescriptionTextProcessor(DescriptionTextProcessor l) {
+        if (!descriptionTextProcessors.contains(l))
+            descriptionTextProcessors.addFirst(l);
     }
 
     /**
      * Remove a DescriptionTextProcessor
      * @param l listener to remove
      */
-    public void removeLookListener(DescriptionTextProcessor l) {
-
+    public void removeDescriptionTextProcessor(DescriptionTextProcessor l) {
+        descriptionTextProcessors.remove(l);
     }
 
     /**
@@ -848,9 +858,44 @@ public final class GameManager
      * @param textType either {@link DescriptionTextProcessor#ROOM_DESCRIPTION} or {@link
      *   DescriptionTextProcessor#ENTITY_DESCRIPTION}, indicating at what point the method is being called.
      */
-    public void fireDescriptionTextReady(StringBuilder sb, int textType) {
+    private void fireDescriptionTextReady(StringBuilder sb, int textType) {
         for (DescriptionTextProcessor l : descriptionTextProcessors)
             l.descriptionTextReady(sb, textType);
+    }
+
+    /**
+     * Add a ParserMessageProcessor
+     * @param p processor to add
+     */
+    public void addParserMessageProcessor(ParserMessageProcessor p) {
+        if (!parserMessageProcessors.contains(p))
+            parserMessageProcessors.addFirst(p);
+    }
+
+    /**
+     * Remove a ParserMessageProcessor
+     * @param p processor to remove
+     */
+    public void removeParserMessageProcessor(ParserMessageProcessor p) {
+        parserMessageProcessors.remove(p);
+    }
+
+    /**
+     * Called when a parser message is being generated to notify all our registered
+     * <tt>ParserMessageProcessor</tt>S.
+     * @param e selected entity performing the action
+     * @param action the action that is being performed
+     * @return null to allow the normal parser message flow to continue, <tt>""</tt> to suppress the
+     *         parser message entirely, or a non-empty string to replace the default parser message.
+     */
+    private String fireProcessingParserMessage(Entity e, String action) {
+        String msg = null;
+        for (ParserMessageProcessor p : parserMessageProcessors) {
+            msg = p.replaceParserMessage(e, action);
+            if (msg != null)
+                break;
+        }
+        return msg;
     }
     //endregion
 }

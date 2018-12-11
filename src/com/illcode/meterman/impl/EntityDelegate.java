@@ -37,6 +37,6 @@ public interface EntityDelegate
     /** @see Entity#processAction(String)  */
     boolean processAction(BaseEntity e, String action);
 
-    /** @see Entity#suppressParserMessage(String) */
-    boolean suppressParserMessage(String action);
+    /** @see Entity#replaceParserMessage(String) */
+    String replaceParserMessage(BaseEntity e, String action);
 }
