@@ -279,8 +279,11 @@ public class SwingUI implements MetermanUI
         return listDialog.showListDialog(header, text, items, showCancelButton);
     }
 
-    public void showImageDialog(String header, String imageName, int imageScale, String text, String buttonLabel) {
-        imageDialog.show(header, imageMap.get(imageName), text, buttonLabel);
+    public void showImageDialog(String header, String imageName, int scale, String text, String buttonLabel) {
+        BufferedImage image = imageMap.get(imageName);
+        if (image != null && scale > 1)
+            image = GuiUtils.getScaledImage(image, scale);
+        imageDialog.show(header, image, text, buttonLabel);
     }
 
     /** Called by MainFrame when an entity is selected from the room list. We translate

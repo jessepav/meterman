@@ -137,8 +137,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
             else
                 bar.setAttribute(Attributes.DARK);
         } else if (r == foyer && toRoom == patio) {
-            //ui.appendTextLn(bundle.getPassage("no-go-patio"));
-            ui.showImageDialog("Phantom", "phantom-frame-image", 1, "Aaaagh! The Phantom of the Opera", "Okay");
+            ui.appendTextLn(bundle.getPassage("no-go-patio"));
             return true;
         }
         return false;

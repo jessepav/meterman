@@ -257,11 +257,11 @@ public interface MetermanUI
 
     /**
      * Shows a dialog displaying an image.
-     * @param header header surmounted above the text passage
+     * @param header header surmounted above the image
      * @param imageName name of the image, as chosen in {@link #loadImage(String, Path)}
-     * @param imageScale the factor (>= 1) by which the image will be scaled before being shown
+     * @param scale the factor (>= 1) by which the image will be scaled before being shown
      * @param text text passage (line-breaks kept intact) shown below the image
-     * @param buttonLabel label of the button to dismiss dialog
+     * @param buttonLabel label of the button used to dismiss dialog
      */
-    void showImageDialog(String header, String imageName, int imageScale, String text, String buttonLabel);
+    void showImageDialog(String header, String imageName, int scale, String text, String buttonLabel);
 }

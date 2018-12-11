@@ -1,8 +1,6 @@
-Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
+Finish Cloak of Darkness (see firthworks.com description)
 
 == And then... ==
-
-Implement Cloak of Darkness (see firthworks.com description)
 
 Write the Riverboat, modifying the engine as needed to enable required features.
 
@@ -10,10 +8,9 @@ Write the Riverboat, modifying the engine as needed to enable required features.
 
 Breadth first search algorithm for pathfinding between rooms.
 
+Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 
 == Things I may or may not do ==
-
-Add an Image Dialog (w header and subtitle text area).
 
 Add an option in the startup screen to download and install games from the web.
 

@@ -25,6 +25,7 @@ public class ImageDialog implements ActionListener
     JButton closeButton;
 
     ImageIcon imageIcon;
+    BufferedImage emptyImage;
 
     public ImageDialog(Window owner) {
         this.owner = owner;
@@ -43,6 +44,8 @@ public class ImageDialog implements ActionListener
 
             closeButton.addActionListener(this);
             dialog.getRootPane().setDefaultButton(closeButton);
+
+            emptyImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "ImageDialog()", ex);
         }
@@ -50,14 +53,14 @@ public class ImageDialog implements ActionListener
 
     void show(String header, BufferedImage image, String text, String buttonLabel) {
         headerLabel.setText(header);
-        if (image != null)
-            imageIcon.setImage(image);
+        imageIcon.setImage(image == null ? emptyImage : image);
         textArea.setText(text);
         closeButton.setText(buttonLabel);
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
         closeButton.requestFocusInWindow();
         dialog.setVisible(true);  // blocks until hidden
+        imageIcon.setImage(emptyImage);  // allow 'image' to be GC'd
     }
 
     public void actionPerformed(ActionEvent e) {
