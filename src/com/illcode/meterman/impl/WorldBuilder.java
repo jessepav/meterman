@@ -152,12 +152,14 @@ public class WorldBuilder
         {
             "id" : "ferryman",
             "name" : "River Ferryman",
+            "indefiniteArticle" : "a",
             "listName" : "Ferryman",
             "description" : "[[ferryman-description]]",
             "imageName" : "ferryman",
             "attributes" : ["concealed", "lightsource"],
         }
      * }</pre>
+     * <tt>indefiniteArticle</tt> is optional.
      * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.<br/>
      * <tt>attributes</tt> is optional.
      * @param e BaseEntity into which to store the data
@@ -171,10 +173,13 @@ public class WorldBuilder
             JsonObject o = Json.parse(json).asObject();
             e.id = getJsonString(o.get("id"));
             e.name = getJsonString(o.get("name"));
+            JsonValue v = o.get("indefiniteArticle");
+            if (v != null)
+                e.indefiniteArticle = getJsonString(v, null);
             e.listName = getJsonString(o.get("listName"), e.name);
             e.description = getJsonString(o.get("description"));
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
-            JsonValue v = o.get("attributes");
+            v = o.get("attributes");
             if (v != null) {
                 for (JsonValue attrVal : v.asArray().values())
                     e.setAttribute(Attributes.stringToEntityAttribute(attrVal.asString()));

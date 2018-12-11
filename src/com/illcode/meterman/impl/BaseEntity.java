@@ -19,6 +19,7 @@ public class BaseEntity implements Entity
     public String id;
 
     public String name;
+    public String indefiniteArticle;
     public String listName;
     public String description;
     public BitSet attributes;
@@ -38,6 +39,7 @@ public class BaseEntity implements Entity
     public void init() {
         id = "(id)";
         name = "(name)";
+        indefiniteArticle = null;
         listName = "(list name)";
         description = "(description)";
         attributes = new BitSet(64);
@@ -63,6 +65,10 @@ public class BaseEntity implements Entity
 
     public String getName() {
         return name;
+    }
+
+    public String getIndefiniteArticle() {
+        return indefiniteArticle;
     }
 
     public String getListName() {

@@ -11,9 +11,6 @@ public interface Entity
     /** Initialize the entity to its default state. This is not called when restoring a game. */
     void init();
 
-    /** Return the name of this entity */
-    String getName();
-
     /** Returns true if {@code attribute} is set */
     boolean checkAttribute(int attribute);
 
@@ -25,6 +22,13 @@ public interface Entity
 
     /** Clear all attributes */
     void clearAllAttributes();
+
+    /** Return the name of this entity */
+    String getName();
+
+    /** Return the indefinite article to be used when referring to this entity.
+     *  A null return value causes the system to make its best guess. */
+    String getIndefiniteArticle();
 
     /**
      * Returns the name of the entity that should be displayed in the room or inventory list. This

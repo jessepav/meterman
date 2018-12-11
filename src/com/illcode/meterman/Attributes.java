@@ -35,6 +35,9 @@ public final class Attributes
     /** This entity is a light source. */
     public static final int LIGHTSOURCE = 4;
 
+    /** This entity has a proper name and doesn't require the definite article. */
+    public static final int PROPER_NAME = 5;
+
     //
     // Room attributes
     //
@@ -63,6 +66,8 @@ public final class Attributes
             return "equippable";
         case LIGHTSOURCE:
             return "lightsource";
+        case PROPER_NAME:
+            return "proper-name";
         default:
             return "unknown";
         }
@@ -104,6 +109,8 @@ public final class Attributes
             return EQUIPPABLE;
         case "lightsource":
             return LIGHTSOURCE;
+        case "proper-name":
+            return PROPER_NAME;
         default:
             return -1;
         }
