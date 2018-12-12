@@ -210,6 +210,30 @@ public final class TextBundle
     }
 
     /**
+     * Returns a bundle passage, optionally flowed, split into multiple strings.
+     * @param name passage name
+     * @param separator separator character by which to split the passage text
+     * @param flowed if true, the passage text will be {@link #flowText(String) flowed} before being split
+     * @return array of strings holding the split text
+     */
+    public String[] getPassageSplit(String name, char separator, boolean flowed) {
+        String text = getPassage(name);
+        if (flowed)
+            text = flowText(text);
+        return StringUtils.split(text, separator);
+    }
+
+    /**
+     * Returns a bundle passage split into multiple strings.
+     * @param name passage name
+     * @param separator separator character by which to split the passage text
+     * @return array of strings holding the split text
+     */
+    public String[] getPassageSplit(String name, char separator) {
+        return getPassageSplit(name, separator, false);
+    }
+
+    /**
      * Returns a set of the names of the passages contained in this text bundle.
      */
     public Set<String> getPassageNames() {
