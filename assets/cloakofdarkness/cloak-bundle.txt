@@ -208,10 +208,6 @@ Scrawled in the sawdust is a message:
 When you read the message your vision blurs and you feel yourself
 thrown through a rift in reality.
 
-[ win-message ]
+[ win-lose ]
 
-won
-
-[ lose-message ]
-
-lost
+won|lost

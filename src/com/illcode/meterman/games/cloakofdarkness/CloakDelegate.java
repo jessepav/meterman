@@ -113,9 +113,9 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 
     public boolean selected(BaseEntity e) {
         if (e == message) {
-            // I use bundle.putSubstitution() here just to show its operation.
-            bundle.putSubstitution("wonlost", bundle.getPassage(
-                state.numDarkBarActions < 3 ? "win-message" : "lose-message"));
+            // I use putSubstitution() and getPassageSplit() here just to show their operation.
+            bundle.putSubstitution("wonlost",
+                bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);
             String s = bundle.getPassage("endgame-message");
             bundle.clearSubstitutions();
             ui.showTextDialog("Message", s, "Close");
