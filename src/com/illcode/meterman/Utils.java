@@ -202,7 +202,7 @@ public final class Utils
      * <p/>
      * This method is for the Meterman system classes only: games should call
      * {@link #pathForGameAsset(String)} instead.
-     * @param path (relative to the system assets path) of the asset we want
+     * @param asset (relative to the system assets path) of the asset we want
      * @return the resolved path
      */
     public static Path pathForSystemAsset(String asset) {

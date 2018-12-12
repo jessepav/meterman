@@ -18,8 +18,9 @@ mkdir %output_dir%
 
 javadoc -classpath lib\*;build\production\Meterman -%visibility% %linksrc% ^
    -sourcepath src -subpackages com.illcode.meterman -d "%output_dir%" ^
+   -exclude com.illcode.meterman.games ^
    -windowtitle "Meterman Javadocs" -doctitle "Meterman Javadocs" ^
-   -linkoffline https://jessepav.github.io/java-api-docs/json-simple-3.0.2/ scripts\package-info\json-simple ^
+   -linkoffline https://www.javadoc.io/doc/com.eclipsesource.minimal-json/minimal-json/0.9.5/ scripts\package-info\minimal-json ^
    -linkoffline https://docs.oracle.com/javase/7/docs/api/ scripts\package-info\java7 ^
    -linkoffline https://jessepav.github.io/java-api-docs/BeanShell/javadoc/ scripts\package-info\bsh
 
