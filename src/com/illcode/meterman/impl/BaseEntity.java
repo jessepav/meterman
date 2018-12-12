@@ -107,11 +107,12 @@ public class BaseEntity implements Entity
             delegate.dropped(this);
     }
 
-    public void selected() {
+    public boolean selected() {
         if (delegate != null)
-            delegate.selected(this);
+            return delegate.selected(this);
         if (imageName != null)
             Meterman.ui.setEntityImage(imageName);
+        return false;
     }
 
     public Room getRoom() {

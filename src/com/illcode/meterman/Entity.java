@@ -79,8 +79,14 @@ public interface Entity
     /** Called when the entity is removed from the player inventory */
     void dropped();
 
-    /** Called when the entity is selected in the UI. This can be used to set an entity image. */
-    void selected();
+    /**
+     * Called when the entity is selected in the UI.
+     * <p/>
+     * Note that it is called <em>after</em> the UI is updated as normal for the entity, so this method can
+     * modify it if desired.
+     * @return true if selection listeners should be skipped, false to continue processing.
+     */
+    boolean selected();
 
     /**
      * Returns the room  where this entity is found. If the entity is held in player inventory,

@@ -111,7 +111,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         }
     }
 
-    public void selected(BaseEntity e) {
+    public boolean selected(BaseEntity e) {
         if (e == message) {
             // I use bundle.putSubstitution() here just to show its operation.
             bundle.putSubstitution("wonlost", bundle.getPassage(
@@ -122,8 +122,9 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
             ui.clearText();
             bundle.putPassage("wait-message", bundle.getPassage("purgatory-wait-message"));
             gm.movePlayer(purgatory);
+            return true;
         } else {
-            super.selected(e);
+            return super.selected(e);
         }
     }
 

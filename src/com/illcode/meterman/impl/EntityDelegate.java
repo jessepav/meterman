@@ -29,7 +29,7 @@ public interface EntityDelegate
     void dropped(BaseEntity e);
 
     /** @see Entity#selected()  */
-    void selected(BaseEntity e);
+    boolean selected(BaseEntity e);
 
     /** @see Entity#getActions()  */
     List<String> getActions(BaseEntity e);

@@ -16,6 +16,7 @@ public interface EntitySelectionListener
      * Note that it is called <em>after</em> the UI is updated as normal for that entity,
      * so that the listener can modify it if desired.
      * @param e selected entity
+     * @return true if other selection listeners should be skipped, false to continue processing.
      */
-    void entitySelected(Entity e);
+    boolean entitySelected(Entity e);
 }

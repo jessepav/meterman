@@ -461,8 +461,8 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn(Utils.fmt("> %s %s",
                 SystemActions.getGoAction().toUpperCase(), toRoom.getExitName().toUpperCase()));
+            movePlayer(toRoom);
         }
-        movePlayer(toRoom);
         nextTurn();
     }
 
@@ -494,8 +494,8 @@ public final class GameManager
         selectedEntity = e;
         refreshEntityUI();
         if (e != null) {
-            e.selected();
-            fireEntitySelected(e);
+            if (!e.selected())
+                fireEntitySelected(e);
         }
     }
 
@@ -831,7 +831,8 @@ public final class GameManager
      */
     private void fireEntitySelected(Entity e) {
         for (EntitySelectionListener l : entitySelectionListeners)
-            l.entitySelected(e);
+            if (l.entitySelected(e))
+                break;
     }
 
     /**
