@@ -7,7 +7,7 @@ This is the Meterman implementation of the Cloak of Darkness specification
 [ cloak-rooms ]
 
 [
-    "foyer", "bar:dark", "cloakroom", "patio"
+    "foyer", "bar:dark", "cloakroom", "patio", "purgatory"
 ]
 
 [ cloak-entities ]
@@ -36,8 +36,13 @@ This is the Meterman implementation of the Cloak of Darkness specification
 {
     "id" : "foyer",
     "name" : "Foyer",
-    "description" : "..."
+    "description" : "[[foyer-description]]"
 }
+
+[foyer-description (flowed)]
+
+The foyer of the opera house is empty, shadows gathering in the folds of
+the threadbare curtains and cracks of doors and windows.
 
 [ bar ]
 
@@ -45,20 +50,37 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "id" : "bar",
     "name" : "Bar",
     "exitName" : "Bar",
-    "description" : "...",
+    "description" : "[[bar-description]]",
     "darkName" : "Darkened Bar",
     "darkExitName" : "Shadowy Bar",
-    "darkDescription" : "...",
+    "darkDescription" : "[[dark-bar-description]]",
     "attributes" : ["dark"]
 }
+
+[ bar-description (flowed) ]
+
+The bar is now lit, and you can see its empty shelves and cracked
+countertop. Only a pile of sawdust remains; it seems to have
+a message scrawled in its dry chips.
+
+[dark-bar-description (flowed)]
+
+The bar is strangely dark, as though light were being sucked out of the air itself.
 
 [ cloakroom ]
 
 {
     "id" : "cloakroom",
     "name" : "Cloakroom",
-    "description" : "..."
+    "description" : "[[cloakroom-description]]"
 }
+
+[cloakroom-description (flowed)]
+
+The cloakroom possesses a sturdiness that the other rooms in the old opera house
+seem to lack.
+
+Your eye is drawn to a brass hook mounted along one wall.
 
 [ patio ]
 
@@ -68,23 +90,47 @@ This is the Meterman implementation of the Cloak of Darkness specification
     "description" : "Fake Patio"
 }
 
+[ purgatory ]
+{
+    "id" : "purgatory",
+    "name" : "Strange Purgatory",
+    "description" : "[[purgatory-description]]"
+}
+
+[ purgatory-description (flowed)]
+
+You find yourself in a room outside of time and space, unable to leave,
+devoid of material and companionship forevermore.
+
+                ** THE END **
+
+[ purgatory-wait-message ]
+
+Time passes...or so you think, in this place where time has no meaning.
+
 [ cloak ]
 
 {
     "id" : "cloak",
-    "name" : "Strange Cloak",
+    "name" : "Velvet Cloak",
     "listName" : "Cloak",
-    "description" : "...",
+    "description" : "[[cloak-description]]",
     "imageName" : "cloak",
     "attributes" : ["wearable", "takeable"]
 }
+
+[cloak-description (flowed)]
+
+This velvet cloak is black, so black that it seems a hole in the
+fabric of the world itself. If you stare at it for more than a
+second, even the periphery of your vision starts to go dark.
 
 [ hook ]
 
 {
     "id" : "hook",
     "name" : "Brass Hook",
-    "description" : "..."
+    "description" : "The brass hook shines as though glowing with an inner light."
 }
 
 [ scrawled-message ]
@@ -155,7 +201,12 @@ It is probably best not to disturb mysterious things in the dark.
 
 [ endgame-message ]
 
-Scrawled in the sawdust is a message: "You have ${wonlost}."
+Scrawled in the sawdust is a message:
+
+  "You have ${wonlost}."
+
+When you read the message your vision blurs and you feel yourself
+thrown through a rift in reality.
 
 [ win-message ]
 

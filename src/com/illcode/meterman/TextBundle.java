@@ -197,7 +197,11 @@ public final class TextBundle
         return flowText(getPassage(name));
     }
 
-    private static String flowText(String text) {
+    /**
+     * Returns given text with each paragraph flowed into one line, but paragraph
+     * breaks (two or more newlines in sequence) left intact.
+     */
+    public static String flowText(String text) {
         if (text.isEmpty())
             return "";
         if (flowPattern == null)
