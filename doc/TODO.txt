@@ -1,5 +1,3 @@
-Finish Cloak of Darkness (see firthworks.com description)
-
 == And then... ==
 
 Write the Riverboat, modifying the engine as needed to enable required features.
