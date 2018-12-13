@@ -1,10 +1,10 @@
+Breadth first search algorithm for pathfinding between rooms (take doors into account).
+
 == And then... ==
 
 Write the Riverboat, modifying the engine as needed to enable required features.
 
 == Things to do in the future ==
-
-Breadth first search algorithm for pathfinding between rooms.
 
 Write a "frame image manager" that tracks player movements and sets the frame image appropriately.
 
