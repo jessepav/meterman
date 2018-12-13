@@ -1,7 +1,8 @@
 package com.illcode.meterman.games.cloakofdarkness;
 
 import com.illcode.meterman.*;
-import com.illcode.meterman.impl.*;
+import com.illcode.meterman.impl.BasicWorldManager;
+import com.illcode.meterman.impl.WorldBuilder;
 
 public class CloakGame implements Game
 {
