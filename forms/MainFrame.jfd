@@ -451,7 +451,6 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "gameMenu"
 					"text": "Game"
-					"mnemonic": 71
 					"foreground": &Color4 new java.awt.Color( 214, 214, 214, 255 )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "newMenuItem"
@@ -488,7 +487,6 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "settingsMenu"
 					"text": "Settings"
-					"mnemonic": 83
 					"foreground": #Color4
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "alwaysLookCheckBoxMenuItem"
@@ -505,15 +503,28 @@ new FormModel {
 						name: "soundCheckBoxMenuItem"
 						"text": "Sound Effects"
 					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator8"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "scrollbackMenuItem"
+						"text": "Scrollback Buffer Size..."
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "helpMenu"
 					"text": "Help"
-					"mnemonic": 72
 					"foreground": #Color4
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "webSiteMenuItem"
+						"text": "Meterman Web Site"
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator9"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "aboutMenuItem"
-						"text": "About..."
+						"text": "About Game..."
 					} )
 				} )
 			}

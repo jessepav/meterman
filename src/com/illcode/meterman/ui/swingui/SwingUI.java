@@ -9,6 +9,8 @@ import com.illcode.meterman.ui.UIConstants;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class SwingUI implements MetermanUI
     private Map<String,BufferedImage> imageMap;
     private BufferedImage defaultFrameImage;
     private String currentFrameImage, currentEntityImage;
+
+    int maxBufferSize;
 
     public void init() {
         GuiUtils.initGraphics();
@@ -66,6 +70,7 @@ public class SwingUI implements MetermanUI
     }
 
     public boolean run() {
+        maxBufferSize = Utils.intPref("max-text-buffer-size", 50000);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -73,6 +78,7 @@ public class SwingUI implements MetermanUI
                 } catch (Exception ex) {
                     Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
                 }
+                setGameName(null);
                 mainFrame.setVisible(true);
                 realized = true;
                 mainFrame.startup();
@@ -81,8 +87,16 @@ public class SwingUI implements MetermanUI
         return false;
     }
 
-    public void setTitle(String title) {
-        mainFrame.frame.setTitle(title);
+    public void setGameName(String name) {
+        if (name == null) {
+            mainFrame.frame.setTitle("Meterman (no game loaded)");
+            mainFrame.aboutMenuItem.setText("About...");
+            mainFrame.aboutMenuItem.setEnabled(false);
+        } else {
+            mainFrame.frame.setTitle("Meterman - " + name);
+            mainFrame.aboutMenuItem.setText("About " + name);
+            mainFrame.aboutMenuItem.setEnabled(true);
+        }
     }
 
     public void openURL(String url) {
@@ -158,7 +172,17 @@ public class SwingUI implements MetermanUI
     public void appendText(String text) {
         JTextArea ta = mainFrame.mainTextArea;
         ta.append(text);
-        ta.setCaretPosition(ta.getDocument().getLength()); // scroll to the bottom of the text area
+        Document doc = ta.getDocument();
+        int len = doc.getLength();
+        if (len > maxBufferSize) {
+            try {
+                doc.remove(0, len - maxBufferSize);
+                len = maxBufferSize;
+            } catch (BadLocationException e) {
+                Utils.logger.log(Level.WARNING, "SwingUI.appendText()", e);
+            }
+        }
+        ta.setCaretPosition(len); // scroll to the bottom of the text area
     }
 
     public void appendNewline() {

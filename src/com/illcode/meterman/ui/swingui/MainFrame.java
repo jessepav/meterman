@@ -36,7 +36,8 @@ class MainFrame implements ActionListener, ListSelectionListener
     private SwingUI ui;
 
     JFrame frame;
-    JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, quitMenuItem, aboutMenuItem;
+    JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, quitMenuItem, aboutMenuItem,
+        webSiteMenuItem, scrollbackMenuItem;
     JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem;
     JPanel imagePanel;
     JLabel roomNameLabel, objectNameLabel;
@@ -72,6 +73,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             loadMenuItem = cr.getMenuItem("loadMenuItem");
             quitMenuItem = cr.getMenuItem("quitMenuItem");
             aboutMenuItem = cr.getMenuItem("aboutMenuItem");
+            webSiteMenuItem = cr.getMenuItem("webSiteMenuItem");
+            scrollbackMenuItem = cr.getMenuItem("scrollbackMenuItem");
             alwaysLookCheckBoxMenuItem = cr.getCheckBoxMenuItem("alwaysLookCheckBoxMenuItem");
             musicCheckBoxMenuItem = cr.getCheckBoxMenuItem("musicCheckBoxMenuItem");
             soundCheckBoxMenuItem = cr.getCheckBoxMenuItem("soundCheckBoxMenuItem");
@@ -111,7 +114,7 @@ class MainFrame implements ActionListener, ListSelectionListener
 
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
                 quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
-                lookButton, waitButton})
+                webSiteMenuItem, scrollbackMenuItem, lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -318,6 +321,17 @@ class MainFrame implements ActionListener, ListSelectionListener
             boolean alwaysLook = alwaysLookCheckBoxMenuItem.isSelected();
             Meterman.gm.setAlwaysLook(alwaysLook);
             Utils.setPref("always-look", Boolean.toString(alwaysLook));
+        } else if (source == scrollbackMenuItem) {
+            int newval = Utils.parseInt(ui.showPromptDialog("Scrollback",
+                "Scrollback buffer size, in characters:", "Size:", Integer.toString(ui.maxBufferSize)));
+            if (newval == 0) {
+                ui.showTextDialog("Scrollback", "That's not a valid size!", "Sorry, I'll try again");
+            } else {
+                ui.maxBufferSize = newval;
+                Utils.setPref("max-text-buffer-size", Integer.toString(newval));
+            }
+        } else if (source == webSiteMenuItem) {
+            ui.openURL("https://jessepav.github.io/meterman/");
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
         }

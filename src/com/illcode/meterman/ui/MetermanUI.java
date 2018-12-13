@@ -40,10 +40,10 @@ public interface MetermanUI
     boolean run();
 
     /**
-     * Sets the frame title (or equivalent), to show the game name, etc.
-     * @param title title string
+     * Sets the frame title (or equivalent) and About menu text to show the game name.
+     * @param name game name, or null if no game loaded
      */
-    void setTitle(String title);
+    void setGameName(String name);
 
     /**
      * Opens a web browser to the given URL, if applicable. If the UI doesn't

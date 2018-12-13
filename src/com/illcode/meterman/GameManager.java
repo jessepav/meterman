@@ -97,7 +97,7 @@ public final class GameManager
     public void newGame(Game game) {
         closeGame();
         this.game = game;
-        ui.setTitle("Meterman - " + game.getGameName());
+        ui.setGameName(game.getGameName());
         game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;
@@ -139,7 +139,7 @@ public final class GameManager
         closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
-        ui.setTitle("Meterman - " + game.getGameName());
+        ui.setGameName(game.getGameName());
         game.init();
         player = worldState.player;
         worldData = worldState.worldData;
@@ -167,7 +167,7 @@ public final class GameManager
             game.dispose();
             game = null;
         }
-        ui.setTitle("Meterman");
+        ui.setGameName(null);
     }
 
     private void storeListenerListsInWorldData() {
