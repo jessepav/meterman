@@ -635,7 +635,7 @@ public class WorldBuilder
      * Certain suffixes may be attacked to a passage name for special treatment:
      * <ul>
      *     <li>Suffix <tt>:door</tt> - loaded as a {@link #loadDoor(String) Door}</li>
-     *     <li>Suffix <tt>:talking</tt> - loaded as a {@link #loadTalkingEntity(String)} TalkingEntity</li>
+     *     <li>Suffix <tt>:talking</tt> - loaded as a {@link #loadTalkingEntity(String) TalkingEntity}</li>
      * </ul>
      * For each passage name listed, we will call the appropriate variant of {@link #loadEntity(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found

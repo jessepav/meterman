@@ -27,6 +27,8 @@ public class TalkingEntity extends BaseEntity
     // The topics we'll show in the list when we're Talk'ed to.
     public List<TalkTopic> currentTopics;
 
+    private TalkTopic lastTopicDiscussed;
+
     protected List<String> actions;
 
     public TalkingEntity() {
@@ -61,6 +63,16 @@ public class TalkingEntity extends BaseEntity
     }
 
     /**
+     * Return the last (non-null) TalkTopic discussed with this TalkingEntity.
+     * <p/>
+     * This is useful to listeners who want to find out what the player chose to talk
+     * about, even if the entity itself handled the Talk action.
+     */
+    public TalkTopic getLastTopicDiscussed() {
+        return lastTopicDiscussed;
+    }
+
+    /**
      * Processes the Talk action. Kept in a separate method so listeners and delegates can call it directly.
      * @return the {@link TalkTopic} selected (may be null)
      */
@@ -79,6 +91,7 @@ public class TalkingEntity extends BaseEntity
                         currentTopics.add(topic);
                 for (TalkTopic topic : tt.removeTopics)
                     currentTopics.remove(topic);
+                lastTopicDiscussed = tt;
             }
             return tt;
         }
