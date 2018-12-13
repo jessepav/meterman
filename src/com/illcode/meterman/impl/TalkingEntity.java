@@ -27,7 +27,7 @@ public class TalkingEntity extends BaseEntity
     // The topics we'll show in the list when we're Talk'ed to.
     public List<TalkTopic> currentTopics;
 
-    private List<String> actions;
+    protected List<String> actions;
 
     public TalkingEntity() {
     }

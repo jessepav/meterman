@@ -13,12 +13,3 @@ Add an option in the startup screen to download and install games from the web.
 "Special action manager", that allows the user to type an action name to send to the selected object.
 
 == Things I won't do ==
-
-[Actually, don't do this:  the frame images are still visible when the dialogs appear, so there's still
- some graphical feedback (like entity image) while viewing dialog text. If I want to ensure that the images
- are visible I could position the dialogs to the immediate right of the FrameImagePanel instead of the center
- of the frame.]
-
-   Add a side image panel to the XxxDialogS, that accepts the same imageName parameter as the frame image.
-   If the imageName is null, the panel will be hidden (set a preferred size of 150x400). I don't need a
-   custom JPanel subclass for this, but can just pop an Image into an ImageIcon and use a JLabel.

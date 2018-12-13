@@ -21,18 +21,18 @@ import static com.illcode.meterman.impl.BasicActions.*;
  */
 public class Door extends BaseEntity
 {
-    private BaseRoom[] rooms;
-    private int[] positions;
-    private String[] descriptions;
-    private String[] lockedMessages;
-    private String[] unlockedMessages;
-    private String[] openMessages;
-    private String[] noKeyMessages;
+    protected BaseRoom[] rooms;
+    protected int[] positions;
+    protected String[] descriptions;
+    protected String[] lockedMessages;
+    protected String[] unlockedMessages;
+    protected String[] openMessages;
+    protected String[] noKeyMessages;
 
-    private Entity key;
-    private boolean locked;
-    private boolean open;
-    private List<String> actions;
+    protected Entity key;
+    protected boolean locked;
+    protected boolean open;
+    protected List<String> actions;
 
     public Door() {
     }

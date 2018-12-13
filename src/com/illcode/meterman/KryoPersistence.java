@@ -60,7 +60,7 @@ public final class KryoPersistence implements Persistence
     private static class TextBundleSerializer extends Serializer<TextBundle> {
         public TextBundle copy(Kryo kryo, TextBundle original) {
             // Since the only place copy() is used is to implement undo, we want it fast, and can just
-            // reuse the original, on the assumption that not too much has changed in one turn.
+            // reuse the original, on the assumption that nothing critical will have changed in one turn.
             return original;
         }
 
