@@ -514,6 +514,13 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator8"
 					} )
+					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
+						name: "enableUndoCheckBoxMenuItem"
+						"text": "Enable Undo"
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator11"
+					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "scrollbackMenuItem"
 						"text": "Scrollback Buffer Size..."

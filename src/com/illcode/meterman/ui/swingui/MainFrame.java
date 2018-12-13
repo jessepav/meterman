@@ -38,7 +38,8 @@ class MainFrame implements ActionListener, ListSelectionListener
     JFrame frame;
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, undoMenuItem,
         quitMenuItem, aboutMenuItem, webSiteMenuItem, scrollbackMenuItem;
-    JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem;
+    JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
+        enableUndoCheckBoxMenuItem;
     JPanel imagePanel;
     JLabel roomNameLabel, objectNameLabel;
     JButton lookButton, waitButton;
@@ -79,6 +80,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             alwaysLookCheckBoxMenuItem = cr.getCheckBoxMenuItem("alwaysLookCheckBoxMenuItem");
             musicCheckBoxMenuItem = cr.getCheckBoxMenuItem("musicCheckBoxMenuItem");
             soundCheckBoxMenuItem = cr.getCheckBoxMenuItem("soundCheckBoxMenuItem");
+            enableUndoCheckBoxMenuItem = cr.getCheckBoxMenuItem("enableUndoCheckBoxMenuItem");
             imagePanel = cr.getPanel("imagePanel");
             roomNameLabel = cr.getLabel("roomNameLabel");
             objectNameLabel = cr.getLabel("objectNameLabel");
@@ -115,7 +117,7 @@ class MainFrame implements ActionListener, ListSelectionListener
 
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
                 quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
-                webSiteMenuItem, scrollbackMenuItem, undoMenuItem, lookButton, waitButton})
+                enableUndoCheckBoxMenuItem, webSiteMenuItem, scrollbackMenuItem, undoMenuItem, lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -324,6 +326,11 @@ class MainFrame implements ActionListener, ListSelectionListener
             boolean alwaysLook = alwaysLookCheckBoxMenuItem.isSelected();
             Meterman.gm.setAlwaysLook(alwaysLook);
             Utils.setPref("always-look", Boolean.toString(alwaysLook));
+        } else if (source == enableUndoCheckBoxMenuItem) {
+            boolean undoEnabled = enableUndoCheckBoxMenuItem.isSelected();
+            Meterman.gm.setUndoEnabled(undoEnabled);
+            Utils.setPref("undo-enabled", Boolean.toString(undoEnabled));
+            undoMenuItem.setEnabled(undoEnabled);
         } else if (source == scrollbackMenuItem) {
             int newval = Utils.parseInt(ui.showPromptDialog("Scrollback",
                 "Scrollback buffer size, in characters:", "Size:", Integer.toString(ui.maxBufferSize)));
@@ -373,6 +380,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         soundCheckBoxMenuItem.setSelected(Meterman.sound.isSoundEnabled());
         musicCheckBoxMenuItem.setSelected(Meterman.sound.isMusicEnabled());
         alwaysLookCheckBoxMenuItem.setSelected(Meterman.gm.isAlwaysLook());
+        enableUndoCheckBoxMenuItem.setSelected(Meterman.gm.isUndoEnabled());
 
         ui.clearActions();
         ui.clearExits();
@@ -380,7 +388,6 @@ class MainFrame implements ActionListener, ListSelectionListener
         ui.setObjectName("(nothing selected)");
         ui.setObjectText("");
         ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
-        undoMenuItem.setEnabled(Meterman.gm.isUndoEnabled());
 
         initGame:  // make the user keep selecting choices until a game is
         do {       // successfully started or loaded

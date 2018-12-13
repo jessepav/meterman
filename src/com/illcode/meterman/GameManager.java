@@ -231,6 +231,8 @@ public final class GameManager
 
     public void setUndoEnabled(boolean undoEnabled) {
         this.undoEnabled = undoEnabled;
+        if (!undoEnabled)
+            undoWorldState = null;
     }
 
     public boolean isUndoEnabled() {
@@ -511,11 +513,8 @@ public final class GameManager
      * to Hades.
      */
     public void undoCheckpoint() {
-        long start = System.nanoTime();
         if (undoEnabled)
             undoWorldState = Meterman.persistence.copyWorldState(worldState);
-        long nanos = System.nanoTime() - start;
-        System.err.println(Utils.fmt("World-State copy took %d microseconds.", nanos/1000));
     }
 
     /**
@@ -609,8 +608,14 @@ public final class GameManager
     /** Called by the UI when the user requests an undo. */
     public void undo() {
         if (undoEnabled && undoWorldState != null) {
-            loadGame(undoWorldState);
+            worldState = undoWorldState;
             undoWorldState = null;
+            player = worldState.player;
+            worldData = worldState.worldData;
+            restoreListenerListsFromWorldData();
+            refreshRoomUI();
+            refreshInventoryUI();
+            entitySelected(null);
             ui.appendNewline();
             ui.appendTextLn(Meterman.getSystemBundle().getPassage("undo-message"));
         }
