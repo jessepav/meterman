@@ -59,9 +59,9 @@ public final class KryoPersistence implements Persistence
 
     private static class TextBundleSerializer extends Serializer<TextBundle> {
         public TextBundle copy(Kryo kryo, TextBundle original) {
-            return new TextBundle(new HashMap<>(original.getPassageMap()),
-                                  new HashMap<>(original.getSubMap()),
-                                  original.getParent());
+            // Since the only place copy() is used is to implement undo, we want it fast, and can just
+            // reuse the original, on the assumption that not too much has changed in one turn.
+            return original;
         }
 
         public void write(Kryo kryo, Output output, TextBundle bundle) {

@@ -511,6 +511,10 @@ public final class GameManager
      * but games can call it at any point that would be reasonable if they're going to
      * do something potentially non-recoverable, like killing the player or moving him
      * to Hades.
+     * <p/>
+     * On a 2.13Ghz i3 from 2010 with slow RAM, checkpointing Cloak of Darkness takes
+     * about 1.5ms. So for a huge game on an old machine, turning off undo might be something
+     * to consider.
      */
     public void undoCheckpoint() {
         if (undoEnabled)
