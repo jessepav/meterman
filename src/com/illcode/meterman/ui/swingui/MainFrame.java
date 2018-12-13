@@ -36,8 +36,8 @@ class MainFrame implements ActionListener, ListSelectionListener
     private SwingUI ui;
 
     JFrame frame;
-    JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, quitMenuItem, aboutMenuItem,
-        webSiteMenuItem, scrollbackMenuItem;
+    JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, undoMenuItem,
+        quitMenuItem, aboutMenuItem, webSiteMenuItem, scrollbackMenuItem;
     JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem;
     JPanel imagePanel;
     JLabel roomNameLabel, objectNameLabel;
@@ -71,6 +71,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             saveMenuItem = cr.getMenuItem("saveMenuItem");
             saveAsMenuItem = cr.getMenuItem("saveAsMenuItem");
             loadMenuItem = cr.getMenuItem("loadMenuItem");
+            undoMenuItem = cr.getMenuItem("undoMenuItem");
             quitMenuItem = cr.getMenuItem("quitMenuItem");
             aboutMenuItem = cr.getMenuItem("aboutMenuItem");
             webSiteMenuItem = cr.getMenuItem("webSiteMenuItem");
@@ -114,7 +115,7 @@ class MainFrame implements ActionListener, ListSelectionListener
 
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
                 quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
-                webSiteMenuItem, scrollbackMenuItem, lookButton, waitButton})
+                webSiteMenuItem, scrollbackMenuItem, undoMenuItem, lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -290,6 +291,8 @@ class MainFrame implements ActionListener, ListSelectionListener
                     ui.showTextDialog("Load Error", ex.getMessage(), "OK");
                 }
             }
+        } else if (source == undoMenuItem) {
+            Meterman.gm.undo();
         } else if (source == saveMenuItem) {
             if (lastSaveFile == null) {
                 saveAsMenuItem.doClick();
@@ -377,6 +380,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         ui.setObjectName("(nothing selected)");
         ui.setObjectText("");
         ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
+        undoMenuItem.setEnabled(Meterman.gm.isUndoEnabled());
 
         initGame:  // make the user keep selecting choices until a game is
         do {       // successfully started or loaded

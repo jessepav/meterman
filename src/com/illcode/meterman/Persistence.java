@@ -28,4 +28,11 @@ public interface Persistence
      * @return new world-state instance
      */
     WorldState loadWorldState(InputStream in);
+
+    /**
+     * Make a deep copy of a {@code WorldState} instance.
+     * @param ws world-state instance
+     * @return deep copy
+     */
+    WorldState copyWorldState(WorldState ws);
 }

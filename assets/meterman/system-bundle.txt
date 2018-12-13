@@ -72,3 +72,7 @@ What do you want to ask about?
 [ default-noTopicsText ]
 
 There's nothing to talk about.
+
+[ undo-message ]
+
+-- Time spins backwards! You have UNDONE the past. --

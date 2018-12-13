@@ -38,15 +38,13 @@ public final class GameManager
     // Methods that use textBuilder should call .setLength(0) when finished to leave it empty.
     private StringBuilder textBuilder;
 
-    // See queueLookText()
-    private StringBuilder commonTextBuilder, paragraphBuilder;
-
-    // Used for composing UI actions - reuse same list to avoid allocation
-    private List<String> actions;
-
+    private StringBuilder commonTextBuilder, paragraphBuilder; // See queueLookText()
+    private List<String> actions; // Used for composing UI actions - reuse same list to avoid allocation
     private Entity selectedEntity;  // currently selected entity, or null if none
-
     private boolean alwaysLook; // see setAlwaysLook()
+    private WorldState undoWorldState;  // see undo()
+    private boolean undoEnabled;
+
 
     public GameManager() {
     }
@@ -70,6 +68,7 @@ public final class GameManager
     public void dispose() {
         closeGame();
         worldState = null;
+        undoWorldState = null;
         player = null;
         worldData = null;
         beforeGameActionListeners = null;
@@ -106,7 +105,6 @@ public final class GameManager
 
         // We store our listener lists in the worldState so that they're persisted
         storeListenerListsInWorldData();
-        ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
@@ -145,7 +143,6 @@ public final class GameManager
         worldData = worldState.worldData;
 
         restoreListenerListsFromWorldData();
-        ui.clearText();
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
@@ -160,6 +157,7 @@ public final class GameManager
         player = null;
         worldData = null;
         worldState = null;
+        undoWorldState = null;
         Meterman.setGameBundle(null);
         Utils.resetActionNameTranslations();
         Utils.setGameAssetsPath(null);
@@ -229,6 +227,14 @@ public final class GameManager
 
     public int getNumTurns() {
         return worldState.numTurns;
+    }
+
+    public void setUndoEnabled(boolean undoEnabled) {
+        this.undoEnabled = undoEnabled;
+    }
+
+    public boolean isUndoEnabled() {
+        return undoEnabled;
     }
 
     /**
@@ -396,6 +402,7 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
+        undoCheckpoint();
         performLook(true);
         nextTurn();
     }
@@ -441,6 +448,7 @@ public final class GameManager
 
     /** Called by the UI when the user clicks "Wait" */
     public void waitCommand() {
+        undoCheckpoint();
         ui.appendNewline();
         ui.appendTextLn("> " + SystemActions.getWaitAction().toUpperCase());
         ui.appendTextLn(Meterman.getSystemBundle().getPassage("wait-message"));
@@ -455,6 +463,7 @@ public final class GameManager
     
     /** Called by the UI when the user clicks an exit button */
     public void exitSelected(int position) {
+        undoCheckpoint();
         Room toRoom = getCurrentRoom().getExit(position);
         if (toRoom != null) {
             // "> GO TO <exit label>"
@@ -469,6 +478,7 @@ public final class GameManager
     /** Called by the UI when the user clicks an action button (or selects an action
      *  from the combo box when there are many actions) */
     public void entityActionSelected(String action) {
+        undoCheckpoint();
         String msg = selectedEntity.replaceParserMessage(action);
         if (msg == null)
             msg = fireProcessingParserMessage(selectedEntity, action);
@@ -484,6 +494,28 @@ public final class GameManager
                     ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         }
         nextTurn();
+    }
+
+    /**
+     * Creates an undo checkpoint to which the user can return by invoking undo.
+     * <p/>
+     * This is automatically called when
+     * <ul>
+     *     <li>a room exit is selected</li>
+     *     <li>an entity action is selected</li>
+     *     <li>a look command is invoked</li>
+     *     <li>a wait command is invoked</li>
+     * </ul>
+     * but games can call it at any point that would be reasonable if they're going to
+     * do something potentially non-recoverable, like killing the player or moving him
+     * to Hades.
+     */
+    public void undoCheckpoint() {
+        long start = System.nanoTime();
+        if (undoEnabled)
+            undoWorldState = Meterman.persistence.copyWorldState(worldState);
+        long nanos = System.nanoTime() - start;
+        System.err.println(Utils.fmt("World-State copy took %d microseconds.", nanos/1000));
     }
 
     /**
@@ -574,13 +606,23 @@ public final class GameManager
             ui.selectEntity(savedSE);
     }
 
-    /** Called by the UI when it's time to load a saved game*/
+    /** Called by the UI when the user requests an undo. */
+    public void undo() {
+        if (undoEnabled && undoWorldState != null) {
+            loadGame(undoWorldState);
+            undoWorldState = null;
+            ui.appendNewline();
+            ui.appendTextLn(Meterman.getSystemBundle().getPassage("undo-message"));
+        }
+    }
+
+    /** Called by the UI when it's time to load a saved game. */
     public void loadGameState(InputStream in) {
         loadGame(Meterman.persistence.loadWorldState(in));
         ui.appendText("\n------- Game Loaded -------\n\n");
     }
 
-    /** Called by the UI when it's time to save a game*/
+    /** Called by the UI when it's time to save a game. */
     public void saveGameState(OutputStream out) {
         Meterman.persistence.saveWorldState(worldState, out);
         ui.appendText("\n------- Game Saved -------\n\n");

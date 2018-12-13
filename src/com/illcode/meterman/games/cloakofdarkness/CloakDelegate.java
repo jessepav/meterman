@@ -113,6 +113,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 
     public boolean selected(BaseEntity e) {
         if (e == message) {
+            gm.undoCheckpoint();
             // I use putSubstitution() and getPassageSplit() here just to show their operation.
             bundle.putSubstitution("wonlost",
                 bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);

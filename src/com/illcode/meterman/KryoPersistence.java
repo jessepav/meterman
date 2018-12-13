@@ -53,6 +53,10 @@ public final class KryoPersistence implements Persistence
         return state;
     }
 
+    public WorldState copyWorldState(WorldState ws) {
+        return kryo.copy(ws);
+    }
+
     private static class TextBundleSerializer extends Serializer<TextBundle> {
         public TextBundle copy(Kryo kryo, TextBundle original) {
             return new TextBundle(new HashMap<>(original.getPassageMap()),

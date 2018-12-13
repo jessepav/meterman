@@ -476,6 +476,14 @@ new FormModel {
 						"accelerator": static javax.swing.KeyStroke getKeyStroke( 76, 130, false )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator10"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "undoMenuItem"
+						"text": "Undo"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 90, 130, false )
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator1"
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
