@@ -3,7 +3,7 @@ assets
 config
 doc
 forms
-glue
+games
 scripts
 src
 meterman.iml
