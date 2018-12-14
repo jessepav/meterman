@@ -26,6 +26,20 @@ dialog, which then accepts different god mode commands.
    this way we can define the state object appropriately and the game world will spring to life
    consistently.
 
+== On the Engine and Games ==
+
+Given that I wrote Meterman inspired by the unified structure of mainframe Zork--which was
+a program in itself, not a story file for some other engine--I will continue Meterman's
+development in the same vein. I won't split up my games into separate projects, but will
+keep them alongside the engine's source tree, so that I can make changes to either code
+base freely, without worrying about violating interfaces.
+
+When I want to move on to new games without worrying about keeping the old games in sync
+with the engine, I'll create a new repository and project, call it "Meterman2", and start
+making the new games and any engine changes they need, while leaving the old ones entirely
+playable in the "Meterman Classic" engine. In this way it's like generations passing,
+each one having a few sibling games.
+
 
 == Some big picture code notes ==
 
