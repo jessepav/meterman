@@ -1,5 +1,5 @@
 /**
- * This is the package where the various games themselves will live.
+ * Sample games to demonstrate usage of the Meterman engine.
  */
 
 package com.illcode.meterman.games;

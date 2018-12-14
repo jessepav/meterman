@@ -7,6 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/forms" isTestSource="false" packagePrefix="com.illcode.meterman.ui.swingui" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/assets-src" />
+      <excludeFolder url="file://$MODULE_DIR$/docs" />
+      <excludeFolder url="file://$MODULE_DIR$/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/lib" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
       <excludeFolder url="file://$MODULE_DIR$/saves" />
     </content>
