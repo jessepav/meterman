@@ -132,6 +132,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             fc.setCurrentDirectory(Meterman.savesPath.toFile());
 
             installKeyBindings();
+            frame.setIconImage(GuiUtils.loadOpaqueImage(Utils.pathForSystemAsset("frame-icon.png")));
 
             GuiUtils.setBoundsFromPrefs(frame, "main-window-size");
         } catch (Exception ex) {
