@@ -21,4 +21,4 @@ riverboat
 
 [ game-class ]
 
-com.illcode.meterman.games.riverboat.RiverboatGame
+com.illcode.riverboat.RiverboatGame
