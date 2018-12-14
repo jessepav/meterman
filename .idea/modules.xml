@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/games/cloakofdarkness/cloak-of-darkness.iml" filepath="$PROJECT_DIR$/games/cloakofdarkness/cloak-of-darkness.iml" />
+      <module fileurl="file://$PROJECT_DIR$/games/cloakofdarkness/cloak-of-darkness.iml" filepath="$PROJECT_DIR$/games/cloakofdarkness/cloak-of-darkness.iml" group="Games" />
       <module fileurl="file://$PROJECT_DIR$/meterman.iml" filepath="$PROJECT_DIR$/meterman.iml" />
-      <module fileurl="file://$PROJECT_DIR$/games/riverboat/riverboat.iml" filepath="$PROJECT_DIR$/games/riverboat/riverboat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/games/riverboat/riverboat.iml" filepath="$PROJECT_DIR$/games/riverboat/riverboat.iml" group="Games" />
     </modules>
   </component>
 </project>

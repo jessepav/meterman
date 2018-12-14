@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact name="cloak-dist">
+    <output-path>$PROJECT_DIR$/build/artifacts/meterman-dist</output-path>
+    <root id="root">
+      <element id="directory" name="glue">
+        <element id="file-copy" path="$PROJECT_DIR$/games/cloakofdarkness/cloak-dist.glue" />
+      </element>
+      <element id="directory" name="assets">
+        <element id="archive" name="cloakofdarkness.zip">
+          <element id="dir-copy" path="$PROJECT_DIR$/games/cloakofdarkness/assets" />
+        </element>
+      </element>
+      <element id="directory" name="jars">
+        <element id="archive" name="cloak.jar">
+          <element id="module-output" name="cloak-of-darkness" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

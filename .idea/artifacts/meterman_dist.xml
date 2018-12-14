@@ -1,12 +1,13 @@
 <component name="ArtifactManager">
-  <artifact name="meterman:jar">
-    <output-path>$PROJECT_DIR$/build/artifacts/meterman_jar</output-path>
+  <artifact name="meterman-dist">
+    <output-path>$PROJECT_DIR$/build/artifacts/meterman-dist</output-path>
     <root id="root">
       <element id="archive" name="meterman.jar">
         <element id="module-output" name="meterman" />
       </element>
       <element id="directory" name="config">
-        <element id="dir-copy" path="$PROJECT_DIR$/config" />
+        <element id="file-copy" path="$PROJECT_DIR$/config/logging.properties" />
+        <element id="file-copy" path="$PROJECT_DIR$/config/meterman-dist.properties" output-file-name="meterman.properties" />
       </element>
       <element id="directory" name="lib">
         <element id="library" level="project" name="BeanShell" />
@@ -20,13 +21,16 @@
         <element id="library" level="project" name="tinysound" />
       </element>
       <element id="directory" name="assets">
-        <element id="dir-copy" path="$PROJECT_DIR$/assets" />
+        <element id="file-copy" path="$PROJECT_DIR$/assets/00 Put Game Assets Files Here.txt" />
+        <element id="archive" name="meterman.zip">
+          <element id="dir-copy" path="$PROJECT_DIR$/assets/meterman" />
+        </element>
       </element>
       <element id="directory" name="glue">
-        <element id="dir-copy" path="$PROJECT_DIR$/glue" />
+        <element id="file-copy" path="$PROJECT_DIR$/glue/00 Put Game Glue Files Here.txt" />
       </element>
       <element id="directory" name="jars">
-        <element id="dir-copy" path="$PROJECT_DIR$/jars" />
+        <element id="file-copy" path="$PROJECT_DIR$/jars/00 Put Game Jar Files Here.txt" />
       </element>
       <element id="file-copy" path="$PROJECT_DIR$/scripts/run-dist-jar.bat" output-file-name="run-meterman.bat" />
       <element id="file-copy" path="$PROJECT_DIR$/scripts/run-dist-jar.sh" output-file-name="run-meterman.sh" />

@@ -1,0 +1,24 @@
+[ name ]
+
+The Riverboat
+
+[ description ]
+
++--------------------------------------+
+
+  A sample game distributed to show
+  some features of the engine, and to
+  give game authors example code to
+  help guide the implementation of
+  their own adventures.
+
+
++--------------------------------------+
+
+[ assets-path ]
+
+riverboat.zip
+
+[ game-class ]
+
+com.illcode.riverboat.RiverboatGame
