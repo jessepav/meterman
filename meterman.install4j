@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="4.2.8" transformSequenceNumber="2">
-  <directoryPresets config="./build/install4j" />
+  <directoryPresets config="./assets/meterman" />
   <application name="Meterman" distributionSourceDir="" applicationId="9290-6597-0220-6298" mediaDir="./build/install4j" mediaFilePattern="meterman-${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" keepModificationTimes="false" missingFilesStrategy="warn" shortName="meterman" publisher="Jesse Pavel" publisherWeb="https://jessepav.github.io/meterman/" version="1.0" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.7" javaMaxVersion="1.8" allowBetaVM="false" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
@@ -16,18 +16,66 @@
   <files>
     <filesets />
     <roots />
-    <mountPoints />
-    <entries />
+    <mountPoints>
+      <mountPoint id="42" root="" location="" mode="755" />
+    </mountPoints>
+    <entries>
+      <dirEntry mountPoint="42" file="./build/artifacts/meterman_jar" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes="" dirMode="755">
+        <exclude>
+          <entry location="run-meterman.bat" fileType="regular" />
+          <entry location="run-meterman.sh" fileType="regular" />
+        </exclude>
+      </dirEntry>
+    </entries>
     <components />
   </files>
-  <launchers />
+  <launchers>
+    <launcher name="meterman" id="43" external="false" excludeFromMenu="false" menuName="" icnsFile="" pngIcon16File="./assets/meterman/frame-icon-16x16.png" pngIcon32File="./assets/meterman/frame-icon.png" macServiceDependencies="" swtApp="false" fileset="">
+      <executable name="meterman" type="1" iconSet="true" iconFile="" executableDir="" redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
+        <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
+      </executable>
+      <splashScreen show="true" autoOff="true" alwaysOnTop="true" width="0" height="0" bitmapFile="./assets/meterman/splash-screen.png" java6SplashScreen="true">
+        <text>
+          <statusLine x="20" y="20" text="" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
+          <versionLine x="20" y="40" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
+        </text>
+      </splashScreen>
+      <java mainClass="com.illcode.meterman.Meterman" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
+        <classPath>
+          <archive location="meterman.jar" failOnError="true" />
+          <scanDirectory location="lib" failOnError="true" />
+          <scanDirectory location="jars" failOnError="false" />
+        </classPath>
+        <nativeLibraryDirectories />
+      </java>
+      <includedFiles />
+      <unextractableFiles />
+      <customScript mode="1" file="">
+        <scriptLines />
+      </customScript>
+    </launcher>
+  </launchers>
   <installerGui installerType="1" suggestPreviousProgramGroup="false" addOnAppId="" suggestPreviousLocations="true">
     <customCode useInstalledFiles="false" />
     <applications>
       <application name="" id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" enabled="true" commentSet="false" comment="" customIcnsFile="" customIcoFile="">
         <serializedBean>
           <java class="java.beans.XMLDecoder">
-            <object class="com.install4j.runtime.beans.applications.InstallerApplication" />
+            <object class="com.install4j.runtime.beans.applications.InstallerApplication">
+              <void property="customPngIcon16File">
+                <object class="com.install4j.api.beans.ExternalFile">
+                  <string>./assets/meterman/frame-icon-16x16.png</string>
+                </object>
+              </void>
+              <void property="customPngIcon32File">
+                <object class="com.install4j.api.beans.ExternalFile">
+                  <string>./assets/meterman/frame-icon.png</string>
+                </object>
+              </void>
+              <void property="useCustomIcon">
+                <boolean>true</boolean>
+              </void>
+            </object>
           </java>
         </serializedBean>
         <startup>
@@ -41,7 +89,29 @@
             <validation />
             <preActivation />
             <postActivation />
-            <actions />
+            <actions>
+              <action name="Set Default Installation Directory" id="83" beanClass="com.install4j.runtime.beans.actions.control.RunScriptAction" enabled="true" commentSet="false" comment="" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.control.RunScriptAction">
+                      <void property="script">
+                        <object class="com.install4j.api.beans.ScriptProperty">
+                          <void property="value">
+                            <string>import javax.swing.filechooser.FileSystemView;
+
+File dir = new File(FileSystemView.getFileSystemView().getDefaultDirectory(),"Meterman");
+context.setInstallationDirectory(dir);
+return true;
+</string>
+                          </void>
+                        </object>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+            </actions>
             <formComponents />
           </screen>
         </startup>
@@ -129,7 +199,11 @@
               <action name="" id="8" beanClass="com.install4j.runtime.beans.actions.InstallFilesAction" enabled="true" commentSet="false" comment="" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
                 <serializedBean>
                   <java class="java.beans.XMLDecoder">
-                    <object class="com.install4j.runtime.beans.actions.InstallFilesAction" />
+                    <object class="com.install4j.runtime.beans.actions.InstallFilesAction">
+                      <void property="triggerReboot">
+                        <boolean>false</boolean>
+                      </void>
+                    </object>
                   </java>
                 </serializedBean>
                 <condition />
@@ -272,7 +346,34 @@
       </application>
     </applications>
   </installerGui>
-  <mediaSets />
-  <buildIds buildAll="true" />
+  <mediaSets>
+    <win32 name="Installer (Dynamic JRE)" id="44" mediaFileName="meterman-${compiler:sys.version}-installer" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="windows-x86-1.7.0_51" manualJREEntry="false" bundleType="2" jreURL="http://www.elektrika-inc.com/dist/windows-x86-1.7.0_51.tar.gz" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
+      <excludedLaunchers />
+      <excludedComponents />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude />
+      <variables />
+    </win32>
+    <win32 name="Installer (No JRE)" id="85" mediaFileName="meterman-${compiler:sys.version}-installer-no_JRE" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="" manualJREEntry="false" bundleType="2" jreURL="http://www.elektrika-inc.com/dist/windows-x86-1.7.0_51.tar.gz" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
+      <excludedLaunchers />
+      <excludedComponents />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude />
+      <variables />
+    </win32>
+    <win32Archive name="ZIP (Bundled JRE)" id="92" mediaFileName="meterman-${compiler:sys.version}-portable" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="windows-x86-1.7.0_51" manualJREEntry="false">
+      <excludedLaunchers />
+      <excludedComponents />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude />
+      <variables />
+    </win32Archive>
+  </mediaSets>
+  <buildIds buildAll="false">
+    <mediaSet refId="92" />
+  </buildIds>
 </install4j>
 
