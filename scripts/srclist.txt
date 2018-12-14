@@ -3,10 +3,11 @@ assets
 config
 doc
 forms
+glue
 scripts
 src
 meterman.iml
-Meterman.jfdproj
 meterman.install4j
+Meterman.jfdproj
 meterman-ant-build.*
 README.txt
