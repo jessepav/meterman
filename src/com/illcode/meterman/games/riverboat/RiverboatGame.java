@@ -5,7 +5,6 @@ import com.illcode.meterman.impl.BaseEntity;
 import com.illcode.meterman.impl.BaseRoom;
 import com.illcode.meterman.impl.WorldBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RiverboatGame implements Game
@@ -22,19 +21,24 @@ public class RiverboatGame implements Game
     }
 
     public void init() {
-        Utils.setGameAssetsPath("riverboat");
         bundle = TextBundle.loadBundle(Utils.pathForGameAsset("riverboat-bundle.txt"));
         Meterman.setGameBundle(bundle);
     }
 
     public WorldState getInitialWorldState() {
         WorldState worldState = new WorldState();
-        worldState.gameName = NAME;
-        worldState.player = new Player();
-        worldState.player.init();
-        worldState.worldData = new HashMap<>();
-        worldState.numTurns = 0;
-        setupWorldState(worldState);
+        worldState.init(NAME);
+        Map<String,Object> worldData = worldState.worldData;
+
+        WorldBuilder wb = new WorldBuilder(worldState, bundle);
+        worldData.put("entityIdMap", wb.getEntityIdMap());
+        worldData.put("roomIdMap", wb.getRoomIdMap());
+
+        // Install the state object for part 1
+        RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
+        statePart1.init();
+        statePart1.saveTo(worldData);
+
         return worldState;
     }
 
@@ -48,17 +52,6 @@ public class RiverboatGame implements Game
 
     public void dispose() {
 
-    }
-
-    private void setupWorldState(WorldState worldState) {
-        WorldBuilder wb = new WorldBuilder(worldState, bundle);
-        worldState.worldData.put("entityIdMap", wb.getEntityIdMap());
-        worldState.worldData.put("roomIdMap", wb.getRoomIdMap());
-
-        // Install the state object for part 1
-        RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
-        statePart1.init();
-        statePart1.saveTo(worldState.worldData);
     }
 
     /**

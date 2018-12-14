@@ -9,7 +9,8 @@ import java.nio.file.Path;
  */
 public interface Game
 {
-    /** The name of the game, as displayed in the "New Game" UI */
+    /** The name of the game, as displayed in the "New Game" UI. It must match
+     *  the name given in the game's .glue file. */
     String getGameName();
 
     /**

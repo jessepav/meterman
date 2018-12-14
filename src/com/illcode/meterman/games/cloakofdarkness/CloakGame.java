@@ -18,7 +18,6 @@ public class CloakGame implements Game
     }
 
     public void init() {
-        Utils.setGameAssetsPath("cloakofdarkness");
         Utils.installActionNameTranslations(Utils.pathForGameAsset("cloak-action-translations.json"));
         bundle = TextBundle.loadBundle(Utils.pathForGameAsset("cloak-bundle.txt"));
         Meterman.setGameBundle(bundle);  // which also sets the bundle's parent to the system bundle

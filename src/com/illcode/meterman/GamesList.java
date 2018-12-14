@@ -38,14 +38,24 @@ public class GamesList
 
     /**
      * Return a description of a game.
-     * @param gameName game name, or <tt>"select-game"</tt> to retrieve text prompting the
-     *                 user to select a game.
+     * @param gameName game name
      * @return game description
      */
     public static String getGameDescription(String gameName) {
         if (gamesMap == null)
             loadGamesMap();
         return gamesMap.get(gameName).description;
+    }
+
+    /**
+     * Return the string assets path of a game.
+     * @param gameName game name
+     * @return string assets path
+     */
+    public static String getGameAssetsPath(String gameName) {
+        if (gamesMap == null)
+            loadGamesMap();
+        return gamesMap.get(gameName).assetsPath;
     }
 
     private static void loadGamesMap() {
