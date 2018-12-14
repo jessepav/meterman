@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.cloakofdarkness;
+package com.illcode.cloak;
 
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.*;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.illcode.meterman.Meterman.gm;
 import static com.illcode.meterman.Meterman.ui;
-import static com.illcode.meterman.games.cloakofdarkness.CloakActions.*;
+import static com.illcode.cloak.CloakActions.*;
 
 public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 {

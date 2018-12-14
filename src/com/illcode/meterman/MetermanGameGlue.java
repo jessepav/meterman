@@ -7,6 +7,7 @@ package com.illcode.meterman;
 public interface MetermanGameGlue {
     /**
      * Return the name of this game as it should be shown in the "New Game" list.
+     * It must match the name returned by the game's {@link Game#getName()} method.
      * @return game name
      */
     String getName();

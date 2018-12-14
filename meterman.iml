@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/assets-src" />
       <excludeFolder url="file://$MODULE_DIR$/docs" />
+      <excludeFolder url="file://$MODULE_DIR$/games" />
       <excludeFolder url="file://$MODULE_DIR$/jars" />
       <excludeFolder url="file://$MODULE_DIR$/lib" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
@@ -15,14 +16,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="BeanShell" level="project" />
-    <orderEntry type="library" name="commons-lang3" level="project" />
-    <orderEntry type="library" name="JDOM" level="project" />
+    <orderEntry type="library" exported="" name="BeanShell" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3" level="project" />
+    <orderEntry type="library" exported="" name="JDOM" level="project" />
     <orderEntry type="library" name="jfd-loader" level="project" />
     <orderEntry type="library" name="jgoodies-forms" level="project" />
     <orderEntry type="library" name="tinysound" level="project" />
-    <orderEntry type="library" name="minimal-json" level="project" />
-    <orderEntry type="library" name="commons-codec" level="project" />
+    <orderEntry type="library" exported="" name="minimal-json" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec" level="project" />
     <orderEntry type="library" name="kryo" level="project" />
   </component>
 </module>

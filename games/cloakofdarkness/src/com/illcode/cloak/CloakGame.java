@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.cloakofdarkness;
+package com.illcode.cloak;
 
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.BasicWorldManager;
@@ -13,7 +13,7 @@ public class CloakGame implements Game
     public CloakGame() {
     }
 
-    public String getGameName() {
+    public String getName() {
         return NAME;
     }
 

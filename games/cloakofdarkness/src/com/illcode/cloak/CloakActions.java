@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.cloakofdarkness;
+package com.illcode.cloak;
 
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.impl.BasicActions;

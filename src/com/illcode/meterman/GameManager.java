@@ -96,8 +96,8 @@ public final class GameManager
     public void newGame(Game game) {
         closeGame();
         this.game = game;
-        ui.setGameName(game.getGameName());
-        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getGameName()));
+        ui.setGameName(game.getName());
+        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getName()));
         game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;
@@ -138,8 +138,8 @@ public final class GameManager
         closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
-        ui.setGameName(game.getGameName());
-        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getGameName()));
+        ui.setGameName(game.getName());
+        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getName()));
         game.init();
         player = worldState.player;
         worldData = worldState.worldData;

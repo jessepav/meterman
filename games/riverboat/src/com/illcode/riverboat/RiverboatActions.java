@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.riverboat;
+package com.illcode.riverboat;
 
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.impl.BasicActions;

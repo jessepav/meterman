@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.cloakofdarkness;
+package com.illcode.cloak;
 
 import java.util.Map;
 

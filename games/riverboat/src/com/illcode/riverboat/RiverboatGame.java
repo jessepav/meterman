@@ -1,4 +1,4 @@
-package com.illcode.meterman.games.riverboat;
+package com.illcode.riverboat;
 
 import com.illcode.meterman.*;
 import com.illcode.meterman.impl.BaseEntity;
@@ -16,7 +16,7 @@ public class RiverboatGame implements Game
     public RiverboatGame() {
     }
 
-    public String getGameName() {
+    public String getName() {
         return NAME;
     }
 

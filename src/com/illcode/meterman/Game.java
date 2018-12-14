@@ -11,7 +11,7 @@ public interface Game
 {
     /** The name of the game, as displayed in the "New Game" UI. It must match
      *  the name given in the game's .glue file. */
-    String getGameName();
+    String getName();
 
     /**
      * Called when a game is started or loaded. A game should, in this method, load any resources (images,
