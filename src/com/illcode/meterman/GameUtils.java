@@ -1,15 +1,18 @@
 package com.illcode.meterman;
 
 import com.illcode.meterman.ui.MetermanUI;
+import static com.illcode.meterman.Attributes.*;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * Utility methods that apply to the game world or interface.
  */
-public class GameUtils
+public final class GameUtils
 {
     private static String defaultMoreLabel;
     private static String defaultCloseLabel;
@@ -19,15 +22,25 @@ public class GameUtils
      * @param entities list of entities to filter
      * @param attribute attribute to filter by
      * @param value the value of the attribute
-     * @return a list of entities that have {@code attribute = value}
+     * @return a new list of entities that have {@code attribute = value}
      */
     public static List<Entity> filterByAttribute(List<Entity> entities, int attribute, boolean value) {
         List<Entity> filteredList = new LinkedList<>();
-        for (Entity e : entities) {
-            if (e.checkAttribute(attribute) == value)
-                filteredList.add(e);
-        }
+        filterByAttribute(entities, attribute, value, filteredList);
         return filteredList;
+    }
+
+    /**
+     * Adds the subset of a given list of entities that have a specific attribute value to a target list.
+     * @param entities list of entities to filter
+     * @param attribute attribute to filter by
+     * @param value the value of the attribute
+     * @param target the list to which filtered entities will be added
+     */
+    public static void filterByAttribute(List<Entity> entities, int attribute, boolean value, List<Entity> target) {
+        for (Entity e : entities)
+            if (e.checkAttribute(attribute) == value)
+                target.add(e);
     }
 
     /**
@@ -85,7 +98,7 @@ public class GameUtils
         String name = e.getName();
         if (name == null || name.isEmpty())
             return "";
-        if (e.checkAttribute(Attributes.PROPER_NAME))
+        if (e.checkAttribute(PROPER_NAME))
             return name;
         String defArt = capitalize ? "The " : "the ";
         return defArt + name;
@@ -110,7 +123,7 @@ public class GameUtils
         String name = e.getName();
         if (name == null || name.isEmpty())
             return "";
-        if (e.checkAttribute(Attributes.PROPER_NAME))
+        if (e.checkAttribute(PROPER_NAME))
             return name;
         String indefArt = e.getIndefiniteArticle();
         if (indefArt == null) {
@@ -131,5 +144,19 @@ public class GameUtils
      */
     public static String indefName(Entity e) {
         return indefName(e, false);
+    }
+
+    /**
+     * Returns a list of all the {@link Attributes#TAKEABLE} entities in the current room and the player
+     * inventory. This is useful in situations, for instance, where some object has a slot that the
+     * player can put something into. The object has an action "Put in Slot" that, when activated, will
+     * prompt the player to choose what to put it -- and presumably only things that are <tt>TAKEABLE</tt> can
+     * be lifted and put in.
+     */
+    public static List<Entity> getCurrentTakeableEntities() {
+        List<Entity> takeables = new LinkedList<>();
+        filterByAttribute(Meterman.gm.getCurrentRoom().getRoomEntities(), TAKEABLE, true, takeables);
+        filterByAttribute(Meterman.gm.getPlayer().inventory, TAKEABLE, true, takeables);
+        return takeables;
     }
 }
