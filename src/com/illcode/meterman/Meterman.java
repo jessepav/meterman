@@ -102,8 +102,8 @@ public final class Meterman
         sound.init();
         persistence.init();
 
-        sound.setSoundEnabled(Utils.booleanPref("sound", true));
-        sound.setMusicEnabled(Utils.booleanPref("music", true));
+        sound.setSoundEnabled(Utils.booleanPref("sound-enabled", true));
+        sound.setMusicEnabled(Utils.booleanPref("music-enabled", true));
         gm.setAlwaysLook(Utils.booleanPref("always-look", true));
         gm.setUndoEnabled(Utils.booleanPref("undo-enabled", false));
 

@@ -68,7 +68,7 @@ a message scrawled in its dry chips.
 
 [dark-bar-description (flowed)]
 
-The bar is strangely dark, as though light were being sucked out of the air itself.
+The bar is oddly dark, as though light were being sucked out of the air itself.
 
 [ cloakroom ]
 
@@ -83,7 +83,10 @@ The bar is strangely dark, as though light were being sucked out of the air itse
 The cloakroom possesses a sturdiness that the other rooms in the old opera house
 seem to lack.
 
+[brass-hook-room-addendum]
+
 Your eye is drawn to a brass hook mounted along one wall.
+
 
 [ patio ]
 
@@ -179,7 +182,7 @@ second, even the periphery of your vision starts to go dark.
 
 [ no-go-patio (flowed) ]
 
-The Phatom of the Opera is on the patio--you decide not to
+The Phatom of the Opera is on the patio—you decide not to
 go outside after all.
 
 [ cloak-hung-description ]
@@ -192,11 +195,11 @@ It is hanging on the hook.
 
 [ hang-cloak-message ]
 
-You hang the strange cloak on the hook.
+You hang the velvet cloak on the hook.
 
 [ unhang-cloak-message ]
 
-You take the strange cloak off the hook.
+You take the velvet cloak off the hook.
 
 [ dark-bar-action-warning ]
 

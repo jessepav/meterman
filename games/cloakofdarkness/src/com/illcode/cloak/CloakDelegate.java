@@ -131,6 +131,11 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         }
     }
 
+    public void lookInRoom(BaseEntity e) {
+        if (e == hook)
+            gm.queueLookText(bundle.getPassage("brass-hook-room-addendum"), true);
+    }
+
     //endregion
 
     //region -- RoomDelegate --
