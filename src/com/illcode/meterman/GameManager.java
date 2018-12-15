@@ -113,7 +113,7 @@ public final class GameManager
         ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
         game.start(true);
         getCurrentRoom().entered(null);
-        performLook(false);
+        performLook();
         getCurrentRoom().setAttribute(Attributes.VISITED);
     }
 
@@ -267,7 +267,7 @@ public final class GameManager
         fireAfterPlayerMovement(fromRoom, toRoom);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
         if (alwaysLook || !toRoom.checkAttribute(Attributes.VISITED))
-            performLook(false);
+            performLook();
         toRoom.setAttribute(Attributes.VISITED);
         refreshRoomUI();
     }
@@ -408,19 +408,16 @@ public final class GameManager
     /** Called by the UI when the user clicks "Look", or when the player moves rooms */
     public void lookCommand() {
         undoCheckpoint();
-        performLook(true);
+        ui.appendNewline();
+        ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
+        performLook();
         nextTurn();
     }
 
     /**
-     * Actually performs the look command, optionally showing a parser-like prompt message.
-     * @param showParserMessage true to show parser-like message
+     * Actually performs the look command.
      */
-    private void performLook(boolean showParserMessage) {
-        if (showParserMessage) {
-            ui.appendNewline();
-            ui.appendTextLn("> " + SystemActions.getLookAction().toUpperCase());
-        }
+    private void performLook() {
         textBuilder.append(getCurrentRoom().getDescription());
         textBuilder.append("\n");
         for (Entity e : getCurrentRoom().getRoomEntities())
