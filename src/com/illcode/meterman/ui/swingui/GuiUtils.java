@@ -4,8 +4,11 @@ import com.illcode.meterman.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,6 +16,8 @@ import java.util.logging.Level;
 
 public final class GuiUtils
 {
+    public static final KeyStroke ESCAPE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+
     static GraphicsEnvironment graphicsEnvironment;
     static GraphicsConfiguration graphicsConfiguration;
     static Toolkit toolkit;
@@ -240,6 +245,17 @@ public final class GuiUtils
     public static void saveBoundsToPref(Window w, String prefName) {
         Rectangle r = w.getBounds();
         Utils.setPref(prefName, Utils.fmt("%d, %d, %d, %d", r.x, r.y, r.width, r.height));
+    }
+
+    public static void attachEscapeCloseOperation(final JDialog dialog) {
+        Action dispatchClosing = new AbstractAction() {
+            public void actionPerformed(ActionEvent event) {
+                dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+            }
+        };
+        JRootPane root = dialog.getRootPane();
+        root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ESCAPE_KEY_STROKE, "ESCAPE:WINDOW_CLOSING");
+        root.getActionMap().put("ESCAPE:WINDOW_CLOSING", dispatchClosing);
     }
 
 }
