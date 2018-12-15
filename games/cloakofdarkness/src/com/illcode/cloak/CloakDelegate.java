@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.illcode.cloak.CloakActions.*;
 import static com.illcode.meterman.Meterman.gm;
 import static com.illcode.meterman.Meterman.ui;
-import static com.illcode.cloak.CloakActions.*;
 
 public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 {

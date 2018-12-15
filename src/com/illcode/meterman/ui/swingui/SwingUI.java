@@ -78,6 +78,9 @@ public class SwingUI implements MetermanUI
                 } catch (Exception ex) {
                     Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
                 }
+                // This prevents JComboBox from firing an ActionEvent every time the selection
+                // changes when using keyboard navigation.
+                UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
                 setGameName(null);
                 mainFrame.setVisible(true);
                 realized = true;

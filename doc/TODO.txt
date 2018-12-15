@@ -8,8 +8,9 @@ Write a "frame image manager" that tracks player movements and sets the frame im
 
 == Things I may or may not do ==
 
+Add an option in the startup screen to download and install games from the web.
+
 "Special action manager", that allows the user to type an action name to send to the selected object.
 
 == Things I won't do ==
 
-Add an option in the startup screen to download and install games from the web.
