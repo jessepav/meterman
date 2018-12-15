@@ -172,27 +172,6 @@ class MainFrame implements ActionListener, ListSelectionListener
             actionMap.put(actionMapKey, new ButtonAction(exitButtons[i]));
         }
 
-        int[] actionButtonKeyCodes = new int[] {
-            KeyEvent.VK_U, KeyEvent.VK_I, KeyEvent.VK_O,
-            KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L,
-            KeyEvent.VK_M, KeyEvent.VK_COMMA
-        };
-
-        for (int i = 0; i < NUM_ACTION_BUTTONS; i++) {
-            String actionMapKey = "actionButton:" + (i+1);
-            inputMap.put(KeyStroke.getKeyStroke(actionButtonKeyCodes[i], 0), actionMapKey);
-            actionMap.put(actionMapKey, new ButtonAction(actionButtons[i]));
-        }
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, 0), "moreActionCombo:focus");
-        actionMap.put("moreActionCombo:focus", new FocusAction(moreActionCombo));
-
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), "roomList:focus");
-        actionMap.put("roomList:focus", new FocusAction(roomList));
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK), "inventoryList:focus");
-        actionMap.put("inventoryList:focus", new FocusAction(inventoryList));
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "mainTextArea:focus");
-        actionMap.put("mainTextArea:focus", new FocusAction(mainTextArea));
-
         root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(DEBUG_KEYSTROKE, "debugCommand");
         root.getActionMap().put("debugCommand", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -480,19 +459,4 @@ class MainFrame implements ActionListener, ListSelectionListener
                 b.doClick();
         }
     }
-
-    private class FocusAction extends AbstractAction
-    {
-        Component c;
-
-        private FocusAction(Component c) {
-            this.c = c;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (c.isVisible())
-                c.requestFocusInWindow();
-        }
-    }
-
 }
