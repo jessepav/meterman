@@ -64,6 +64,10 @@ public class CloakGame implements Game
 
     public void start(boolean newGame) {
         Meterman.ui.setFrameImage("phantom-frame-image");
+        if (newGame) {
+            Meterman.sound.loadMusic("intro-music", Utils.pathForGameAsset("intro-music.ogg"));
+            Meterman.sound.playMusic("intro-music", false, 1.0);
+        }
     }
 
     public void dispose() {

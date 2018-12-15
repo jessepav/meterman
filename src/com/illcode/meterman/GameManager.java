@@ -98,6 +98,7 @@ public final class GameManager
         this.game = game;
         ui.setGameName(game.getName());
         Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getName()));
+        ui.clearText();
         game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;

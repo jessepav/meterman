@@ -119,6 +119,8 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
                 bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);
             String s = bundle.getPassage("endgame-message");
             bundle.clearSubstitutions();
+            Meterman.sound.loadSound("endgame-sfx", Utils.pathForGameAsset("endgame-sfx.wav"));
+            Meterman.sound.playSound("endgame-sfx", 1.0);
             ui.showTextDialog("Message", s, "Close");
             ui.clearText();
             bundle.putPassage("wait-message", bundle.getPassage("purgatory-wait-message"));
