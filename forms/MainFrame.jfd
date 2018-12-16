@@ -472,8 +472,8 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "loadMenuItem"
-						"text": "Load Game"
-						"accelerator": static javax.swing.KeyStroke getKeyStroke( 76, 130, false )
+						"text": "Restore Saved Game"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 82, 130, false )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator10"

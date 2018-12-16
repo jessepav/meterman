@@ -26,6 +26,7 @@ public class SwingUI implements MetermanUI
     PromptDialog promptDialog;
     ListDialog listDialog;
     ImageDialog imageDialog;
+    SelectItemDialog selectItemDialog;
 
     private List<Entity> roomEntities, inventoryEntities;
 
@@ -48,6 +49,7 @@ public class SwingUI implements MetermanUI
         promptDialog = new PromptDialog(mainFrame.frame);
         listDialog = new ListDialog(mainFrame.frame);
         imageDialog = new ImageDialog(mainFrame.frame);
+        selectItemDialog = new SelectItemDialog(mainFrame.frame);
 
         setStatusLabel(UIConstants.LEFT_LABEL, "");
         setStatusLabel(UIConstants.CENTER_LABEL, "");
@@ -62,6 +64,7 @@ public class SwingUI implements MetermanUI
         unloadAllImages();
         defaultFrameImage.flush();
         defaultFrameImage = null;
+        selectItemDialog.dispose();
         imageDialog.dispose();
         listDialog.dispose();
         promptDialog.dispose();

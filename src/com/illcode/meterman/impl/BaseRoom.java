@@ -117,4 +117,8 @@ public class BaseRoom implements Room
     public void setDelegate(RoomDelegate delegate) {
         this.delegate = delegate;
     }
+
+    public String toString() {
+        return getExitName();
+    }
 }

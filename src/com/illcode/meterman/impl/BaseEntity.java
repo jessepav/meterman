@@ -155,4 +155,8 @@ public class BaseEntity implements Entity
     public void setDelegate(EntityDelegate delegate) {
         this.delegate = delegate;
     }
+
+    public String toString() {
+        return getListName();
+    }
 }

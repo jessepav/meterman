@@ -11,7 +11,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -31,6 +30,12 @@ class MainFrame implements ActionListener, ListSelectionListener
 
     private static final KeyStroke DEBUG_KEYSTROKE =
         KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.CTRL_MASK);
+
+    private static final KeyStroke SELECT_ROOM_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK);
+    private static final KeyStroke SELECT_INVENTORY_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK);
+    private static final KeyStroke SELECT_ACTION_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK);
+    private static final KeyStroke LOOK_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK);
+    private static final KeyStroke WAIT_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK);
 
     private SwingUI ui;
 
@@ -172,15 +177,34 @@ class MainFrame implements ActionListener, ListSelectionListener
             actionMap.put(actionMapKey, new ButtonAction(exitButtons[i]));
         }
 
-        root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(DEBUG_KEYSTROKE, "debugCommand");
-        root.getActionMap().put("debugCommand", new AbstractAction() {
+        inputMap.put(LOOK_KEYSTROKE, "lookButton");
+        actionMap.put("lookButton", new ButtonAction(lookButton));
+        inputMap.put(WAIT_KEYSTROKE, "waitButton");
+        actionMap.put("waitButton", new ButtonAction(waitButton));
+
+        inputMap.put(SELECT_ROOM_ENTITY_KEYSTROKE, "selectRoomEntity");
+        actionMap.put("selectRoomEntity",
+            new SelectItemAction(roomList, roomListModel, "Select an object in the room", "Object:"));
+
+        inputMap.put(SELECT_INVENTORY_ENTITY_KEYSTROKE, "selectInventoryEntity");
+        actionMap.put("selectInventoryEntity",
+            new SelectItemAction(inventoryList, inventoryListModel, "Select an item in your inventory", "Item:"));
+
+        inputMap.put(SELECT_ACTION_KEYSTROKE, "selectAction");
+        actionMap.put("selectAction",
+            new SelectItemAction(actions, "Select an action", "Action:"));
+
+        inputMap.put(DEBUG_KEYSTROKE, "debugCommand");
+        actionMap.put("debugCommand", new AbstractAction()
+        {
             public void actionPerformed(ActionEvent e) {
                 try {
                     debugTriggered();
                 } catch (Exception ex) {
                     logger.log(Level.FINE, "debugTriggered()", ex);
                 }
-            }});
+            }
+        });
     }
 
     private void debugTriggered() {
@@ -446,6 +470,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         }
     }
 
+    // Activates a button when invoked (for keyboard shortcuts)
     private class ButtonAction extends AbstractAction
     {
         AbstractButton b;
@@ -459,4 +484,44 @@ class MainFrame implements ActionListener, ListSelectionListener
                 b.doClick();
         }
     }
+
+    // Used in interacting with the SelectItemDialog
+    private class SelectItemAction extends AbstractAction
+    {
+        private JList<String> entityList;
+        private DefaultListModel<String> entityListModel;
+        private List<String> actionsList;
+        private String header, prompt;
+
+        private SelectItemAction(JList<String> entityList, DefaultListModel<String> entityListModel,
+                                 String header, String prompt) {
+            this.entityList = entityList;
+            this.entityListModel = entityListModel;
+            this.header = header;
+            this.prompt = prompt;
+        }
+
+        private SelectItemAction(List<String> actionsList, String header, String prompt) {
+            this.actionsList = actionsList;
+            this.header = header;
+            this.prompt = prompt;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (entityListModel != null && !entityListModel.isEmpty()) {
+                int n = entityListModel.size();
+                List<String> l = new ArrayList<>(n);
+                for (int i = 0; i < n; i++)
+                    l.add(entityListModel.get(i));
+                int idx = ui.selectItemDialog.showSelectItemDialog(header, prompt, l, entityList.getSelectedIndex());
+                if (idx != -1)
+                    entityList.setSelectedIndex(idx);
+            } else if (actionsList != null && !actionsList.isEmpty()) {
+                int idx = ui.selectItemDialog.showSelectItemDialog(header, prompt, actionsList, -1);
+                if (idx != -1)
+                    Meterman.gm.entityActionSelected(actionsList.get(idx));
+            }
+        }
+    }
+
 }
