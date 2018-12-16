@@ -43,7 +43,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, undoMenuItem,
         quitMenuItem, aboutMenuItem, webSiteMenuItem, scrollbackMenuItem;
     JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
-        enableUndoCheckBoxMenuItem;
+        enableUndoCheckBoxMenuItem, promptToQuitCheckBoxMenuItem;
     JPanel imagePanel;
     JLabel roomNameLabel, objectNameLabel;
     JButton lookButton, waitButton;
@@ -85,6 +85,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             musicCheckBoxMenuItem = cr.getCheckBoxMenuItem("musicCheckBoxMenuItem");
             soundCheckBoxMenuItem = cr.getCheckBoxMenuItem("soundCheckBoxMenuItem");
             enableUndoCheckBoxMenuItem = cr.getCheckBoxMenuItem("enableUndoCheckBoxMenuItem");
+            promptToQuitCheckBoxMenuItem = cr.getCheckBoxMenuItem("promptToQuitCheckBoxMenuItem");
             imagePanel = cr.getPanel("imagePanel");
             roomNameLabel = cr.getLabel("roomNameLabel");
             objectNameLabel = cr.getLabel("objectNameLabel");
@@ -121,7 +122,8 @@ class MainFrame implements ActionListener, ListSelectionListener
 
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
                 quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
-                enableUndoCheckBoxMenuItem, webSiteMenuItem, scrollbackMenuItem, undoMenuItem, lookButton, waitButton})
+                enableUndoCheckBoxMenuItem, promptToQuitCheckBoxMenuItem, webSiteMenuItem, scrollbackMenuItem, undoMenuItem,
+                lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -355,6 +357,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             Meterman.gm.setUndoEnabled(undoEnabled);
             Utils.setPref("undo-enabled", Boolean.toString(undoEnabled));
             undoMenuItem.setEnabled(undoEnabled);
+        } else if (source == promptToQuitCheckBoxMenuItem) {
+            Utils.setPref("prompt-to-quit", Boolean.toString(promptToQuitCheckBoxMenuItem.isSelected()));
         } else if (source == scrollbackMenuItem) {
             int newval = Utils.parseInt(ui.showPromptDialog("Scrollback",
                 "Scrollback buffer size, in characters:", "Size:", Integer.toString(ui.maxBufferSize)));
@@ -372,6 +376,13 @@ class MainFrame implements ActionListener, ListSelectionListener
     }
 
     private void close() {
+        if (Utils.booleanPref("prompt-to-quit", true)) {
+            if (Meterman.gm.getGame() != null &&
+                JOptionPane.showConfirmDialog(frame, "Quit Meterman?", "Quit",
+                    JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
+                return;  // don't quit
+        }
+
         Meterman.shutdown();
     }
 
@@ -405,6 +416,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         musicCheckBoxMenuItem.setSelected(Meterman.sound.isMusicEnabled());
         alwaysLookCheckBoxMenuItem.setSelected(Meterman.gm.isAlwaysLook());
         enableUndoCheckBoxMenuItem.setSelected(Meterman.gm.isUndoEnabled());
+        promptToQuitCheckBoxMenuItem.setSelected(Utils.booleanPref("prompt-to-quit", true));
 
         ui.clearActions();
         ui.clearExits();

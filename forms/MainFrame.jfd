@@ -547,6 +547,10 @@ new FormModel {
 						name: "enableUndoCheckBoxMenuItem"
 						"text": "Enable Undo"
 					} )
+					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
+						name: "promptToQuitCheckBoxMenuItem"
+						"text": "Prompt to Quit"
+					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator11"
 					} )
