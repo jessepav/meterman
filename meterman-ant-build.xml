@@ -224,71 +224,295 @@
     <delete dir="${meterman.testoutput.dir}"/>
   </target>
   
+  
+  <!-- Module cloak-of-darkness -->
+  
+  <dirname property="module.cloak-of-darkness.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.cloak-of-darkness" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="cloak-of-darkness.output.dir" value="${module.cloak-of-darkness.basedir}/build/production/cloak-of-darkness"/>
+  <property name="cloak-of-darkness.testoutput.dir" value="${module.cloak-of-darkness.basedir}/build/test/cloak-of-darkness"/>
+  
+  <path id="cloak-of-darkness.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="cloak-of-darkness.module.production.classpath">
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+  </path>
+  
+  <path id="cloak-of-darkness.runtime.production.module.classpath">
+    <pathelement location="${cloak-of-darkness.output.dir}"/>
+    <path refid="meterman.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="cloak-of-darkness.module.classpath">
+    <pathelement location="${cloak-of-darkness.output.dir}"/>
+    <pathelement location="${meterman.testoutput.dir}"/>
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+  </path>
+  
+  <path id="cloak-of-darkness.runtime.module.classpath">
+    <pathelement location="${cloak-of-darkness.testoutput.dir}"/>
+    <pathelement location="${cloak-of-darkness.output.dir}"/>
+    <path refid="meterman.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.cloak-of-darkness">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.cloak-of-darkness">
+    <patternset refid="excluded.from.module.cloak-of-darkness"/>
+  </patternset>
+  
+  <path id="cloak-of-darkness.module.sourcepath">
+    <dirset dir="${module.cloak-of-darkness.basedir}/games/cloakofdarkness">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.cloak-of-darkness" depends="compile.module.cloak-of-darkness.production,compile.module.cloak-of-darkness.tests" description="Compile module cloak-of-darkness"/>
+  
+  <target name="compile.module.cloak-of-darkness.production" depends="compile.module.meterman" description="Compile module cloak-of-darkness; production classes">
+    <mkdir dir="${cloak-of-darkness.output.dir}"/>
+    <javac destdir="${cloak-of-darkness.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.cloak-of-darkness}"/>
+      <bootclasspath refid="cloak-of-darkness.module.bootclasspath"/>
+      <classpath refid="cloak-of-darkness.module.production.classpath"/>
+      <src refid="cloak-of-darkness.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.cloak-of-darkness"/>
+    </javac>
+    
+    <copy todir="${cloak-of-darkness.output.dir}">
+      <fileset dir="${module.cloak-of-darkness.basedir}/games/cloakofdarkness/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.cloak-of-darkness.tests" depends="compile.module.cloak-of-darkness.production" description="compile module cloak-of-darkness; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.cloak-of-darkness" description="cleanup module">
+    <delete dir="${cloak-of-darkness.output.dir}"/>
+    <delete dir="${cloak-of-darkness.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module riverboat -->
+  
+  <dirname property="module.riverboat.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.riverboat" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="riverboat.output.dir" value="${module.riverboat.basedir}/build/production/riverboat"/>
+  <property name="riverboat.testoutput.dir" value="${module.riverboat.basedir}/build/test/riverboat"/>
+  
+  <path id="riverboat.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="riverboat.module.production.classpath">
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+  </path>
+  
+  <path id="riverboat.runtime.production.module.classpath">
+    <pathelement location="${riverboat.output.dir}"/>
+    <path refid="meterman.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="riverboat.module.classpath">
+    <pathelement location="${riverboat.output.dir}"/>
+    <pathelement location="${meterman.testoutput.dir}"/>
+    <pathelement location="${meterman.output.dir}"/>
+    <path refid="library.beanshell.classpath"/>
+    <path refid="library.commons-lang3.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.minimal-json.classpath"/>
+    <path refid="library.commons-codec.classpath"/>
+  </path>
+  
+  <path id="riverboat.runtime.module.classpath">
+    <pathelement location="${riverboat.testoutput.dir}"/>
+    <pathelement location="${riverboat.output.dir}"/>
+    <path refid="meterman.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.riverboat">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.riverboat">
+    <patternset refid="excluded.from.module.riverboat"/>
+  </patternset>
+  
+  <path id="riverboat.module.sourcepath">
+    <dirset dir="${module.riverboat.basedir}/games/riverboat">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.riverboat" depends="compile.module.riverboat.production,compile.module.riverboat.tests" description="Compile module riverboat"/>
+  
+  <target name="compile.module.riverboat.production" depends="compile.module.meterman" description="Compile module riverboat; production classes">
+    <mkdir dir="${riverboat.output.dir}"/>
+    <javac destdir="${riverboat.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.riverboat}"/>
+      <bootclasspath refid="riverboat.module.bootclasspath"/>
+      <classpath refid="riverboat.module.production.classpath"/>
+      <src refid="riverboat.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.riverboat"/>
+    </javac>
+    
+    <copy todir="${riverboat.output.dir}">
+      <fileset dir="${module.riverboat.basedir}/games/riverboat/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.riverboat.tests" depends="compile.module.riverboat.production" description="compile module riverboat; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.riverboat" description="cleanup module">
+    <delete dir="${riverboat.output.dir}"/>
+    <delete dir="${riverboat.testoutput.dir}"/>
+  </target>
+  
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.meterman, clean.artifact.meterman:jar" description="cleanup all"/>
+  <target name="clean" depends="clean.module.meterman, clean.module.cloak-of-darkness, clean.module.riverboat, clean.artifact.cloak-dist, clean.artifact.meterman-dist, clean.artifact.riverboat-dist" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.meterman" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.meterman, compile.module.cloak-of-darkness, compile.module.riverboat" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.meterman:jar" value="${basedir}/build/artifacts/meterman_jar"/>
+    <property name="artifact.output.cloak-dist" value="${basedir}/build/artifacts/meterman-dist"/>
+    <property name="artifact.output.meterman-dist" value="${basedir}/build/artifacts/meterman-dist"/>
+    <property name="artifact.output.riverboat-dist" value="${basedir}/build/artifacts/meterman-dist"/>
     <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.cloakofdarkness.zip" value="${artifacts.temp.dir}/cloakofdarkness.zip"/>
+    <property name="temp.jar.path.cloak.jar" value="${artifacts.temp.dir}/cloak.jar"/>
     <property name="temp.jar.path.meterman.jar" value="${artifacts.temp.dir}/meterman.jar"/>
+    <property name="temp.jar.path.meterman.zip" value="${artifacts.temp.dir}/meterman.zip"/>
+    <property name="temp.jar.path.riverboat.zip" value="${artifacts.temp.dir}/riverboat.zip"/>
+    <property name="temp.jar.path.riverboat.jar" value="${artifacts.temp.dir}/riverboat.jar"/>
   </target>
   
-  <target name="clean.artifact.meterman:jar" description="clean meterman:jar artifact output">
-    <delete dir="${artifact.output.meterman:jar}"/>
+  <target name="clean.artifact.cloak-dist" description="clean cloak-dist artifact output">
+    <delete dir="${artifact.output.cloak-dist}"/>
   </target>
   
-  <target name="artifact.meterman:jar" depends="init.artifacts, compile.module.meterman" description="Build &#39;meterman:jar&#39; artifact">
-    <mkdir dir="${artifact.output.meterman:jar}"/>
+  <target name="clean.artifact.meterman-dist" description="clean meterman-dist artifact output">
+    <delete dir="${artifact.output.meterman-dist}"/>
+  </target>
+  
+  <target name="clean.artifact.riverboat-dist" description="clean riverboat-dist artifact output">
+    <delete dir="${artifact.output.riverboat-dist}"/>
+  </target>
+  
+  <target name="artifact.cloak-dist" depends="init.artifacts, compile.module.cloak-of-darkness" description="Build &#39;cloak-dist&#39; artifact">
+    <mkdir dir="${artifact.output.cloak-dist}"/>
+    <zip destfile="${temp.jar.path.cloakofdarkness.zip}">
+      <zipfileset dir="${basedir}/games/cloakofdarkness/assets"/>
+    </zip>
+    <jar destfile="${temp.jar.path.cloak.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${cloak-of-darkness.output.dir}"/>
+    </jar>
+    <mkdir dir="${artifact.output.cloak-dist}/glue"/>
+    <copy file="${basedir}/games/cloakofdarkness/cloak-dist.glue" tofile="${artifact.output.cloak-dist}/glue/cloak-dist.glue"/>
+    <mkdir dir="${artifact.output.cloak-dist}/assets"/>
+    <copy file="${temp.jar.path.cloakofdarkness.zip}" tofile="${artifact.output.cloak-dist}/assets/cloakofdarkness.zip"/>
+    <mkdir dir="${artifact.output.cloak-dist}/jars"/>
+    <copy file="${temp.jar.path.cloak.jar}" tofile="${artifact.output.cloak-dist}/jars/cloak.jar"/>
+  </target>
+  
+  <target name="artifact.meterman-dist" depends="init.artifacts, compile.module.meterman" description="Build &#39;meterman-dist&#39; artifact">
+    <mkdir dir="${artifact.output.meterman-dist}"/>
     <jar destfile="${temp.jar.path.meterman.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset dir="${meterman.output.dir}"/>
     </jar>
-    <copy file="${temp.jar.path.meterman.jar}" tofile="${artifact.output.meterman:jar}/meterman.jar"/>
-    <mkdir dir="${artifact.output.meterman:jar}/config"/>
-    <copy todir="${artifact.output.meterman:jar}/config">
-      <fileset dir="${basedir}/config"/>
-    </copy>
-    <mkdir dir="${artifact.output.meterman:jar}/lib"/>
-    <copy file="${basedir}/lib/bsh-2.1.0-SNAPSHOT.jar" tofile="${artifact.output.meterman:jar}/lib/bsh-2.1.0-SNAPSHOT.jar"/>
-    <copy file="${basedir}/lib/commons-codec-1.11.jar" tofile="${artifact.output.meterman:jar}/lib/commons-codec-1.11.jar"/>
-    <copy file="${basedir}/lib/commons-lang3-3.4.jar" tofile="${artifact.output.meterman:jar}/lib/commons-lang3-3.4.jar"/>
-    <copy file="${basedir}/lib/jdom-2.0.6.jar" tofile="${artifact.output.meterman:jar}/lib/jdom-2.0.6.jar"/>
-    <copy file="${basedir}/lib/jaxen-1.1.6.jar" tofile="${artifact.output.meterman:jar}/lib/jaxen-1.1.6.jar"/>
-    <copy file="${basedir}/lib/jfd-loader.jar" tofile="${artifact.output.meterman:jar}/lib/jfd-loader.jar"/>
-    <copy file="${basedir}/lib/jgoodies-forms-1.7.2.jar" tofile="${artifact.output.meterman:jar}/lib/jgoodies-forms-1.7.2.jar"/>
-    <copy file="${basedir}/lib/jgoodies-common-1.8.1.jar" tofile="${artifact.output.meterman:jar}/lib/jgoodies-common-1.8.1.jar"/>
-    <copy file="${basedir}/lib/minlog-1.3.0.jar" tofile="${artifact.output.meterman:jar}/lib/minlog-1.3.0.jar"/>
-    <copy file="${basedir}/lib/objenesis-2.1.jar" tofile="${artifact.output.meterman:jar}/lib/objenesis-2.1.jar"/>
-    <copy file="${basedir}/lib/reflectasm-1.10.1-shaded.jar" tofile="${artifact.output.meterman:jar}/lib/reflectasm-1.10.1-shaded.jar"/>
-    <copy file="${basedir}/lib/kryo-4.0.2.jar" tofile="${artifact.output.meterman:jar}/lib/kryo-4.0.2.jar"/>
-    <copy file="${basedir}/lib/kryo-serializers-0.42.jar" tofile="${artifact.output.meterman:jar}/lib/kryo-serializers-0.42.jar"/>
-    <copy file="${basedir}/lib/minimal-json-0.9.5.jar" tofile="${artifact.output.meterman:jar}/lib/minimal-json-0.9.5.jar"/>
-    <copy file="${basedir}/lib/tinysound-1.1.1-local.jar" tofile="${artifact.output.meterman:jar}/lib/tinysound-1.1.1-local.jar"/>
-    <copy file="${basedir}/lib/jorbis-0.0.17.jar" tofile="${artifact.output.meterman:jar}/lib/jorbis-0.0.17.jar"/>
-    <copy file="${basedir}/lib/tritonus_share.jar" tofile="${artifact.output.meterman:jar}/lib/tritonus_share.jar"/>
-    <copy file="${basedir}/lib/vorbisspi1.0.3.jar" tofile="${artifact.output.meterman:jar}/lib/vorbisspi1.0.3.jar"/>
-    <mkdir dir="${artifact.output.meterman:jar}/assets"/>
-    <copy todir="${artifact.output.meterman:jar}/assets">
-      <fileset dir="${basedir}/assets"/>
-    </copy>
-    <mkdir dir="${artifact.output.meterman:jar}/glue"/>
-    <copy todir="${artifact.output.meterman:jar}/glue">
-      <fileset dir="${basedir}/glue"/>
-    </copy>
-    <mkdir dir="${artifact.output.meterman:jar}/jars"/>
-    <copy todir="${artifact.output.meterman:jar}/jars">
-      <fileset dir="${basedir}/jars"/>
-    </copy>
-    <copy file="${basedir}/scripts/run-dist-jar.bat" tofile="${artifact.output.meterman:jar}/run-meterman.bat"/>
-    <copy file="${basedir}/scripts/run-dist-jar.sh" tofile="${artifact.output.meterman:jar}/run-meterman.sh"/>
+    <zip destfile="${temp.jar.path.meterman.zip}">
+      <zipfileset dir="${basedir}/assets/meterman"/>
+    </zip>
+    <copy file="${temp.jar.path.meterman.jar}" tofile="${artifact.output.meterman-dist}/meterman.jar"/>
+    <mkdir dir="${artifact.output.meterman-dist}/config"/>
+    <copy file="${basedir}/config/logging.properties" tofile="${artifact.output.meterman-dist}/config/logging.properties"/>
+    <copy file="${basedir}/config/meterman-dist.properties" tofile="${artifact.output.meterman-dist}/config/meterman.properties"/>
+    <mkdir dir="${artifact.output.meterman-dist}/lib"/>
+    <copy file="${basedir}/lib/bsh-2.1.0-SNAPSHOT.jar" tofile="${artifact.output.meterman-dist}/lib/bsh-2.1.0-SNAPSHOT.jar"/>
+    <copy file="${basedir}/lib/commons-codec-1.11.jar" tofile="${artifact.output.meterman-dist}/lib/commons-codec-1.11.jar"/>
+    <copy file="${basedir}/lib/commons-lang3-3.4.jar" tofile="${artifact.output.meterman-dist}/lib/commons-lang3-3.4.jar"/>
+    <copy file="${basedir}/lib/jdom-2.0.6.jar" tofile="${artifact.output.meterman-dist}/lib/jdom-2.0.6.jar"/>
+    <copy file="${basedir}/lib/jaxen-1.1.6.jar" tofile="${artifact.output.meterman-dist}/lib/jaxen-1.1.6.jar"/>
+    <copy file="${basedir}/lib/jfd-loader.jar" tofile="${artifact.output.meterman-dist}/lib/jfd-loader.jar"/>
+    <copy file="${basedir}/lib/jgoodies-forms-1.7.2.jar" tofile="${artifact.output.meterman-dist}/lib/jgoodies-forms-1.7.2.jar"/>
+    <copy file="${basedir}/lib/jgoodies-common-1.8.1.jar" tofile="${artifact.output.meterman-dist}/lib/jgoodies-common-1.8.1.jar"/>
+    <copy file="${basedir}/lib/minlog-1.3.0.jar" tofile="${artifact.output.meterman-dist}/lib/minlog-1.3.0.jar"/>
+    <copy file="${basedir}/lib/objenesis-2.1.jar" tofile="${artifact.output.meterman-dist}/lib/objenesis-2.1.jar"/>
+    <copy file="${basedir}/lib/reflectasm-1.10.1-shaded.jar" tofile="${artifact.output.meterman-dist}/lib/reflectasm-1.10.1-shaded.jar"/>
+    <copy file="${basedir}/lib/kryo-4.0.2.jar" tofile="${artifact.output.meterman-dist}/lib/kryo-4.0.2.jar"/>
+    <copy file="${basedir}/lib/kryo-serializers-0.42.jar" tofile="${artifact.output.meterman-dist}/lib/kryo-serializers-0.42.jar"/>
+    <copy file="${basedir}/lib/minimal-json-0.9.5.jar" tofile="${artifact.output.meterman-dist}/lib/minimal-json-0.9.5.jar"/>
+    <copy file="${basedir}/lib/tinysound-1.1.1-local.jar" tofile="${artifact.output.meterman-dist}/lib/tinysound-1.1.1-local.jar"/>
+    <copy file="${basedir}/lib/jorbis-0.0.17.jar" tofile="${artifact.output.meterman-dist}/lib/jorbis-0.0.17.jar"/>
+    <copy file="${basedir}/lib/tritonus_share.jar" tofile="${artifact.output.meterman-dist}/lib/tritonus_share.jar"/>
+    <copy file="${basedir}/lib/vorbisspi1.0.3.jar" tofile="${artifact.output.meterman-dist}/lib/vorbisspi1.0.3.jar"/>
+    <mkdir dir="${artifact.output.meterman-dist}/assets"/>
+    <copy file="${basedir}/assets/00 Put Game Assets Files Here.txt" tofile="${artifact.output.meterman-dist}/assets/00 Put Game Assets Files Here.txt"/>
+    <copy file="${temp.jar.path.meterman.zip}" tofile="${artifact.output.meterman-dist}/assets/meterman.zip"/>
+    <mkdir dir="${artifact.output.meterman-dist}/glue"/>
+    <copy file="${basedir}/glue/00 Put Game Glue Files Here.txt" tofile="${artifact.output.meterman-dist}/glue/00 Put Game Glue Files Here.txt"/>
+    <mkdir dir="${artifact.output.meterman-dist}/jars"/>
+    <copy file="${basedir}/jars/00 Put Game Jar Files Here.txt" tofile="${artifact.output.meterman-dist}/jars/00 Put Game Jar Files Here.txt"/>
+    <copy file="${basedir}/scripts/run-dist-jar.bat" tofile="${artifact.output.meterman-dist}/run-meterman.bat"/>
+    <copy file="${basedir}/scripts/run-dist-jar.sh" tofile="${artifact.output.meterman-dist}/run-meterman.sh"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.meterman:jar" description="Build all artifacts">
+  <target name="artifact.riverboat-dist" depends="init.artifacts, compile.module.riverboat" description="Build &#39;riverboat-dist&#39; artifact">
+    <mkdir dir="${artifact.output.riverboat-dist}"/>
+    <zip destfile="${temp.jar.path.riverboat.zip}">
+      <zipfileset dir="${basedir}/games/riverboat/assets"/>
+    </zip>
+    <jar destfile="${temp.jar.path.riverboat.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${riverboat.output.dir}"/>
+    </jar>
+    <mkdir dir="${artifact.output.riverboat-dist}/assets"/>
+    <copy file="${temp.jar.path.riverboat.zip}" tofile="${artifact.output.riverboat-dist}/assets/riverboat.zip"/>
+    <mkdir dir="${artifact.output.riverboat-dist}/glue"/>
+    <copy file="${basedir}/games/riverboat/riverboat-dist.glue" tofile="${artifact.output.riverboat-dist}/glue/riverboat-dist.glue"/>
+    <mkdir dir="${artifact.output.riverboat-dist}/jars"/>
+    <copy file="${temp.jar.path.riverboat.jar}" tofile="${artifact.output.riverboat-dist}/jars/riverboat.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.cloak-dist, artifact.meterman-dist, artifact.riverboat-dist" description="Build all artifacts">
     
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
