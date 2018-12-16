@@ -8,6 +8,7 @@ import com.illcode.meterman.event.EntityActionsProcessor;
 import com.illcode.meterman.event.GameActionListener;
 import com.illcode.meterman.event.ParserMessageProcessor;
 import com.illcode.meterman.event.TurnListener;
+import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import static com.illcode.meterman.Meterman.gm;
@@ -21,12 +22,13 @@ import java.util.Map;
 
 /**
  * A manager (global listener for various game events) that handles basic
- * world interactions, namely
+ * world interactions. Namely
  * <ul>
  *     <li>Taking and dropping items.</li>
  *     <li>Wearing and taking off wearables.</li>
  *     <li>Equipping and unequipping equippables.</li>
  * </ul>
+ * It also shows the number of turns passed in the {@link MetermanUI#setStatusLabel(int, String) right status label}.
  */
 public class BasicWorldManager implements GameActionListener, EntityActionsProcessor, TurnListener
 {
