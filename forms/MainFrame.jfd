@@ -567,6 +567,10 @@ new FormModel {
 						name: "webSiteMenuItem"
 						"text": "Meterman Web Site"
 					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "onlineManualMenuItem"
+						"text": "Online Manual"
+					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator9"
 					} )

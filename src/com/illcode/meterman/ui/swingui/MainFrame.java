@@ -41,7 +41,7 @@ class MainFrame implements ActionListener, ListSelectionListener
 
     JFrame frame;
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, undoMenuItem,
-        quitMenuItem, aboutMenuItem, webSiteMenuItem, scrollbackMenuItem;
+        quitMenuItem, aboutMenuItem, webSiteMenuItem, onlineManualMenuItem, scrollbackMenuItem;
     JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
         enableUndoCheckBoxMenuItem, promptToQuitCheckBoxMenuItem;
     JPanel imagePanel;
@@ -80,6 +80,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             quitMenuItem = cr.getMenuItem("quitMenuItem");
             aboutMenuItem = cr.getMenuItem("aboutMenuItem");
             webSiteMenuItem = cr.getMenuItem("webSiteMenuItem");
+            onlineManualMenuItem = cr.getMenuItem("onlineManualMenuItem");
             scrollbackMenuItem = cr.getMenuItem("scrollbackMenuItem");
             alwaysLookCheckBoxMenuItem = cr.getCheckBoxMenuItem("alwaysLookCheckBoxMenuItem");
             musicCheckBoxMenuItem = cr.getCheckBoxMenuItem("musicCheckBoxMenuItem");
@@ -123,7 +124,7 @@ class MainFrame implements ActionListener, ListSelectionListener
             for (AbstractButton b : new AbstractButton[] {newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem,
                 quitMenuItem, aboutMenuItem, alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
                 enableUndoCheckBoxMenuItem, promptToQuitCheckBoxMenuItem, webSiteMenuItem, scrollbackMenuItem, undoMenuItem,
-                lookButton, waitButton})
+                onlineManualMenuItem, lookButton, waitButton})
                 b.addActionListener(this);
             for (JButton b : exitButtons)
                 b.addActionListener(this);
@@ -370,6 +371,8 @@ class MainFrame implements ActionListener, ListSelectionListener
             }
         } else if (source == webSiteMenuItem) {
             ui.openURL("https://jessepav.github.io/meterman/");
+        } else if (source == onlineManualMenuItem) {
+            ui.openURL("https://jessepav.github.io/meterman/manual.html");
         } else if (source == aboutMenuItem) {
             Meterman.gm.aboutMenuClicked();
         }
