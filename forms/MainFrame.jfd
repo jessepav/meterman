@@ -41,6 +41,7 @@ new FormModel {
 							"text": "Look"
 							"background": &Color1 new java.awt.Color( 204, 204, 204, 255 )
 							"border": &CompoundBorder0 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3
 						} )
@@ -49,6 +50,7 @@ new FormModel {
 							"text": "Wait"
 							"background": #Color1
 							"border": &CompoundBorder1 new javax.swing.border.CompoundBorder( new javax.swing.border.LineBorder( new java.awt.Color( 104, 105, 119, 255 ), 2, false ), static com.jgoodies.forms.factories.Borders createEmptyBorder( "1dlu, 2dlu, 1dlu, 2dlu" ) )
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 						} )
@@ -68,6 +70,7 @@ new FormModel {
 							"text": "This is the main text flow"
 							"font": new java.awt.Font( "Serif", 0, 15 )
 							"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
+							"focusable": false
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 						"gridX": 1
@@ -94,6 +97,7 @@ new FormModel {
 							"text": "This is the description of the selected object"
 							"font": new java.awt.Font( "Serif", 0, 15 )
 							"border": sfield com.jgoodies.forms.factories.Borders DLU2_BORDER
+							"focusable": false
 						} )
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 						"gridX": 1
@@ -118,12 +122,14 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane3"
+						"focusable": false
 						add( new FormComponent( "javax.swing.JList" ) {
 							name: "roomList"
 							"prototypeCellValue": "01234567890123456789"
 							"background": #Color2
 							"selectionMode": 0
 							"font": new java.awt.Font( "Serif", 0, 16 )
+							"focusable": false
 							auxiliary() {
 								"JavaCodeGenerator.typeParameters": "String"
 							}
@@ -141,12 +147,14 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane4"
+						"focusable": false
 						add( new FormComponent( "javax.swing.JList" ) {
 							name: "inventoryList"
 							"prototypeCellValue": "Abraded Alligator Clips"
 							"background": #Color2
 							"selectionMode": 0
 							"font": new java.awt.Font( "Serif", 0, 16 )
+							"focusable": false
 							auxiliary() {
 								"JavaCodeGenerator.typeParameters": "String"
 							}
@@ -181,6 +189,7 @@ new FormModel {
 							"text": "NW Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3
 						} )
@@ -189,6 +198,7 @@ new FormModel {
 							"text": "N Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 						} )
@@ -197,6 +207,7 @@ new FormModel {
 							"text": "NE Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 						} )
@@ -205,6 +216,7 @@ new FormModel {
 							"text": "X1 Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
 						} )
@@ -220,6 +232,7 @@ new FormModel {
 							"text": "W Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 3
 							"gridX": 3
@@ -243,6 +256,7 @@ new FormModel {
 							"text": "Mid Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 							"gridY": 3
@@ -252,6 +266,7 @@ new FormModel {
 							"text": "E Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 3
@@ -261,6 +276,7 @@ new FormModel {
 							"text": "X2 Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
 							"gridY": 3
@@ -277,6 +293,7 @@ new FormModel {
 							"text": "SW Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 5
 							"gridX": 3
@@ -286,6 +303,7 @@ new FormModel {
 							"text": "S Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 							"gridY": 5
@@ -295,6 +313,7 @@ new FormModel {
 							"text": "SE Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 5
@@ -304,6 +323,7 @@ new FormModel {
 							"text": "X3 Button"
 							"background": #Color1
 							"border": #CompoundBorder0
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 9
 							"gridY": 5
@@ -330,6 +350,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3
 						} )
@@ -338,6 +359,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 						} )
@@ -346,6 +368,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 						} )
@@ -354,6 +377,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 3
 							"gridX": 3
@@ -363,6 +387,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 							"gridY": 3
@@ -372,6 +397,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 3
@@ -381,6 +407,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridY": 5
 							"gridX": 3
@@ -390,6 +417,7 @@ new FormModel {
 							"text": "Action Button"
 							"background": #Color1
 							"border": #CompoundBorder1
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 5
 							"gridY": 5
@@ -401,6 +429,7 @@ new FormModel {
 								addElement( "More..." )
 							}
 							"requestFocusEnabled": false
+							"focusable": false
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 7
 							"gridY": 5
@@ -472,8 +501,8 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "loadMenuItem"
-						"text": "Restore Saved Game"
-						"accelerator": static javax.swing.KeyStroke getKeyStroke( 82, 130, false )
+						"text": "Load Saved Game"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 76, 195, false )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator10"

@@ -43,8 +43,6 @@ public final class SelectItemDialog implements ActionListener
             okButton = cr.getButton("okButton");
             cancelButton = cr.getButton("cancelButton");
 
-            //ComboBoxAutoCompletion.enable(itemCombo);
-            itemCombo.addActionListener(this);
             okButton.addActionListener(this);
             cancelButton.addActionListener(this);
             dialog.getRootPane().setDefaultButton(okButton);
@@ -81,7 +79,7 @@ public final class SelectItemDialog implements ActionListener
 
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == itemCombo || source == okButton) {
+        if (source == okButton) {
             selectedIdx = itemCombo.getSelectedIndex();
             dialog.setVisible(false);
         } else if (source == cancelButton) {

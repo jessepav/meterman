@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.logging.Level;
 
 public final class GuiUtils
 {
@@ -248,14 +247,13 @@ public final class GuiUtils
     }
 
     public static void attachEscapeCloseOperation(final JDialog dialog) {
-        Action dispatchClosing = new AbstractAction() {
+        Action closingAction = new AbstractAction() {
             public void actionPerformed(ActionEvent event) {
                 dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
             }
         };
         JRootPane root = dialog.getRootPane();
         root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ESCAPE_KEY_STROKE, "ESCAPE:WINDOW_CLOSING");
-        root.getActionMap().put("ESCAPE:WINDOW_CLOSING", dispatchClosing);
+        root.getActionMap().put("ESCAPE:WINDOW_CLOSING", closingAction);
     }
-
 }
