@@ -105,3 +105,6 @@ What do you want to take?
 
 What do you want to put ${inPrep} ${defName}?
 
+[ container-locked-message ]
+
+It is locked.

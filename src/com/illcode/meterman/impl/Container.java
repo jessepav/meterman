@@ -46,6 +46,13 @@ public class Container extends BaseEntity
         sysBundle = Meterman.getSystemBundle();
     }
 
+    public String getDescription() {
+        if (!locked)
+            return description;
+        else
+            return description + " " + sysBundle.getPassage("container-locked-message");
+    }
+
     public void setRoom(Room room) {
         super.setRoom(room);
         for (Entity e : contents)
@@ -76,8 +83,6 @@ public class Container extends BaseEntity
 
     public List<String> getActions() {
         actions.clear();
-        if (key == null)
-            locked = false;
         if (locked) {
             actions.add(getUnlockAction());
         } else {
@@ -160,7 +165,6 @@ public class Container extends BaseEntity
             sysBundle.removeSubstitution("defName");
             sysBundle.removeSubstitution("inPrep");
         }
-
     }
 
     public String replaceParserMessage(String action) {
@@ -172,7 +176,7 @@ public class Container extends BaseEntity
             return super.replaceParserMessage(action);
     }
 
-    //region Listener list methods
+    //region -- Listener list methods --
     /**
      * Add a ContainerListener to be notified when something is added to or removed from this container.
      * @param l listener
