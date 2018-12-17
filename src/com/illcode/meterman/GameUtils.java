@@ -60,14 +60,50 @@ public final class GameUtils
         }
     }
 
-    /** Like {@link #showPassages(TextBundle, String, String...)} but using default button labels. */
-    public static void showPassages(TextBundle b, String header, String... passageNames) {
+    /** Like {@link #showPassages} but using default button labels.
+     * We called the method <tt>showPassagesD</tt> because the varargs makes it tricky to disambiguate
+     * overloaded methods with the same parameter types. */
+    public static void showPassagesD(TextBundle b, String header, String... passageNames) {
         if (defaultMoreLabel == null) {
             TextBundle sysBundle = Meterman.getSystemBundle();
             defaultMoreLabel = sysBundle.getPassage("more-button-label");
             defaultCloseLabel = sysBundle.getPassage("close-button-label");
         }
         showPassages(b, header, defaultMoreLabel, defaultCloseLabel, passageNames);
+    }
+
+    /**
+     * Shows a sequence of "F" passages, that is, passages that specify their own header and button
+     * labels. Here is an example F-passage:
+     * <pre>{@code
+     * [ f-passage ]
+     *
+     *          This is the header line
+     * And then the regular bunch of text that is
+     * going to be shown in the TextDialog.
+     *      Button Label
+     * }</pre>
+     * Note that the indentation doesn't matter, and is there only for visual clarity.
+     * <ul>
+     *     <li>Header label: first line of the passage, whitespace trimmed.</li>
+     *     <li>Passage text: from the second through the second-to-last line.</li>
+     *     <li>Button label: last line of the passage, whitespace trimmed.</li>
+     * </ul>
+     * @param b text bundle
+     * @param passageNames bundle passages to show
+     */
+    public static void showPassagesF(TextBundle b, String... passageNames) {
+        for (String name : passageNames) {
+            String text = b.getPassage(name);
+            int firstNewline = text.indexOf('\n');
+            int lastNewline = text.lastIndexOf('\n');
+            if (firstNewline == -1 || firstNewline == lastNewline)
+                continue;  // an invalid F-passage
+            String header = text.substring(0, firstNewline).trim();
+            String buttonLabel = text.substring(lastNewline+1).trim();
+            String passageText = text.substring(firstNewline + 1, lastNewline);
+            Meterman.ui.showTextDialog(header, passageText, buttonLabel);
+        }
     }
 
     /**

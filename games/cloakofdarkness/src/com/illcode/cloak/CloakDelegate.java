@@ -115,13 +115,12 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         if (e == message) {
             gm.undoCheckpoint();
             // I use putSubstitution() and getPassageSplit() here just to show their operation.
-            bundle.putSubstitution("wonlost",
-                bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);
-            String s = bundle.getPassage("endgame-message");
-            bundle.clearSubstitutions();
             Meterman.sound.loadSound("endgame-sfx", Utils.pathForGameAsset("endgame-sfx.wav"));
             Meterman.sound.playSound("endgame-sfx", 1.0);
-            ui.showTextDialog("Message", s, "Close");
+            bundle.putSubstitution("wonlost",
+                bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);
+            GameUtils.showPassagesF(bundle, "endgame-message");
+            bundle.clearSubstitutions();
             ui.clearText();
             bundle.putPassage("wait-message", bundle.getPassage("purgatory-wait-message"));
             gm.movePlayer(purgatory);

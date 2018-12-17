@@ -207,12 +207,14 @@ It is probably best not to disturb mysterious things in the dark.
 
 [ endgame-message ]
 
+        Scrawled Message
 Scrawled in the sawdust is a message:
 
   "You have ${wonlost}."
 
 When you read the message your vision blurs and you feel yourself
 thrown through a rift in reality.
+        Zounds!
 
 [ win-lose ]
 
