@@ -191,8 +191,15 @@ public final class GameUtils
      */
     public static List<Entity> getCurrentTakeableEntities() {
         List<Entity> takeables = new LinkedList<>();
+        getCurrentTakeableEntities(takeables);
+        return takeables;
+    }
+
+    /**
+     * Like {@link #getCurrentTakeableEntities()}, but uses a list given as a parameter to avoid allocation.
+     */
+    public static void getCurrentTakeableEntities(List<Entity> takeables) {
         filterByAttribute(Meterman.gm.getCurrentRoom().getRoomEntities(), TAKEABLE, true, takeables);
         filterByAttribute(Meterman.gm.getPlayer().inventory, TAKEABLE, true, takeables);
-        return takeables;
     }
 }

@@ -335,10 +335,7 @@ public class WorldBuilder
      * Loads a door from a bundle passage that contains JSON data in the format of this example:
      * <pre>{@code
         {
-            "id" : "id",
-            "name" : "name",
-            "listName" : "listName",
-            "imageName" : "imageName",
+            <standard entity fields>
             "descriptions" : [
                 "Description as seen from room #1",
                 "Description as seen from room #2"
@@ -358,12 +355,18 @@ public class WorldBuilder
             "noKeyMessages" : [
                 "Message displayed when the player attempts to unlock the door from room #1 without the key",
                 "Message displayed when the player attempts to unlock the door from room #2 without the key"
-            ]
+            ],
+            "keyId" : entity ID of the key needed to lock/unlock the door, or null for no key,
+            "locked" : if key != null, then a boolean to indicate if the door is locked,
+            "open" : a boolean to indicate if the door is open
         }
      * }</pre>
      * For each of the above arrays, you can have only one string item, in which case it will be used
      * for both rooms. If the entry is missing completely, a default string from the system bundle
      * will be used.
+     * <p/>
+     * Since <tt>keyId</tt> will be looked up to resolve an actual Entity instance, the key must have
+     * already been loaded prior to loading this door.
      * @param d Door into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -383,9 +386,70 @@ public class WorldBuilder
             d.setNoKeyMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
             retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-open");
             d.setOpenMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
+            JsonValue v = o.get("keyId");
+            if (v != null && !v.isNull()) {
+                d.setKey(getEntity(v.asString()));
+                v = o.get("locked");
+                if (v != null)
+                    d.setLocked(v.asBoolean());
+            }
+            v = o.get("open");
+            if (v != null)
+                d.setOpen(v.asBoolean());
             return o;
         } catch (ParseException | UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, readDoorDataFromBundle()", ex);
+            return null;
+        }
+    }
+
+    /**
+     * Load a {@link Container} from JSON data in the bundle
+     * @param passageName name of the passage under which the JSON data is to be found
+     * @return loaded Container
+     */
+    public Container loadContainer(String passageName) {
+        Container c = new Container();
+        c.init();
+        readContainerDataFromBundle(c, passageName);
+        putEntity(c);
+        return c;
+    }
+
+    /**
+     * Loads a container from a bundle passage that contains JSON data in the format of this example:
+     * <pre>{@code
+     *  {
+     *      <standard Entity fields>
+     *      "inPrep" : preposition used when putting something into the container,
+     *      "outPrep" : preposition used when taking something out of the container,
+     *      "keyId" : entity ID of the key needed to lock/unlock the container, or null for no key,
+     *      "locked" : if key != null, then a boolean to indicate if the container is locked
+     *  }
+     * }</pre>
+     * Since <tt>keyId</tt> will be looked up to resolve an actual Entity instance, the key must have
+     * already been loaded prior to loading this container.
+     * @param c Container into which to store the data
+     * @param passageName name of the bundle passage
+     * @return the JsonObject parsed from <tt>passageName</tt>
+     */
+    public JsonObject readContainerDataFromBundle(Container c, String passageName) {
+        JsonObject o = readEntityDataFromBundle(c, passageName);
+        if (o == null)
+            return null;
+        try {
+            c.inPrep = getJsonString(o.get("inPrep"), "(in)");
+            c.outPrep = getJsonString(o.get("outPrep"), "(out)");
+            JsonValue v = o.get("keyId");
+            if (v != null && !v.isNull()) {
+                c.key = getEntity(v.asString());
+                v = o.get("locked");
+                if (v != null)
+                    c.locked = v.asBoolean();
+            }
+            return o;
+        } catch (UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, readContainerDataFromBundle()", ex);
             return null;
         }
     }
@@ -522,8 +586,8 @@ public class WorldBuilder
      * @param pos1 exit position to connect
      * @param roomId2 room to connect to
      */
-    public void connectRoomOneWay(String roomId1, int pos1, String roomId2) {
-        connectRoomOneWay(roomId1, pos1, null, roomId2);
+    public void connectRoomsOneWay(String roomId1, int pos1, String roomId2) {
+        connectRoomsOneWay(roomId1, pos1, null, roomId2);
     }
 
     /**
@@ -533,7 +597,7 @@ public class WorldBuilder
      * @param label exit label
      * @param roomId2 room to connect to
      */
-    public void connectRoomOneWay(String roomId1, int pos1, String label, String roomId2) {
+    public void connectRoomsOneWay(String roomId1, int pos1, String label, String roomId2) {
         BaseRoom r1 = getRoom(roomId1);
         BaseRoom r2 = getRoom(roomId2);
         r1.exits[pos1] = r2;
@@ -547,12 +611,8 @@ public class WorldBuilder
      * @param pos1 the exit position in the first room to connect to the second room
      * @param roomId2 id of the second room
      * @param pos2 the exit position in the second room to connect to the first room
-     * @param keyId the id of the key entity, or null for no key
-     * @param locked whether the door should be locked (set first)
-     * @param open whether the door should be open (set second, can override locked)
      */
-    public void connectRoomsWithDoor(String doorId, String roomId1, int pos1, String roomId2, int pos2,
-                                     String keyId, boolean locked, boolean open) {
+    public void connectRoomsWithDoor(String doorId, String roomId1, int pos1, String roomId2, int pos2) {
         Door d = (Door) getEntity(doorId);
         BaseRoom r1 = getRoom(roomId1);
         BaseRoom r2 = getRoom(roomId2);
@@ -560,13 +620,10 @@ public class WorldBuilder
         r2.entities.add(d);
         d.setRooms(r1, r2);
         d.setPositions(pos1, pos2);
-        d.setKey(keyId == null ? null : getEntity(keyId));
-        d.setLocked(locked);
-        d.setOpen(open);
         // Exit labels don't work with rooms that are connected by a door
         r1.exitLabels[pos1] = null;
         r2.exitLabels[pos2] = null;
-        if (locked) {
+        if (d.isLocked()) {
             r1.exits[pos1] = null;
             r2.exits[pos2] = null;
         } else {
@@ -584,8 +641,10 @@ public class WorldBuilder
         BaseRoom r = getRoom(roomId);
         for (String id : entityIds) {
             Entity e = getEntity(id);
-            if (e != null && !r.entities.contains(e))
+            if (e != null && !r.entities.contains(e)) {
                 r.entities.add(e);
+                e.setRoom(r);
+            }
         }
     }
 
@@ -636,6 +695,9 @@ public class WorldBuilder
      * <ul>
      *     <li>Suffix <tt>:door</tt> - loaded as a {@link #loadDoor(String) Door}</li>
      *     <li>Suffix <tt>:talking</tt> - loaded as a {@link #loadTalkingEntity(String) TalkingEntity}</li>
+     *     <li>Suffix <tt>:container</tt> - loaded as a {@link #loadContainer(String) Container}.<br/>
+     *          If the container definition has a <tt>keyId</tt>, that key entity should appear before
+     *          the container in the list of passage names.</li>
      * </ul>
      * For each passage name listed, we will call the appropriate variant of {@link #loadEntity(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found
@@ -650,6 +712,8 @@ public class WorldBuilder
                     loadDoor(p.substring(0, p.length() - 5));
                 else if (p.endsWith(":talking"))
                     loadTalkingEntity(p.substring(0, p.length() - 8));
+                else if (p.endsWith(":container"))
+                    loadTalkingEntity(p.substring(0, p.length() - 10));
                 else
                     loadEntity(p);
             }
@@ -692,19 +756,52 @@ public class WorldBuilder
     }
 
     /**
+     * Puts entities into containers based on a JSON definition given in a passage bundle.
+     * A definition entry looks like this:
+     * <pre>{@code
+     * [
+     *      [containerId1, entityId1, entityId2, ...],
+     *      [containerId2, entityId1, entityId2, ...],
+     *      ...
+     * ]
+     * }</pre>
+     * @param passageName
+     */
+    public void loadContainerContents(String passageName) {
+        String json = bundle.getPassage(passageName);
+        try {
+            JsonArray contentsList = Json.parse(json).asArray();
+            for (JsonValue v : contentsList) {
+                JsonArray arr = v.asArray();
+                int n = arr.size();
+                Container c = (Container) getEntity(arr.get(0).asString());
+                for (int i = 1; i < n; i++) {
+                    Entity e = getEntity(arr.get(i).asString());
+                    if (e != null && !c.contents.contains(e))
+                        c.contents.add(e);
+                }
+            }
+        } catch (ParseException | UnsupportedOperationException | IndexOutOfBoundsException ex) {
+            logger.log(Level.WARNING, "JSON error, loadContainerContents()", ex);
+        } catch (ClassCastException ex) {
+            logger.log(Level.WARNING, "Invalid containerId, loadContainerContents()", ex);
+        }
+    }
+
+    /**
      * Loads a room-connection defintion from JSON in a bundle passage, and connects the rooms
      * given in the defintion. A defintion entry looks like this:
      * <pre>{@code
      * [
      *    [roomId1, pos1, roomId2, pos2],
      *    [roomId1, pos1, roomId2],
-     *    [doorId, roomId1, pos1, roomId2, pos2, keyId, locked, open],
+     *    [doorId, roomId1, pos1, roomId2, pos2],
      *    ...
      * ]
      * }</pre>
      * The different lengths of arrays correspond to {@link #connectRooms(String, int, String, int)},
-     * {@link #connectRoomOneWay(String, int, String)}, and
-     * {@link #connectRoomsWithDoor(String, String, int, String, int, String, boolean, boolean)},
+     * {@link #connectRoomsOneWay(String, int, String)}, and
+     * {@link #connectRoomsWithDoor(String, String, int, String, int)},
      * respectively.
      * <p/>
      * The "pos" parameters take one of these string values:
@@ -737,19 +834,15 @@ public class WorldBuilder
                     roomId1 = arr.get(0).asString();
                     pos1 = UIConstants.buttonTextToPosition(arr.get(1).asString());
                     roomId2 = arr.get(2).asString();
-                    connectRoomOneWay(roomId1, pos1, roomId2);
+                    connectRoomsOneWay(roomId1, pos1, roomId2);
                     break;
-                case 8:
+                case 5:
                     String doorId = arr.get(0).asString();
                     roomId1 = arr.get(1).asString();
                     pos1 = UIConstants.buttonTextToPosition(arr.get(2).asString());
                     roomId2 = arr.get(3).asString();
                     pos2 = UIConstants.buttonTextToPosition(arr.get(4).asString());
-                    JsonValue keyVal = arr.get(5);
-                    String keyId = keyVal.isNull() ? null : keyVal.asString();
-                    boolean locked = arr.get(6).asBoolean();
-                    boolean open = arr.get(7).asBoolean();
-                    connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2, keyId, locked, open);
+                    connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2);
                     break;
                 }
             }

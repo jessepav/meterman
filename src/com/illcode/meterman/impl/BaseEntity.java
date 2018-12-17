@@ -25,7 +25,6 @@ public class BaseEntity implements Entity
     public BitSet attributes;
     public Room room;
     public Map<String,Object> properties;
-    public boolean suppressParserMessage;
 
     /** If not null, it will be set as the {@link MetermanUI#setEntityImage(String)} when this
      *  BaseEntity is selected() */

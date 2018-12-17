@@ -5,8 +5,8 @@ import com.illcode.meterman.Utils;
 
 public class BasicActions extends SystemActions
 {
-    public static String getTakeAction() {
-        return Utils.getActionName("Take");
+    public static String getExamineAction() {
+        return Utils.getActionName("Examine");
     }
 
     public static String getDropAction() {
@@ -47,5 +47,25 @@ public class BasicActions extends SystemActions
 
     public static String getTalkAction() {
         return Utils.getActionName("Talk to");
+    }
+
+    public static String getContainerExamineAction() {
+        return Utils.getActionName("Examine Items");
+    }
+
+    public static String getContainerPutAction(String preposition) {
+        return Utils.getActionName("Put Item " + preposition);
+    }
+
+    public static String getContainerTakeAction(String preposition) {
+        return Utils.getActionName("Take Item " + preposition);
+    }
+
+    public static String getTakeAction() {
+        return Utils.getActionName("Take");
+    }
+
+    public static String getPutAction() {
+        return Utils.getActionName("Put");
     }
 }

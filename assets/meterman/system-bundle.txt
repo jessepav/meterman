@@ -76,3 +76,32 @@ There's nothing to talk about.
 [ undo-message ]
 
 -- Time spins backwards! You have UNDONE the past. --
+
+[ container-no-key-message ]
+
+You do not have the key to unlock ${defName}.
+
+[ container-no-contents-examine-message ]
+
+There is nothing ${inPrep} ${defName} to examine.
+
+[ container-no-contents-take-message ]
+
+There is nothing ${inPrep} ${defName} that you can take.
+
+[ container-no-contents-put-message ]
+
+There is nothing that you can put ${inPrep} ${defName}.
+
+[ container-examine-message ]
+
+What do you want to examine?
+
+[ container-take-message ]
+
+What do you want to take?
+
+[ container-put-message ]
+
+What do you want to put ${inPrep} ${defName}?
+

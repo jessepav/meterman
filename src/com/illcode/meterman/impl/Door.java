@@ -183,7 +183,6 @@ public class Door extends BaseEntity
         if (action.equals(getLockAction()) || action.equals(getUnlockAction())) {
             // note that in these cases we already know that key != null
             if (!Meterman.gm.isInInventory(key)) {
-                Meterman.ui.appendNewline();
                 Meterman.ui.appendTextLn(noKeyMessages[idx]);
             } else {
                 locked = !locked;
