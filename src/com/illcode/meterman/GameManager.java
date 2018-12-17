@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.*;
 
-import static com.illcode.meterman.Meterman.ui;
 import static com.illcode.meterman.Meterman.sound;
+import static com.illcode.meterman.Meterman.ui;
 
 public final class GameManager
 {
@@ -24,10 +24,8 @@ public final class GameManager
     private Map<String,Object> worldData;
 
     // Our listener lists
-    private LinkedList<GameActionListener> beforeGameActionListeners;
-    private LinkedList<GameActionListener> defaultGameActionListeners;
-    private LinkedList<PlayerMovementListener> beforePlayerMovementListeners;
-    private LinkedList<PlayerMovementListener> afterPlayerMovementListeners;
+    private LinkedList<GameActionListener> gameActionListeners;
+    private LinkedList<PlayerMovementListener> playerMovementListeners;
     private LinkedList<TurnListener> turnListeners;
     private LinkedList<EntityActionsProcessor> entityActionsProcessors;
     private LinkedList<EntitySelectionListener> entitySelectionListeners;
@@ -50,10 +48,8 @@ public final class GameManager
     }
 
     public void init() {
-        beforeGameActionListeners = new LinkedList<>();
-        defaultGameActionListeners = new LinkedList<>();
-        beforePlayerMovementListeners = new LinkedList<>();
-        afterPlayerMovementListeners = new LinkedList<>();
+        gameActionListeners = new LinkedList<>();
+        playerMovementListeners = new LinkedList<>();
         turnListeners = new LinkedList<>();
         entityActionsProcessors = new LinkedList<>();
         entitySelectionListeners = new LinkedList<>();
@@ -71,10 +67,8 @@ public final class GameManager
         undoWorldState = null;
         player = null;
         worldData = null;
-        beforeGameActionListeners = null;
-        defaultGameActionListeners = null;
-        beforePlayerMovementListeners = null;
-        afterPlayerMovementListeners = null;
+        gameActionListeners = null;
+        playerMovementListeners = null;
         turnListeners = null;
         entityActionsProcessors = null;
         entitySelectionListeners = null;
@@ -172,10 +166,8 @@ public final class GameManager
     }
 
     private void storeListenerListsInWorldData() {
-        worldData.put("beforeGameActionListeners", beforeGameActionListeners);
-        worldData.put("defaultGameActionListeners", defaultGameActionListeners);
-        worldData.put("beforePlayerMovementListeners", beforePlayerMovementListeners);
-        worldData.put("afterPlayerMovementListeners", afterPlayerMovementListeners);
+        worldData.put("gameActionListeners", gameActionListeners);
+        worldData.put("playerMovementListeners", playerMovementListeners);
         worldData.put("turnListeners", turnListeners);
         worldData.put("entityActionsProcessors", entityActionsProcessors);
         worldData.put("entitySelectionListeners", entitySelectionListeners);
@@ -185,10 +177,8 @@ public final class GameManager
 
     @SuppressWarnings("unchecked")
     private void restoreListenerListsFromWorldData() {
-        beforeGameActionListeners = (LinkedList<GameActionListener>) worldData.get("beforeGameActionListeners");
-        defaultGameActionListeners = (LinkedList<GameActionListener>) worldData.get("defaultGameActionListeners");
-        beforePlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("beforePlayerMovementListeners");
-        afterPlayerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("afterPlayerMovementListeners");
+        gameActionListeners = (LinkedList<GameActionListener>) worldData.get("gameActionListeners");
+        playerMovementListeners = (LinkedList<PlayerMovementListener>) worldData.get("playerMovementListeners");
         turnListeners = (LinkedList<TurnListener>) worldData.get("turnListeners");
         entityActionsProcessors = (LinkedList<EntityActionsProcessor>) worldData.get("entityActionsProcessors");
         entitySelectionListeners = (LinkedList<EntitySelectionListener>) worldData.get("entitySelectionListeners");
@@ -197,10 +187,8 @@ public final class GameManager
     }
 
     private void clearListenerLists() {
-        beforeGameActionListeners.clear();
-        defaultGameActionListeners.clear();
-        beforePlayerMovementListeners.clear();
-        afterPlayerMovementListeners.clear();
+        gameActionListeners.clear();
+        playerMovementListeners.clear();
         turnListeners.clear();
         entityActionsProcessors.clear();
         entitySelectionListeners.clear();
@@ -252,7 +240,7 @@ public final class GameManager
             return;
         Room fromRoom = player.currentRoom;
         // Here we go...
-        if (fireBeforePlayerMovement(fromRoom, toRoom))
+        if (firePlayerMovement(fromRoom, toRoom, true))
             return;  // we were blocked by a listener
         if (fromRoom.exiting(toRoom))
             return;  // blocked by the room itself
@@ -264,7 +252,7 @@ public final class GameManager
             e.setRoom(toRoom);
         for (Entity e : toRoom.getRoomEntities())
             e.enterScope();
-        fireAfterPlayerMovement(fromRoom, toRoom);
+        firePlayerMovement(fromRoom, toRoom, false);
         ui.clearEntitySelection();  // this in turn will call entitySelected(null) if needed
         if (alwaysLook || !toRoom.checkAttribute(Attributes.VISITED))
             performLook();
@@ -490,9 +478,9 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn(msg);
         }
-        if (!fireBeforeAction(action, selectedEntity)) {
+        if (!fireGameAction(action, selectedEntity, true)) {
             if (!selectedEntity.processAction(action))
-                if (!fireDefaultAction(action, selectedEntity))
+                if (!fireGameAction(action, selectedEntity, false))
                     ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         }
         nextTurn();
@@ -650,7 +638,7 @@ public final class GameManager
 
     //region Event Listener methods
     /**
-     * Adds a GameActionListener to be called before a game action is processed. If the listener's
+     * Adds a GameActionListener to be called when a game action is processed. If the listener's
      * {@link GameActionListener#processAction(String, Entity, boolean)} method returns true, further action
      * processing will be bypassed.
      * <p/>
@@ -658,75 +646,39 @@ public final class GameManager
      * listener will be notified before previously added listeners.
      * @param l listener to add
      */
-    public void addBeforeGameActionListener(GameActionListener l) {
-        if (!beforeGameActionListeners.contains(l))
-            beforeGameActionListeners.addFirst(l);
+    public void addGameActionListener(GameActionListener l) {
+        if (!gameActionListeners.contains(l))
+            gameActionListeners.addFirst(l);
     }
 
 
     /**
-     * Removes a GameActionListener from the before-action notification list.
+     * Removes a GameActionListener from the action notification list.
      * @param l listener to remove
      */
-    public void removeBeforeGameActionListener(GameActionListener l) {
-        beforeGameActionListeners.remove(l);
+    public void removeGameActionListener(GameActionListener l) {
+        gameActionListeners.remove(l);
     }
 
     /**
-     * Adds a GameActionListener to be called if an action was not handled by any
-     * {@link #addBeforeGameActionListener before-action listeners} or by the
-     * {@link Entity#processAction(String) selected entity}.
-     * <p/>
-     * Listeners are added to the front of our list, and thus the most recently added
-     * listener will be notified before previously added listeners.
-     * @param l listener to add
-     */
-    public void addDefaultGameActionListener(GameActionListener l) {
-        if (!defaultGameActionListeners.contains(l))
-            defaultGameActionListeners.addFirst(l);
-    }
-
-    /**
-     * Removes a GameActionListener from the default-action notification list.
-     * @param l listener to remove
-     */
-    public void removeDefaultGameActionListener(GameActionListener l) {
-        defaultGameActionListeners.remove(l);
-    }
-
-    /**
-     * Notifies all registered {@code GameActionListener}S that an action is about
-     * to be processed.
+     * Notifies all registered {@code GameActionListener}S that an action is being, or has been, processed.
      * @param action action name
      * @param e selected entity
+     * @param beforeAction true if the method is being called before the action has been
+     *          processed; false otherwise.
      * @return true if any GameActionListener interrupted the chain by returning true,
      *         and thus normal action processing should be skipped.
      */
-    private boolean fireBeforeAction(String action, Entity e) {
-        for (GameActionListener l : beforeGameActionListeners) {
-            if (l.processAction(action, e, true))
+    private boolean fireGameAction(String action, Entity e, boolean beforeAction) {
+        for (GameActionListener l : gameActionListeners) {
+            if (l.processAction(action, e, beforeAction))
                 return true;
         }
         return false;
     }
 
     /**
-     * Notifies registered default-action {@code GameActionListener}S that an action is
-     * being processed that was not handled by before-action listeners or the entity itself.
-     * @param action action name
-     * @param e selected entity
-     * @return true if any GameActionListener interrupted the chain by returning true,
-     */
-    private boolean fireDefaultAction(String action, Entity e) {
-        for (GameActionListener l : defaultGameActionListeners) {
-            if (l.processAction(action, e, false))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds a PlayerMovementListener to be called before player movement actually occurs. The
+     * Adds a PlayerMovementListener to be called when the player moves. The
      * listener may return true from its {@link PlayerMovementListener#playerMove}
      * method to halt further movement processing.
      * <p/>
@@ -734,65 +686,29 @@ public final class GameManager
      * listener will be notified before previously added listeners.
      * @param l listener to add
      */
-    public void addBeforePlayerMovementListener(PlayerMovementListener l) {
-        if (!beforePlayerMovementListeners.contains(l))
-            beforePlayerMovementListeners.addFirst(l);
+    public void addPlayerMovementListener(PlayerMovementListener l) {
+        if (!playerMovementListeners.contains(l))
+            playerMovementListeners.addFirst(l);
     }
 
     /**
      * Removes a PlayerMovementListener from the before-movement notification list.
      * @param l listener to remove
      */
-    public void removeBeforePlayerMovementListener(PlayerMovementListener l) {
-        beforePlayerMovementListeners.remove(l);
+    public void removePlayerMovementListener(PlayerMovementListener l) {
+        playerMovementListeners.remove(l);
     }
 
     /**
-     * Adds a PlayerMovementListener to be called before player movement actually occurs. The
-     * listener may return true from its {@link PlayerMovementListener#playerMove}
-     * method to halt further movement processing.
-     * <p/>
-     * Listeners are added to the front of our list, and thus the most recently added
-     * listener will be notified before previously added listeners.
-     * @param l listener to add
+     * Notifies registered {@code PlayerMovementListener}S that the player is moving or has moved.
+     * @param from room player moves from
+     * @param to room player moves to
+     * @param beforeMove true if being called before player movement has occurred; false otherwise.
+     * @return true if any PlayerMovementListener interrupted the chain by returning true.
      */
-    public void addAfterPlayerMovementListener(PlayerMovementListener l) {
-        if (!afterPlayerMovementListeners.contains(l))
-            afterPlayerMovementListeners.addFirst(l);
-    }
-
-    /**
-     * Removes a PlayerMovementListener from the after-movement notification list.
-     * @param l listener to remove
-     */
-    public void removeAfterPlayerMovementListener(PlayerMovementListener l) {
-        afterPlayerMovementListeners.remove(l);
-    }
-
-    /**
-     * Notifies registered {@code PlayerMovementListener}S that the player is about to move.
-     * @param from room player is moving from
-     * @param to room player is moving to
-     * @return true if any PlayerMovementListener interrupted the chain by returning true,
-     *              and thus that player movement should be blocked.
-     */
-    private boolean fireBeforePlayerMovement(Room from, Room to) {
-        for (PlayerMovementListener l : beforePlayerMovementListeners) {
-            if (l.playerMove(from, to, true))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * Notifies register {@code PlayerMovementListener}S that the player has moved
-     * @param from room player has moved from
-     * @param to room player has moved to
-     * @return true if any PlayerMovementListener interrupted the chain by returning true,
-     */
-    private boolean fireAfterPlayerMovement(Room from, Room to) {
-        for (PlayerMovementListener l : afterPlayerMovementListeners) {
-            if (l.playerMove(from, to, false))
+    private boolean firePlayerMovement(Room from, Room to, boolean beforeMove) {
+        for (PlayerMovementListener l : playerMovementListeners) {
+            if (l.playerMove(from, to, beforeMove))
                 return true;
         }
         return false;

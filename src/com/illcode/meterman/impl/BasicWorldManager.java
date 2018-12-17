@@ -53,7 +53,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
      * This should be called in {@link Game#start(boolean)} when a new game is started.
      */
     public void register() {
-        gm.addDefaultGameActionListener(this);
+        gm.addGameActionListener(this);
         gm.addEntityActionsProcessor(this);
         gm.addTurnListener(this);
     }
@@ -65,7 +65,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
      * be retrieved later on and re-registered without losing state.
      */
     public void deregister() {
-        gm.removeDefaultGameActionListener(this);
+        gm.removeGameActionListener(this);
         gm.removeEntityActionsProcessor(this);
         gm.removeTurnListener(this);
     }
@@ -92,6 +92,9 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     }
 
     public boolean processAction(String action, Entity e, boolean beforeAction) {
+        if (beforeAction)
+            return false;  // we don't want to block the entity from handling the action itself
+
         if (action.equals(getDropAction())) {
             gm.moveEntity(e, e.getRoom());
             return true;

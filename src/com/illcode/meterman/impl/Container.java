@@ -129,7 +129,7 @@ public class Container extends BaseEntity
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-put-message"), takeables, true);
                     if (item != null) {
-                        if (!fireContentsChanging(item, true)) {  // if we're not blocked
+                        if (!fireContentsChanging(item, true, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
                                 getPutAction(), item.getName(), inPrep, getName()).toUpperCase());
                             Room currentRoom = gm.getCurrentRoom();
@@ -137,6 +137,7 @@ public class Container extends BaseEntity
                             currentRoom.getRoomEntities().remove(item);  // whisk it out of of the room
                             gm.roomChanged(currentRoom);
                             contents.add(item);  // and now it's in here!
+                            fireContentsChanging(item, true, false);
                         }
                     }
                 }
@@ -149,11 +150,12 @@ public class Container extends BaseEntity
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-take-message"), takeables, true);
                     if (item != null) {
-                        if (!fireContentsChanging(item, false)) {  // if we're not blocked
+                        if (!fireContentsChanging(item, false, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
                                 getTakeAction(), item.getName(), outPrep, getName()).toUpperCase());
                             contents.remove(item);
                             gm.takeEntity(item);
+                            fireContentsChanging(item, false, false);
                         }
                     }
                 }
@@ -191,9 +193,9 @@ public class Container extends BaseEntity
         containerListeners.remove(l);
     }
 
-    private boolean fireContentsChanging(Entity e, boolean isAdded) {
+    private boolean fireContentsChanging(Entity e, boolean isAdded, boolean beforeEntityMove) {
         for (ContainerListener l : containerListeners)
-            if (l.contentsChanging(this, e, isAdded))
+            if (l.contentsChanging(this, e, isAdded, beforeEntityMove))
                 return true;
         return false;
     }
