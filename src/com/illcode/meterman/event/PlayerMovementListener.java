@@ -17,8 +17,6 @@ public interface PlayerMovementListener
      *          false if the move has already occurred.
      * @return true if the further processing of the player move command should be blocked;
      *              false to let processing continue as usual.
-     * @see GameManager#addPlayerMovementListener(PlayerMovementListener)
-     * @see GameManager#addAfterPlayerMovementListener(PlayerMovementListener)
      */
     boolean playerMove(Room from, Room to, boolean beforeMove);
 }
