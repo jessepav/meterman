@@ -12,15 +12,18 @@ import static com.illcode.meterman.Utils.fmt;
 import static com.illcode.meterman.impl.BasicActions.*;
 
 /**
- * This class represents anything that can contain, support, or in any
- * similar way hold a set of entities as contents.
+ * This class represents anything that can contain, support, or in a
+ * similar way hold a set of entities as contents. It supports being locked
+ * and opened with a key.
  */
 public class Container extends BaseEntity
 {
-    /** The preposition that will be used when putting something "in/on/etc." this container. */
+    /** The preposition that will be used when putting something "in/on/etc." this container.
+     *  Should generally be in lowercase. */
     protected String inPrep;
 
-    /** The preposition that will be used when taking something "out/off/etc." of this container. */
+    /** The preposition that will be used when taking something "out/off/etc." of this container.
+     *  Should generally be in lowercase. */
     protected String outPrep;
 
     protected List<Entity> contents; // The items we contain.
@@ -39,8 +42,6 @@ public class Container extends BaseEntity
         super.init();
         inPrep = "(in)";
         outPrep = "(out)";
-        // We use an ArrayList because these items will most often be shown in a ListDialog,
-        // and the showListDialog method uses random access.
         contents = new ArrayList<>(8);
         actions = new ArrayList<>(6);
         containerListeners = new LinkedList<>();
@@ -132,7 +133,7 @@ public class Container extends BaseEntity
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-put-message"), takeables, true);
                     if (item != null) {
-                        if (!fireContentsChanging(item, true, true)) {  // if we're not blocked
+                        if (!fireContentsChange(item, true, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
                                 getPutAction(), item.getName(), inPrep, getName()).toUpperCase());
                             Room currentRoom = gm.getCurrentRoom();
@@ -140,7 +141,7 @@ public class Container extends BaseEntity
                             currentRoom.getRoomEntities().remove(item);  // whisk it out of of the room
                             gm.roomChanged(currentRoom);
                             contents.add(item);  // and now it's in here!
-                            fireContentsChanging(item, true, false);
+                            fireContentsChange(item, true, false);
                         }
                     }
                 }
@@ -154,12 +155,12 @@ public class Container extends BaseEntity
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-take-message"), takeables, true);
                     if (item != null) {
-                        if (!fireContentsChanging(item, false, true)) {  // if we're not blocked
+                        if (!fireContentsChange(item, false, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
                                 getTakeAction(), item.getName(), outPrep, getName()).toUpperCase());
                             contents.remove(item);
                             gm.takeEntity(item);
-                            fireContentsChanging(item, false, false);
+                            fireContentsChange(item, false, false);
                         }
                     }
                 }
@@ -197,9 +198,9 @@ public class Container extends BaseEntity
         containerListeners.remove(l);
     }
 
-    private boolean fireContentsChanging(Entity e, boolean isAdded, boolean beforeEntityMove) {
+    private boolean fireContentsChange(Entity e, boolean isAdded, boolean beforeEntityMove) {
         for (ContainerListener l : containerListeners)
-            if (l.contentsChanging(this, e, isAdded, beforeEntityMove))
+            if (l.contentsChange(this, e, isAdded, beforeEntityMove))
                 return true;
         return false;
     }

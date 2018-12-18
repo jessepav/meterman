@@ -3,7 +3,7 @@ package com.illcode.meterman.impl;
 import com.illcode.meterman.Entity;
 
 /**
- * An interface to support notification when an item is being put in or taken out of
+ * An interface to support notification when an item is put in or taken out of
  * a {@link Container}.
  */
 public interface ContainerListener
@@ -21,5 +21,5 @@ public interface ContainerListener
      * @return true to interrupt the normal add/remove processing chain, false to allow it
      *          to proceed as normal.
      */
-    boolean contentsChanging(Container c, Entity e, boolean isAdded, boolean beforeEntityMove);
+    boolean contentsChange(Container c, Entity e, boolean isAdded, boolean beforeEntityMove);
 }

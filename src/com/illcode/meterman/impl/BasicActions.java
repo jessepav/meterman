@@ -2,6 +2,7 @@ package com.illcode.meterman.impl;
 
 import com.illcode.meterman.SystemActions;
 import com.illcode.meterman.Utils;
+import org.apache.commons.lang3.text.WordUtils;
 
 public class BasicActions extends SystemActions
 {
@@ -54,11 +55,11 @@ public class BasicActions extends SystemActions
     }
 
     public static String getContainerPutAction(String preposition) {
-        return Utils.getActionName("Put Item " + preposition);
+        return Utils.getActionName(WordUtils.capitalizeFully("Put Item " + preposition));
     }
 
     public static String getContainerTakeAction(String preposition) {
-        return Utils.getActionName("Take Item " + preposition);
+        return Utils.getActionName(WordUtils.capitalizeFully("Take Item " + preposition));
     }
 
     public static String getTakeAction() {

@@ -11,24 +11,26 @@ The Riverboat on the River Orange.
 [ part1-rooms ]
 
 [
-    "hillock"
+    "hillock", "game-room"
 ]
 
 [ part1-entities ]
 
 [
-    "iron-key", "chest:container", "ten-ton-rock", "leaf"
+    "iron-key", "chest:container", "ten-ton-rock", "leaf", "shelf:container"
 ]
 
 [ part1-connections ]
 
 [
+    ["hillock", "N", "game-room", "S"]
 ]
 
 [ part1-entity-placements ]
 
 [
-    ["hillock", "chest", "leaf"]
+    ["hillock", "chest", "leaf"],
+    ["game-room", "shelf"]
 ]
 
 [ part1-container-contents ]
@@ -52,6 +54,15 @@ The Riverboat on the River Orange.
     "description" : "A grassy hillock is the last bastion of the East Sward before it slopes down to the River Orange."
 }
 
+[game-room]
+
+{
+    "id" : "game-room",
+    "name" : "Awesome Game Room",
+    "exitName" : "Game Room",
+    "description" : "A boss game room has been built in a little cave. To the south is a grassy hillock."
+}
+
 [chest]
 
 {
@@ -64,6 +75,18 @@ The Riverboat on the River Orange.
     "outPrep" : "from",
     "keyId" : "iron-key",
     "locked" : true
+}
+
+[shelf]
+
+{
+    "id" : "shelf",
+    "name" : "IKEA Bookshelf",
+    "indefiniteArticle" : "an",
+    "listName" : "Bookshelf",
+    "description" : "It's an IKEA bookshelf named Kvööörtil.",
+    "inPrep" : "on",
+    "outPrep" : "off of"
 }
 
 [iron-key]
@@ -89,5 +112,6 @@ The Riverboat on the River Orange.
 {
     "id" : "leaf",
     "name" : "Leaf",
-    "description" : "A rather ordinary maple leaf."
+    "description" : "A rather ordinary maple leaf.",
+    "attributes" : ["takeable"]
 }

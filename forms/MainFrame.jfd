@@ -166,7 +166,7 @@ new FormModel {
 					"gridX": 5
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-					"$columnSpecs": "glue, max(default;196dlu), 15dlu, max(default;185dlu)"
+					"$columnSpecs": "12dlu, max(default;196dlu), glue, max(default;185dlu)"
 					"$rowSpecs": "top:default"
 				} ) {
 					name: "buttonPanel"
