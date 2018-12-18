@@ -83,7 +83,7 @@ You do not have the key to unlock ${defName}.
 
 [ container-no-contents-examine-message ]
 
-There is nothing ${inPrep} ${defName} to examine.
+There is nothing particularly interesting ${inPrep} ${defName}.
 
 [ container-no-contents-take-message ]
 

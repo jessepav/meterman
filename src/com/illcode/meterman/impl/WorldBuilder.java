@@ -744,12 +744,11 @@ public class WorldBuilder
             for (JsonValue v : placementList) {
                 JsonArray arr = v.asArray();
                 int n = arr.size();
-                BaseRoom r = getRoom(arr.get(0).asString());
-                for (int i = 1; i < n; i++) {
-                    Entity e = getEntity(arr.get(i).asString());
-                    if (e != null && !r.entities.contains(e))
-                        r.entities.add(e);
-                }
+                String roomId = arr.get(0).asString();
+                String[] entityIds = new String[n-1];
+                for (int i = 1; i < n; i++)
+                    entityIds[i-1] = arr.get(i).asString();
+                putEntitiesInRoom(roomId, entityIds);
             }
         } catch (ParseException|UnsupportedOperationException|IndexOutOfBoundsException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntityPlacements()", ex);
