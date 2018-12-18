@@ -10,7 +10,8 @@ public interface PlayerMovementListener
 {
     /**
      * Called when a player moves rooms. It may be called twice per player movement, once
-     * before the move has actually occurred, and once after.
+     * before the move has actually occurred, and once after, unless another PlayerMovementListener
+     * interrupts the processing chain.
      * @param from the room the player is moving, or has moved, from
      * @param to the room the player is moving, or has moved, to
      * @param beforeMove true if this method is being called before the player moves, and

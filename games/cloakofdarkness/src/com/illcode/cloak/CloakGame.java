@@ -71,7 +71,7 @@ public class CloakGame implements Game
     }
 
     public void dispose() {
-
+        bundle = null;
     }
 
     public void debugCommand(String command) {

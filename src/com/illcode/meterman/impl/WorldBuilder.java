@@ -21,6 +21,7 @@ import static com.illcode.meterman.Utils.logger;
  *     <li>{@link #loadEntities(String)}</li>
  *     <li>{@link #loadRoomConnections(String)}</li>
  *     <li>{@link #loadEntityPlacements(String)}</li>
+ *     <li>{@link #loadContainerContents(String)}</li>
  *     <li>{@link #loadPlayerState(String)}</li>
  * </ol>
  * In this case, only delegates and managers will need to be manually wired together in a Game's
@@ -713,7 +714,7 @@ public class WorldBuilder
                 else if (p.endsWith(":talking"))
                     loadTalkingEntity(p.substring(0, p.length() - 8));
                 else if (p.endsWith(":container"))
-                    loadTalkingEntity(p.substring(0, p.length() - 10));
+                    loadContainer(p.substring(0, p.length() - 10));
                 else
                     loadEntity(p);
             }

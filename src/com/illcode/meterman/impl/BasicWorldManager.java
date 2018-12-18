@@ -37,6 +37,10 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     public BasicWorldManager() {
     }
 
+    public void init() {
+
+    }
+
     /** Save this instance into a world-data map. */
     public void saveTo(Map<String,Object> worldData) {
         worldData.put(BASIC_WORLD_MANAGER_KEY, this);
@@ -47,23 +51,14 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         return (BasicWorldManager) worldData.get(BASIC_WORLD_MANAGER_KEY);
     }
 
-    /**
-     * Registers the BasicWorldManager with the GameManager, and saves the instance in the world-data.
-     * <p/>
-     * This should be called in {@link Game#start(boolean)} when a new game is started.
-     */
+    /** Registers the BasicWorldManager with the GameManager */
     public void register() {
         gm.addGameActionListener(this);
         gm.addEntityActionsProcessor(this);
         gm.addTurnListener(this);
     }
 
-    /**
-     * De-registers this BasicWorldManager from the GameManager.
-     * <p/>
-     * It does <em>not</em> remove the reference to the instance from the world data, so that the instance
-     * be retrieved later on and re-registered without losing state.
-     */
+    /** De-registers this BasicWorldManager from the GameManager. */
     public void deregister() {
         gm.removeGameActionListener(this);
         gm.removeEntityActionsProcessor(this);

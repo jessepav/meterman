@@ -27,6 +27,8 @@ class ListDialog implements ActionListener, MouseListener
     DefaultListModel<String> listModel;
     JButton okButton, cancelButton;
 
+    private boolean okPressed;
+
     @SuppressWarnings("unchecked")
     ListDialog(Window owner) {
         this.owner = owner;
@@ -48,6 +50,7 @@ class ListDialog implements ActionListener, MouseListener
             cancelButton.addActionListener(this);
             list.addMouseListener(this);
             dialog.getRootPane().setDefaultButton(okButton);
+            GuiUtils.attachEscapeCloseOperation(dialog);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "ListDialog()", ex);
         }
@@ -63,20 +66,22 @@ class ListDialog implements ActionListener, MouseListener
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
         list.requestFocusInWindow();
+        okPressed = false;
         dialog.setVisible(true);  // blocks until hidden
-        int idx = list.getSelectedIndex();
-        if (idx == -1)
+        if (okPressed) {
+            int idx = list.getSelectedIndex();
+            return idx == -1 ? null : items.get(idx);
+        } else {
             return null;
-        else
-            return items.get(idx);
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == okButton) {
+            okPressed = true;
             dialog.setVisible(false);
         } else if (source == cancelButton) {
-            list.clearSelection();
             dialog.setVisible(false);
         }
     }

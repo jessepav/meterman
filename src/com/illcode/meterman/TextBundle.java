@@ -156,11 +156,17 @@ public final class TextBundle
      * @return passage text or "" if the passage doesn't exist
      */
     public String getPassage(String name) {
+        return getPassage(name, sub);
+    }
+
+    // When we chain a getPassage() call from a child to parent bundle, we
+    // want the parent to use the StrSubstitutor of the child.
+    private String getPassage(String name, StrSubstitutor strSub) {
         String s = passageMap.get(name);
         if (s != null)
-            return sub.replace(s);
+            return strSub.replace(s);
         else if (parent != null)
-            return parent.getPassage(name);
+            return parent.getPassage(name, strSub);
         else
             return "";
     }

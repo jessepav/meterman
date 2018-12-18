@@ -36,6 +36,7 @@ public class Container extends BaseEntity
     }
 
     public void init() {
+        super.init();
         inPrep = "(in)";
         outPrep = "(out)";
         // We use an ArrayList because these items will most often be shown in a ListDialog,
@@ -99,7 +100,7 @@ public class Container extends BaseEntity
         try {
             sysBundle.putSubstitution("defName", GameUtils.defName(this));
             sysBundle.putSubstitution("inPrep", inPrep);
-            if (action.equals(getLockAction()) || action.equals(getUnlockAction())) {
+            if (action.equals(getLockAction()) || action.equals(getUnlockAction())) {  // LOCK/UNLOCK
                 // note that in these cases we already know that key != null
                 if (!Meterman.gm.isInInventory(key)) {
                     ui.appendTextLn(sysBundle.getPassage("container-no-key-message"));
@@ -108,8 +109,9 @@ public class Container extends BaseEntity
                     gm.entityChanged(this);
                 }
                 return true;
-            } else if (action.equals(getContainerExamineAction())) {
+            } else if (action.equals(getContainerExamineAction())) {  // EXAMINE ITEMS
                 if (contents.isEmpty()) {
+                    ui.appendTextLn(fmt("\n> %s %s %s", getContainerExamineAction(), inPrep, getName()).toUpperCase());
                     ui.appendTextLn(sysBundle.getPassage("container-no-contents-examine-message"));
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-examine-message"), contents, true);
@@ -119,12 +121,13 @@ public class Container extends BaseEntity
                     }
                 }
                 return true;
-            } else if (action.equals(getContainerPutAction(inPrep))) {
+            } else if (action.equals(getContainerPutAction(inPrep))) {  // PUT IN
                 List<Entity> takeables = new ArrayList<>();
                 GameUtils.getCurrentTakeableEntities(takeables);
                 if (checkAttribute(Attributes.TAKEABLE))
                     takeables.remove(this);
                 if (takeables.isEmpty()) {
+                    ui.appendTextLn(fmt("\n> %s %s", getContainerPutAction(inPrep), getName()).toUpperCase());
                     ui.appendTextLn(sysBundle.getPassage("container-no-contents-put-message"));
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-put-message"), takeables, true);
@@ -142,10 +145,11 @@ public class Container extends BaseEntity
                     }
                 }
                 return true;
-            } else if (action.equals(getContainerTakeAction(outPrep))) {
+            } else if (action.equals(getContainerTakeAction(outPrep))) {  // TAKE FROM
                 List<Entity> takeables = new ArrayList<>();
                 GameUtils.filterByAttribute(contents, Attributes.TAKEABLE, true, takeables);
                 if (takeables.isEmpty()) {
+                    ui.appendTextLn(fmt("\n> %s %s", getContainerTakeAction(outPrep), getName()).toUpperCase());
                     ui.appendTextLn(sysBundle.getPassage("container-no-contents-take-message"));
                 } else {
                     Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-take-message"), takeables, true);

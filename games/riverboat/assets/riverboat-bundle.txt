@@ -1,3 +1,93 @@
 [# Riverboat ]
 
 This is the Riverboat game bundle.
+
+[ about-riverboat ]
+
+    Riverboat
+The Riverboat on the River Orange.
+    Boat Away
+
+[ part1-rooms ]
+
+[
+    "hillock"
+]
+
+[ part1-entities ]
+
+[
+    "iron-key", "chest:container", "ten-ton-rock", "leaf"
+]
+
+[ part1-connections ]
+
+[
+]
+
+[ part1-entity-placements ]
+
+[
+    ["hillock", "chest", "leaf"]
+]
+
+[ part1-container-contents ]
+
+[
+    ["chest", "ten-ton-rock"]
+]
+
+[ player-state ]
+
+{
+    "currentRoom" : "hillock",
+    "inventory" : ["iron-key"]
+}
+
+[ hillock ]
+
+{
+    "id" : "hillock",
+    "name" : "Hillock",
+    "description" : "A grassy hillock is the last bastion of the East Sward before it slopes down to the River Orange."
+}
+
+[chest]
+
+{
+    "id" : "chest",
+    "name" : "Doughty Chest",
+    "indefiniteArticle" : "a",
+    "listName" : "Chest",
+    "description" : "A fierce iron-chest that cannot be battered into submission.",
+    "inPrep" : "in",
+    "outPrep" : "from",
+    "keyId" : "iron-key",
+    "locked" : true
+}
+
+[iron-key]
+
+{
+    "id" : "iron-key",
+    "name" : "Iron Key",
+    "indefiniteArticle" : "an",
+    "description" : "This iron key is engraved with the blazion of the House of Goop.",
+    "attributes" : ["takeable"]
+}
+
+[ten-ton-rock]
+
+{
+    "id" : "ten-ton-rock",
+    "name" : "Ten Ton Rock",
+    "description" : "A surprisingly small rock, for its ten-ton weight."
+}
+
+[leaf]
+
+{
+    "id" : "leaf",
+    "name" : "Leaf",
+    "description" : "A rather ordinary maple leaf."
+}

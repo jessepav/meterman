@@ -9,7 +9,8 @@ public interface GameActionListener
 {
     /**
      * Called when an action is sent to the selected entity. It may be called twice per action,
-     * once before the action has actually been processed, and once after.
+     * once before the action has actually been processed, and once after, if not interrupted
+     * by another GameActionListener or {@link Entity#processAction(String)}.
      * @param action action name
      * @param e selected entity
      * @param beforeAction true if the method is being called before the action has reached the
