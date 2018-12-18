@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="4.2.8" transformSequenceNumber="2">
-  <directoryPresets config="./assets/meterman" />
+  <directoryPresets config="./build/artifacts" />
   <application name="Meterman" distributionSourceDir="" applicationId="9290-6597-0220-6298" mediaDir="./build/install4j" mediaFilePattern="meterman-${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" keepModificationTimes="false" missingFilesStrategy="warn" shortName="meterman" publisher="Jesse Pavel" publisherWeb="https://jessepav.github.io/meterman/" version="1.0" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.7" javaMaxVersion="1.8" allowBetaVM="false" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
@@ -20,7 +20,7 @@
       <mountPoint id="42" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="42" file="./build/artifacts/meterman_jar" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes="" dirMode="755">
+      <dirEntry mountPoint="42" file="./build/artifacts/meterman-dist" overwrite="4" shared="false" mode="644" uninstallMode="0" excludeSuffixes="" dirMode="755">
         <exclude>
           <entry location="run-meterman.bat" fileType="regular" />
           <entry location="run-meterman.sh" fileType="regular" />
@@ -347,7 +347,7 @@ return true;
     </applications>
   </installerGui>
   <mediaSets>
-    <win32 name="Installer (Dynamic JRE)" id="44" mediaFileName="meterman-${compiler:sys.version}-installer" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="windows-x86-1.7.0_51" manualJREEntry="false" bundleType="2" jreURL="http://www.elektrika-inc.com/dist/windows-x86-1.7.0_51.tar.gz" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
+    <win32 name="Installer (Dynamic JRE)" id="44" mediaFileName="meterman-${compiler:sys.version}-installer" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="windows-x86-1.7.0_51" manualJREEntry="false" bundleType="2" jreURL="http://www.illcode.com/dist/windows-x86-1.7.0_51.tar.gz" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
       <excludedLaunchers />
       <excludedComponents />
       <excludedBeans />
@@ -355,7 +355,7 @@ return true;
       <exclude />
       <variables />
     </win32>
-    <win32 name="Installer (No JRE)" id="85" mediaFileName="meterman-${compiler:sys.version}-installer-no_JRE" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="" manualJREEntry="false" bundleType="2" jreURL="http://www.elektrika-inc.com/dist/windows-x86-1.7.0_51.tar.gz" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
+    <win32 name="Installer (No JRE)" id="85" mediaFileName="meterman-${compiler:sys.version}-installer-no_JRE" installDir="meterman" overridePrincipalLanguage="false" requires64bit="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" includedJRE="" manualJREEntry="false" bundleType="2" jreURL="" jreFtpURL="" jreShared="false" directDownload="false" customInstallBaseDir="" createUninstallIcon="true" contentFilesType="1" downloadURL="" runAsAdmin="false">
       <excludedLaunchers />
       <excludedComponents />
       <excludedBeans />
