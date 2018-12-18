@@ -36,9 +36,7 @@ public class EntityDelegateAdapter implements EntityDelegate
     }
 
     public boolean selected(BaseEntity e) {
-        if (e.imageName != null)
-            Meterman.ui.setEntityImage(e.imageName);
-        return false;
+        return e.selectedImpl();
     }
 
     public List<String> getActions(BaseEntity e) {

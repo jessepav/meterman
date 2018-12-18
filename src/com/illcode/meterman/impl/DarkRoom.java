@@ -51,14 +51,11 @@ public class DarkRoom extends BaseRoom
     }
 
     // You cannot see what's in the room if it's dark
-    public List<Entity> getRoomEntities() {
-        if (delegate != null)
-            return delegate.getRoomEntities(this);
-
+    protected List<Entity> getRoomEntitiesImpl() {
         if (isDark())
             return Collections.emptyList();
         else
-            return entities;
+            return super.getRoomEntitiesImpl();
     }
 
     public boolean isDark() {

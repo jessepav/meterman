@@ -91,7 +91,11 @@ public class BaseRoom implements Room
         if (delegate != null)
             return delegate.getRoomEntities(this);
         else
-            return entities;
+            return getRoomEntitiesImpl();
+    }
+
+    protected List<Entity> getRoomEntitiesImpl() {
+        return entities;
     }
 
     public void entered(Room fromRoom) {

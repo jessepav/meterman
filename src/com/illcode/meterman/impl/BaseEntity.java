@@ -109,6 +109,12 @@ public class BaseEntity implements Entity
     public boolean selected() {
         if (delegate != null)
             return delegate.selected(this);
+        else
+            return selectedImpl();
+    }
+
+    // For subclasses and delegates
+    protected boolean selectedImpl() {
         if (imageName != null)
             Meterman.ui.setEntityImage(imageName);
         return false;
