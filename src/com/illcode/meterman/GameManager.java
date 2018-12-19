@@ -418,7 +418,7 @@ public final class GameManager
             textBuilder.append(paragraphBuilder);
             paragraphBuilder.setLength(0);
         }
-        fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ROOM_DESCRIPTION);
+        fireDescriptionTextReady(textBuilder, getCurrentRoom());
         ui.appendText(textBuilder.toString());
         textBuilder.setLength(0);
     }
@@ -539,7 +539,7 @@ public final class GameManager
             fireProcessEntityActions(selectedEntity, actions);
             ui.setObjectName(selectedEntity.getName());
             textBuilder.append(selectedEntity.getDescription());
-            fireDescriptionTextReady(textBuilder, DescriptionTextProcessor.ENTITY_DESCRIPTION);
+            fireDescriptionTextReady(textBuilder, selectedEntity);
             ui.setObjectText(textBuilder.toString());
             textBuilder.setLength(0);
             ui.clearActions();
@@ -820,15 +820,25 @@ public final class GameManager
     }
 
     /**
-     * Notifies registered <tt>DescriptionTextProcessor</tt>s that the text of a look command has been
-     * gathered and will be displayed in the UI.
+     * Notifies registered <tt>DescriptionTextProcessor</tt>s that the text of a room description
+     * has been gathered and will be displayed in the UI.
      * @param sb the StringBuilder containing the text to be shown
-     * @param textType either {@link DescriptionTextProcessor#ROOM_DESCRIPTION} or {@link
-     *   DescriptionTextProcessor#ENTITY_DESCRIPTION}, indicating at what point the method is being called.
+     * @param r room
      */
-    private void fireDescriptionTextReady(StringBuilder sb, int textType) {
+    private void fireDescriptionTextReady(StringBuilder sb, Room r) {
         for (DescriptionTextProcessor l : descriptionTextProcessors)
-            l.descriptionTextReady(sb, textType);
+            l.roomDescriptionTextReady(sb, r);
+    }
+
+    /**
+     * Notifies registered <tt>DescriptionTextProcessor</tt>s that the text of an entity description
+     * has been gathered and will be displayed in the UI.
+     * @param sb the StringBuilder containing the text to be shown
+     * @param e entity
+     */
+    private void fireDescriptionTextReady(StringBuilder sb, Entity e) {
+        for (DescriptionTextProcessor l : descriptionTextProcessors)
+            l.entityDescriptionTextReady(sb, e);
     }
 
     /**

@@ -1,5 +1,8 @@
 package com.illcode.meterman.event;
 
+import com.illcode.meterman.Entity;
+import com.illcode.meterman.Room;
+
 /**
  * A DescriptionTextProcessor is notified when the text that will be displayed for a Room or Entity
  * description (via a Look command or entity selection) has been gathered and is ready for display in the UI.
@@ -10,18 +13,19 @@ package com.illcode.meterman.event;
  */
 public interface DescriptionTextProcessor
 {
-    /** Constant indicating room description text (aka Look text) is ready. */
-    public static final int ROOM_DESCRIPTION = 1;
-
-    /** Constant indicating entity description text is ready. */
-    public static final int ENTITY_DESCRIPTION = 2;
-
     /**
-     * Called when the text that will be shown for a description has been gathered and is about to be
+     * Called when the text that will be shown for a room description has been gathered and is about to be
      * displayed. The listener can affect the text shown by modifying the StringBuilder.
      * @param sb StringBuilder holding the text to be shown
-     * @param textType either {@link #ROOM_DESCRIPTION} or {@link #ENTITY_DESCRIPTION}, indicating at
-     *      what point the method is being called.
+     * @param r room whose description is being displayed
      */
-    void descriptionTextReady(StringBuilder sb, int textType);
+    void roomDescriptionTextReady(StringBuilder sb, Room r);
+
+    /**
+     * Called when the text that will be shown for an entity description has been gathered and is about to be
+     * displayed. The listener can affect the text shown by modifying the StringBuilder.
+     * @param sb StringBuilder holding the text to be shown
+     * @param e entity whose description is being displayed
+     */
+    void entityDescriptionTextReady(StringBuilder sb, Entity e);
 }
