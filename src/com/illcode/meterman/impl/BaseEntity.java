@@ -58,6 +58,10 @@ public class BaseEntity implements Entity
         attributes.set(attribute);
     }
 
+    public void setAttribute(int attribute, boolean val) {
+        attributes.set(attribute, val);
+    }
+
     public void clearAllAttributes() {
         attributes.clear();
     }

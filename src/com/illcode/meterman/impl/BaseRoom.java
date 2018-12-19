@@ -55,6 +55,10 @@ public class BaseRoom implements Room
         attributes.set(attribute);
     }
 
+    public void setAttribute(int attribute, boolean val) {
+        attributes.set(attribute, val);
+    }
+
     public void clearAllAttributes() {
         attributes.clear();
     }
@@ -91,11 +95,7 @@ public class BaseRoom implements Room
         if (delegate != null)
             return delegate.getRoomEntities(this);
         else
-            return getRoomEntitiesImpl();
-    }
-
-    protected List<Entity> getRoomEntitiesImpl() {
-        return entities;
+            return entities;
     }
 
     public void entered(Room fromRoom) {

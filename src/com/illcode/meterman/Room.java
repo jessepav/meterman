@@ -11,26 +11,29 @@ public interface Room
     /** Initialize the room to its default state. This is not called when restoring a game. */
     void init();
 
-    /** Returns true if {@code attribute} is set */
+    /** Returns true if {@code attribute} is set. */
     boolean checkAttribute(int attribute);
 
-    /** Clear an attribute */
+    /** Clear an attribute. */
     void clearAttribute(int attribute);
 
-    /** Set an attribute */
+    /** Set an attribute. */
     void setAttribute(int attribute);
 
-    /** Clear all attributes */
+    /** Set an attribute to a given value. */
+    void setAttribute(int attribute, boolean val);
+
+    /** Clear all attributes. */
     void clearAllAttributes();
 
-    /** Returns the full name of the room */
+    /** Returns the full name of the room. */
     String getName();
 
     /** Returns a potentially shorter version of the name, to be used in Exit buttons.
      *  This method may return a different name depending on whether the room has been visited. */
     String getExitName();
 
-    /** Returns the text to be displayed when the player enters the room or clicks "Look" */
+    /** Returns the text to be displayed when the player enters the room or clicks "Look". */
     String getDescription();
 
     /**
@@ -64,7 +67,7 @@ public interface Room
     void entered(Room fromRoom);
 
     /**
-     * Called as the player is exiting the room (but is still there)
+     * Called as the player is exiting the room (but is still there).
      * @param toRoom the room the player is attempting to move to.
      * @return true to block the player from exiting, false to allow the exit (note that
      *          the exit may fail for other reasons)

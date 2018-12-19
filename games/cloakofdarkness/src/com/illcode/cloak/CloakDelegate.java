@@ -148,10 +148,7 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
 
     public boolean exiting(BaseRoom r, Room toRoom) {
         if (r == cloakroom) {
-            if (!gm.isInInventory(cloak) && cloak.getRoom() == cloakroom)
-                bar.clearAttribute(Attributes.DARK);
-            else
-                bar.setAttribute(Attributes.DARK);
+            bar.setAttribute(Attributes.DARK, gm.isInInventory(cloak) || cloak.getRoom() != cloakroom);
         } else if (r == foyer && toRoom == patio) {
             ui.appendTextLn(bundle.getPassage("no-go-patio"));
             return true;

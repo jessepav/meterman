@@ -20,6 +20,9 @@ public interface Entity
     /** Set an attribute */
     void setAttribute(int attribute);
 
+    /** Set an attribute to a given value. */
+    void setAttribute(int attribute, boolean val);
+
     /** Clear all attributes */
     void clearAllAttributes();
 
