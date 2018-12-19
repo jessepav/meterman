@@ -1,6 +1,6 @@
 package com.illcode.meterman;
 
-public class SystemActions
+public final class SystemActions
 {
     public static String getGoAction() {
         return Utils.getActionName("Go to");

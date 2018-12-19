@@ -166,7 +166,7 @@ public class WorldBuilder
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
-     * @see Attributes#stringToEntityAttribute(java.lang.String)
+     * @see #getAttributeVal(String)
      */
     public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
@@ -182,8 +182,11 @@ public class WorldBuilder
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
             v = o.get("attributes");
             if (v != null) {
-                for (JsonValue attrVal : v.asArray().values())
-                    e.setAttribute(Attributes.stringToEntityAttribute(attrVal.asString()));
+                for (JsonValue attrVal : v.asArray().values()) {
+                    int attr = getAttributeVal(attrVal.asString());
+                    if (attr != -1)
+                        e.setAttribute(attr);
+                }
             }
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
@@ -663,8 +666,11 @@ public class WorldBuilder
      * <ul>
      *     <li>Suffix <tt>:dark</tt> - loaded as a {@link #loadDarkRoom(String) DarkRoom}</li>
      * </ul>
+     * Subclasses of WorldBuilder may allow additional suffix strings not listed here.
+     * <p/>
      * For each passage name listed, we will call the appropriate variant of {@link #loadRoom(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found
+     * @see #loadRoomType(String, String)
      */
     public void loadRooms(String passageName) {
         String json = bundle.getPassage(passageName);
@@ -672,10 +678,11 @@ public class WorldBuilder
             JsonArray passageList = Json.parse(json).asArray();
             for (JsonValue v : passageList) {
                 String p = v.asString();
-                if (p.endsWith(":dark"))
-                    loadDarkRoom(p.substring(0, p.length() - 5));
-                else
+                int idx = p.indexOf(':');
+                if (idx == -1)
                     loadRoom(p);
+                else
+                    loadRoomType(p.substring(0, idx), p.substring(idx + 1));
             }
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadRooms()", ex);
@@ -700,8 +707,11 @@ public class WorldBuilder
      *          If the container definition has a <tt>keyId</tt>, that key entity should appear before
      *          the container in the list of passage names.</li>
      * </ul>
+     * Subclasses of WorldBuilder may allow additional suffix strings not listed here.
+     * <p/>
      * For each passage name listed, we will call the appropriate variant of {@link #loadEntity(String)}.
      * @param passageName name of the passage under which the JSON definition is to be found
+     * @see #loadEntityType(String, String)
      */
     public void loadEntities(String passageName) {
         String json = bundle.getPassage(passageName);
@@ -709,14 +719,11 @@ public class WorldBuilder
             JsonArray passageList = Json.parse(json).asArray();
             for (JsonValue v : passageList) {
                 String p = v.asString();
-                if (p.endsWith(":door"))
-                    loadDoor(p.substring(0, p.length() - 5));
-                else if (p.endsWith(":talking"))
-                    loadTalkingEntity(p.substring(0, p.length() - 8));
-                else if (p.endsWith(":container"))
-                    loadContainer(p.substring(0, p.length() - 10));
-                else
+                int idx = p.indexOf(':');
+                if (idx == -1)
                     loadEntity(p);
+                else
+                    loadEntityType(p.substring(0, idx), p.substring(idx + 1));
             }
         } catch (ParseException|UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadEntities()", ex);
@@ -890,6 +897,66 @@ public class WorldBuilder
             // when the game starts, GameManager#ensurePlayerInventoryConsistent() will do this.
         } catch (ParseException | UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, loadPlayerState()", ex);
+        }
+    }
+
+    // These methods are meant to be overridden in subclasses to provide any additional
+    // entity and room types, and attribute values that are needed.
+
+    /**
+     * Return the integer attribute value that corresponds to a given string.
+     * For instance, "takeable" corresponds to {@link Attributes#TAKEABLE}.
+     * <p/>
+     * Subclasses of WorldBuilder should override this method (chaining up to the superclass implementation)
+     * to provide new attributes.
+     * @param attrStr string representation of an attribute
+     * @return attribute value, or -1 if the string has no corresponding attribute
+     */
+    protected int getAttributeVal(String attrStr) {
+        return Attributes.stringToEntityAttribute(attrStr);
+    }
+
+    /**
+     * Called by {@link #loadEntities} to load a BaseEntity or subclass from a passage.
+     * <p/>
+     * Subclasses of WorldBuilder should override this method (chaining up to the superclass implementation)
+     * to provide new entity types.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     * @param typeStr a string indicating what type of entity to load (ex. "door").
+     */
+    protected void loadEntityType(String passageName, String typeStr) {
+        switch (typeStr.toLowerCase()) {
+        case "door":
+            loadDoor(passageName);
+            break;
+        case "talking":
+            loadTalkingEntity(passageName);
+            break;
+        case "container":
+            loadContainer(passageName);
+            break;
+        default:
+            loadEntity(passageName);
+            break;
+        }
+    }
+
+    /**
+     * Called by {@link #loadRooms} to load a BaseRoom or subclass from a passage.
+     * <p/>
+     * Subclasses of WorldBuilder should override this method (chaining up to the superclass implementation)
+     * to provide new room types.
+     * @param passageName name of the passage under which the JSON definition is to be found
+     * @param typeStr a string indicating what type of room to load (ex. "dark").
+     */
+    protected void loadRoomType(String passageName, String typeStr) {
+        switch (typeStr.toLowerCase()) {
+        case "dark":
+            loadDarkRoom(passageName);
+            break;
+        default:
+            loadRoom(passageName);
+            break;
         }
     }
 

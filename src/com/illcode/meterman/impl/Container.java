@@ -12,9 +12,11 @@ import static com.illcode.meterman.Utils.fmt;
 import static com.illcode.meterman.impl.BasicActions.*;
 
 /**
- * This class represents anything that can contain, support, or in a
- * similar way hold a set of entities as contents. It supports being locked
- * and opened with a key.
+ * This class represents anything that can contain, support, or in a similar way hold a set of entities as
+ * contents. It supports being locked and opened with a key.
+ * <p/>
+ * Note that unlike Inform &amp; co., these containers do <em>not</em> propagate light, so if you
+ * put your lamp in a chest or on a shelf, it will be dark.
  */
 public class Container extends BaseEntity
 {
@@ -32,7 +34,7 @@ public class Container extends BaseEntity
     protected List<String> actions;
     protected LinkedList<ContainerListener> containerListeners;
 
-    private TextBundle sysBundle;
+    private TextBundle bundle;
 
 
     public Container() {
@@ -45,14 +47,14 @@ public class Container extends BaseEntity
         contents = new ArrayList<>(8);
         actions = new ArrayList<>(6);
         containerListeners = new LinkedList<>();
-        sysBundle = Meterman.getSystemBundle();
+        bundle = Meterman.getSystemBundle();
     }
 
     public String getDescription() {
         if (!locked)
             return description;
         else
-            return description + " " + sysBundle.getPassage("container-locked-message");
+            return description + " " + bundle.getPassage("container-locked-message");
     }
 
     public void setRoom(Room room) {
@@ -99,12 +101,12 @@ public class Container extends BaseEntity
 
     public boolean processAction(String action) {
         try {
-            sysBundle.putSubstitution("defName", GameUtils.defName(this));
-            sysBundle.putSubstitution("inPrep", inPrep);
+            bundle.putSubstitution("defName", GameUtils.defName(this));
+            bundle.putSubstitution("inPrep", inPrep);
             if (action.equals(getLockAction()) || action.equals(getUnlockAction())) {  // LOCK/UNLOCK
                 // note that in these cases we already know that key != null
                 if (!Meterman.gm.isInInventory(key)) {
-                    ui.appendTextLn(sysBundle.getPassage("container-no-key-message"));
+                    ui.appendTextLn(bundle.getPassage("container-no-key-message"));
                 } else {
                     locked = !locked;
                     gm.entityChanged(this);
@@ -113,9 +115,9 @@ public class Container extends BaseEntity
             } else if (action.equals(getContainerExamineAction())) {  // EXAMINE ITEMS
                 if (contents.isEmpty()) {
                     ui.appendTextLn(fmt("\n> %s %s %s", getContainerExamineAction(), inPrep, getName()).toUpperCase());
-                    ui.appendTextLn(sysBundle.getPassage("container-no-contents-examine-message"));
+                    ui.appendTextLn(bundle.getPassage("container-no-contents-examine-message"));
                 } else {
-                    Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-examine-message"), contents, true);
+                    Entity item = ui.showListDialog(getName(), bundle.getPassage("container-examine-message"), contents, true);
                     if (item != null) {
                         ui.appendTextLn(fmt("\n> %s %s", getExamineAction(), item.getName()).toUpperCase());
                         ui.appendTextLn(item.getDescription());
@@ -129,9 +131,9 @@ public class Container extends BaseEntity
                     takeables.remove(this);
                 if (takeables.isEmpty()) {
                     ui.appendTextLn(fmt("\n> %s %s", getContainerPutAction(inPrep), getName()).toUpperCase());
-                    ui.appendTextLn(sysBundle.getPassage("container-no-contents-put-message"));
+                    ui.appendTextLn(bundle.getPassage("container-no-contents-put-message"));
                 } else {
-                    Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-put-message"), takeables, true);
+                    Entity item = ui.showListDialog(getName(), bundle.getPassage("container-put-message"), takeables, true);
                     if (item != null) {
                         if (!fireContentsChange(item, true, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
@@ -151,9 +153,9 @@ public class Container extends BaseEntity
                 GameUtils.filterByAttribute(contents, Attributes.TAKEABLE, true, takeables);
                 if (takeables.isEmpty()) {
                     ui.appendTextLn(fmt("\n> %s %s", getContainerTakeAction(outPrep), getName()).toUpperCase());
-                    ui.appendTextLn(sysBundle.getPassage("container-no-contents-take-message"));
+                    ui.appendTextLn(bundle.getPassage("container-no-contents-take-message"));
                 } else {
-                    Entity item = ui.showListDialog(getName(), sysBundle.getPassage("container-take-message"), takeables, true);
+                    Entity item = ui.showListDialog(getName(), bundle.getPassage("container-take-message"), takeables, true);
                     if (item != null) {
                         if (!fireContentsChange(item, false, true)) {  // if we're not blocked
                             ui.appendTextLn(fmt("\n> %s %s %s %s",
@@ -169,8 +171,8 @@ public class Container extends BaseEntity
                 return false;
             }
         } finally {
-            sysBundle.removeSubstitution("defName");
-            sysBundle.removeSubstitution("inPrep");
+            bundle.removeSubstitution("defName");
+            bundle.removeSubstitution("inPrep");
         }
     }
 

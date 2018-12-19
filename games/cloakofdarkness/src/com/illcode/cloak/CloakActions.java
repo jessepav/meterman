@@ -3,7 +3,7 @@ package com.illcode.cloak;
 import com.illcode.meterman.Utils;
 import com.illcode.meterman.impl.BasicActions;
 
-public class CloakActions extends BasicActions
+public final class CloakActions
 {
     public static String getHangOnHookAction() {
         return Utils.getActionName("Hang on Hook");

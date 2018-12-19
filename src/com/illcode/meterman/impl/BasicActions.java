@@ -4,7 +4,7 @@ import com.illcode.meterman.SystemActions;
 import com.illcode.meterman.Utils;
 import org.apache.commons.lang3.text.WordUtils;
 
-public class BasicActions extends SystemActions
+public final class BasicActions
 {
     public static String getExamineAction() {
         return Utils.getActionName("Examine");
