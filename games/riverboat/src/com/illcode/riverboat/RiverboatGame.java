@@ -51,6 +51,11 @@ public class RiverboatGame implements Game
         bwm.register();
         bwm.saveTo(worldData);
 
+        RiverboatManagerPart1 rm1 = new RiverboatManagerPart1();
+        rm1.init(wb, worldData);
+        rm1.register();
+        rm1.saveTo(worldData);
+
         return worldState;
     }
 

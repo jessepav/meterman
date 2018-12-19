@@ -160,6 +160,7 @@ public class WorldBuilder
             "attributes" : ["concealed", "lightsource"],
         }
      * }</pre>
+     * <tt>id</tt> is optional; if not present, the name of the passage will be used.<br/>
      * <tt>indefiniteArticle</tt> is optional.
      * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.<br/>
      * <tt>attributes</tt> is optional.
@@ -172,7 +173,7 @@ public class WorldBuilder
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
-            e.id = getJsonString(o.get("id"));
+            e.id = getJsonString(o.get("id"), passageName);
             e.name = getJsonString(o.get("name"));
             JsonValue v = o.get("indefiniteArticle");
             if (v != null)

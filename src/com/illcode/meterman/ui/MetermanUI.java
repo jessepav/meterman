@@ -154,7 +154,13 @@ public interface MetermanUI
      * @param e entity to remove
      */
     void removeRoomEntity(Entity e);
-    
+
+    /**
+     * Refresh the list item corresponding to an entity in the current room.
+     * @param e entity to refresh
+     */
+    void refreshRoomEntity(Entity e);
+
     /**
      * Clears the list displaying Entities in the player's inventory.
      */
@@ -163,9 +169,8 @@ public interface MetermanUI
     /**
      * Adds an entity to the list of entities in the player's inventory.
      * @param e entity to add
-     * @param modifiers string to append to the list display for the entity, to
-     *          indicate status like worn or equipped. Will be <tt>null</tt>
-     *          if there are no modifiers.
+     * @param modifiers string to append to the list display for the entity, to indicate status like worn or
+     *                  equipped. Will be <tt>null</tt> if there are no modifiers.
      */
     void addInventoryEntity(Entity e, String modifiers);
 
@@ -174,6 +179,14 @@ public interface MetermanUI
      * @param e entity to remove
      */
     void removeInventoryEntity(Entity e);
+
+    /**
+     * Refresh the list item corresponding to an entity in inventory.
+     * @param e entity to refresh
+     * @param modifiers string to append to the list display for the entity, to indicate status like worn or
+     *                  equipped. Will be <tt>null</tt> if there are no modifiers.
+     */
+    void refreshInventoryEntity(Entity e, String modifiers);
 
     /**
      * Cause a given entity to be selected in the UI, if it is present in the room

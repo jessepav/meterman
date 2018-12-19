@@ -334,7 +334,7 @@ public final class GameManager
     }
 
     /**
-     * Sets whether an entity is worn by the player.
+     * Sets whether an entity is worn by the player. If it is already equipped, it will be unequipped.
      * @param e entity to wear
      * @param wear whether the player should wear the entity. If true, and the given entity is in
      *      the player inventory and is {@link Attributes#WEARABLE wearable}, the player will wear it.
@@ -343,6 +343,8 @@ public final class GameManager
     public boolean setWorn(Entity e, boolean wear) {
         if (wear) {
             if (e.checkAttribute(Attributes.WEARABLE) && isInInventory(e) && !isWorn(e)) {
+                if (isEquipped(e))
+                    player.equipped.remove(e);
                 player.worn.add(e);
                 refreshInventoryUI();
                 return true;
@@ -363,7 +365,7 @@ public final class GameManager
     }
 
     /**
-     * Sets whether an entity is equipped by the player.
+     * Sets whether an entity is equipped by the player. If it is worn, it will be taken off first.
      * @param e entity to equip
      * @param equip whether the player should equip the entity. If true, and the given entity is in
      *      the player inventory and is {@link Attributes#EQUIPPABLE equippable}, the player will equip it.
@@ -372,6 +374,8 @@ public final class GameManager
     public boolean setEquipped(Entity e, boolean equip) {
         if (equip) {
             if (e.checkAttribute(Attributes.EQUIPPABLE) && isInInventory(e) && !isEquipped(e)) {
+                if (isWorn(e))
+                    player.worn.remove(e);
                 player.equipped.add(e);
                 refreshInventoryUI();
                 return true;
@@ -528,7 +532,19 @@ public final class GameManager
      * @param e entity that has changed
      */
     public void entityChanged(Entity e) {
-        if (e != null && e == selectedEntity)
+        if (e == null)
+            return;
+        if (getCurrentRoom().getRoomEntities().contains(e)) {
+            ui.refreshRoomEntity(e);
+        } else if (isInInventory(e)) {
+            String modifiers = null;
+            if (isEquipped(e))
+                modifiers = "(e)";
+            else if (isWorn(e))
+                modifiers = "(w)";
+            ui.refreshInventoryEntity(e, modifiers);
+        }
+        if (e == selectedEntity)
             refreshEntityUI();
     }
 
@@ -559,8 +575,16 @@ public final class GameManager
      * @param r room that has changed
      */
     public void roomChanged(Room r) {
-        if (r == getCurrentRoom())
+        Room currentRoom = getCurrentRoom();
+        if (r == currentRoom) {
             refreshRoomUI();
+        } else {
+            // If the changed room is adjacent to the current room, it's possible that
+            // the exit label it supplied will have changed as well.
+            for (int pos = 0; pos < UIConstants.NUM_EXIT_BUTTONS; pos++)
+                if (currentRoom.getExit(pos) == r)
+                    ui.setExitLabel(pos, currentRoom.getExitLabel(pos));
+        }
     }
 
     private void refreshRoomUI() {

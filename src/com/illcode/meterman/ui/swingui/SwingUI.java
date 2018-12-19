@@ -226,6 +226,12 @@ public class SwingUI implements MetermanUI
         }
     }
 
+    public void refreshRoomEntity(Entity e) {
+        int idx = roomEntities.indexOf(e);
+        if (idx != -1)
+            mainFrame.roomListModel.set(idx, e.getListName());
+    }
+
     public void clearInventoryEntities() {
         inventoryEntities.clear();
         mainFrame.inventoryListModel.clear();
@@ -244,6 +250,16 @@ public class SwingUI implements MetermanUI
         if (idx != -1) {
             inventoryEntities.remove(idx);
             mainFrame.inventoryListModel.remove(idx);
+        }
+    }
+
+    public void refreshInventoryEntity(Entity e, String modifiers) {
+        int idx = inventoryEntities.indexOf(e);
+        if (idx != -1) {
+            String s = e.getListName();
+            if (modifiers != null)
+                s += " " + modifiers;
+            mainFrame.inventoryListModel.set(idx, s);
         }
     }
 
