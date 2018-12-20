@@ -685,7 +685,7 @@ public class WorldBuilder
                 String p = v.asString();
                 int idx = p.indexOf(':');
                 if (idx == -1)
-                    loadRoom(p);
+                    loadRoomType(p, "");
                 else
                     loadRoomType(p.substring(0, idx), p.substring(idx + 1));
             }
@@ -726,7 +726,7 @@ public class WorldBuilder
                 String p = v.asString();
                 int idx = p.indexOf(':');
                 if (idx == -1)
-                    loadEntity(p);
+                    loadEntityType(p, "");
                 else
                     loadEntityType(p.substring(0, idx), p.substring(idx + 1));
             }

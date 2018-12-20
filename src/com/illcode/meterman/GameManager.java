@@ -162,6 +162,13 @@ public final class GameManager
             game = null;
         }
         ui.setGameName(null);
+        clearStatusLabels();
+    }
+
+    private void clearStatusLabels() {
+        ui.setStatusLabel(UIConstants.LEFT_LABEL, "");
+        ui.setStatusLabel(UIConstants.CENTER_LABEL, "");
+        ui.setStatusLabel(UIConstants.RIGHT_LABEL, "");
     }
 
     private void storeListenerListsInWorldData() {

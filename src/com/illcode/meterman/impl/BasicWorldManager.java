@@ -34,11 +34,27 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
 {
     public static final String BASIC_WORLD_MANAGER_KEY = "com.illcode.meterman.impl.BasicWorldManager";
 
+    private boolean updateStatusBar;
+
     public BasicWorldManager() {
     }
 
     public void init() {
 
+    }
+
+    /**
+     * Sets whether the BasicWorldManager should update the status bar each turn.
+     * <p/><br/>
+     * <b>Status Bar</b><br/>
+     * <table border="1">
+     *     <tr><th>Left</th><th>Center</th><th>Right</th></tr>
+     *     <tr><td>(unchanged)</td><td>(unchanged)</td><td>Turns: &lt;# of turns&gt;</td></tr>
+     * </table>
+     * @param updateStatusBar true to enable status bar updates.
+     */
+    public void setUpdateStatusBar(boolean updateStatusBar) {
+        this.updateStatusBar = updateStatusBar;
     }
 
     /** Save this instance into a world-data map. */
@@ -118,6 +134,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     }
 
     public void turn() {
-        Meterman.ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
+        if (updateStatusBar)
+            Meterman.ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
     }
 }
