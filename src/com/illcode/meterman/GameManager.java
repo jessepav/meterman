@@ -482,11 +482,18 @@ public final class GameManager
             ui.appendNewline();
             ui.appendTextLn(msg);
         }
-        if (!fireGameAction(action, selectedEntity, true)) {
-            if (!selectedEntity.processAction(action))
-                if (!fireGameAction(action, selectedEntity, false))
-                    ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
+        boolean actionHandled = false;
+        actionChain:
+        {
+            if (actionHandled = fireGameAction(action, selectedEntity, true))
+                break actionChain;
+            if (actionHandled = selectedEntity.processAction(action))
+                break actionChain;
+            if (actionHandled = fireGameAction(action, selectedEntity, false))
+                break actionChain;
+            ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         }
+        firePostGameAction(action, selectedEntity, actionHandled);
         nextTurn();
     }
 
@@ -702,6 +709,15 @@ public final class GameManager
     }
 
     /**
+     * Notifies all registered <tt>GameActionListener</tt>S that action-processing has finished.
+     * @see GameActionListener#postAction(String, Entity, boolean)
+     */
+    private void firePostGameAction(String action, Entity e, boolean actionHandled) {
+        for (GameActionListener l : gameActionListeners)
+            l.postAction(action, e, actionHandled);
+    }
+
+    /**
      * Adds a PlayerMovementListener to be called when the player moves. The
      * listener may return true from its {@link PlayerMovementListener#playerMove}
      * method to halt further movement processing.
@@ -885,10 +901,7 @@ public final class GameManager
     /**
      * Called when a parser message is being generated to notify all our registered
      * <tt>ParserMessageProcessor</tt>S.
-     * @param e selected entity performing the action
-     * @param action the action that is being performed
-     * @return null to allow the normal parser message flow to continue, <tt>""</tt> to suppress the
-     *         parser message entirely, or a non-empty string to replace the default parser message.
+     * @see ParserMessageProcessor#replaceParserMessage(Entity, String)
      */
     private String fireProcessingParserMessage(Entity e, String action) {
         String msg = null;

@@ -113,6 +113,10 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         }
     }
 
+    public void postAction(String action, Entity e, boolean actionHandled) {
+        // empty
+    }
+
     public void turn() {
         Meterman.ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
     }

@@ -1,9 +1,11 @@
 package com.illcode.meterman.event;
 
 import com.illcode.meterman.Entity;
+import com.illcode.meterman.GameManager;
 
 /**
  * A GameActionListener is notified before and after the player chooses an action.
+ * @see GameManager#entityActionSelected(String)
  */
 public interface GameActionListener
 {
@@ -19,4 +21,14 @@ public interface GameActionListener
      *         processing; false to continue the processing chain.
      */
     boolean processAction(String action, Entity e, boolean beforeAction);
+
+    /**
+     * Called at the end of the action-processing chain regardless if the chain was interrupted
+     * (i.e. handled) by a listener or the entity.
+     * @param action action name
+     * @param e selected entity
+     * @param actionHandled true if the action was processed (by a listener or the entity returning
+     *          true) at any point in the chain, or false otherwise.
+     */
+    void postAction(String action, Entity e, boolean actionHandled);
 }

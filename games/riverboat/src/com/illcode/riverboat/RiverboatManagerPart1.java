@@ -46,17 +46,18 @@ class RiverboatManagerPart1 implements GameActionListener
     }
 
     public boolean processAction(String action, Entity e, boolean beforeAction) {
-        if (beforeAction) {
-            if (e == chest) {
-                if (action.equals(BasicActions.getUnlockAction())) {
-                    leaf.listName = "Funky Leaf";
-                    Meterman.gm.entityChanged(leaf);
-                } else if (action.equals(BasicActions.getLockAction())) {
-                    leaf.listName = "Normal Leaf";
-                    Meterman.gm.entityChanged(leaf);
-                }
+        return false;
+    }
+
+    public void postAction(String action, Entity e, boolean actionHandled) {
+        if (e == chest) {
+            if (action.equals(BasicActions.getUnlockAction())) {
+                leaf.listName = "Funky Leaf";
+                Meterman.gm.entityChanged(leaf);
+            } else if (action.equals(BasicActions.getLockAction())) {
+                leaf.listName = "Normal Leaf";
+                Meterman.gm.entityChanged(leaf);
             }
         }
-        return false;
     }
 }
