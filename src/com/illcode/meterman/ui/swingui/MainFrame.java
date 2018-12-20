@@ -1,7 +1,6 @@
 package com.illcode.meterman.ui.swingui;
 
 import com.illcode.meterman.*;
-import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
@@ -426,7 +425,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         ui.clearText();
         ui.setObjectName("(nothing selected)");
         ui.setObjectText("");
-        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
+        ui.setFrameImage(UIConstants.DEFAULT_FRAME_IMAGE);
 
         initGame:  // make the user keep selecting choices until a game is
         do {       // successfully started or loaded

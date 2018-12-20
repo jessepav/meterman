@@ -29,6 +29,13 @@ public final class UIConstants
     /** The number of exit buttons in the UI */
     public static final int NUM_EXIT_BUTTONS = 12;
 
+    /** Parameter to {@link #setFrameImage} to show the default frame image. */
+    public static final String DEFAULT_FRAME_IMAGE = "default";
+
+    /** Parameter to {@link #setFrameImage}, {@link #setEntityImage},
+     *  or {@link #showImageDialog} to show no image. */
+    public static final String NO_IMAGE = "empty";
+
     private static final String[] BUTTON_NAMES =
         {"NW", "N", "NE", "X1",
          "W", "MID", "E", "X2",

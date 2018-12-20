@@ -2,7 +2,6 @@ package com.illcode.meterman.impl;
 
 import com.eclipsesource.json.*;
 import com.illcode.meterman.*;
-import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import java.util.*;
@@ -180,7 +179,7 @@ public class WorldBuilder
             e.indefiniteArticle = getJsonString(o.get("indefiniteArticle"), null);
             e.listName = getJsonString(o.get("listName"), null);
             e.description = getJsonString(o.get("description"));
-            e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
+            e.imageName = jsonValueAsString(o.get("imageName"), UIConstants.NO_IMAGE);
             JsonValue v = o.get("attributes");
             if (v != null) {
                 for (JsonValue attrVal : v.asArray().values()) {

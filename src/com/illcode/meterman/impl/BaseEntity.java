@@ -4,6 +4,7 @@ import com.illcode.meterman.Entity;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
 import com.illcode.meterman.ui.MetermanUI;
+import com.illcode.meterman.ui.UIConstants;
 
 import java.util.*;
 
@@ -43,7 +44,7 @@ public class BaseEntity implements Entity
         description = "(description)";
         attributes = new BitSet(64);
         properties = new HashMap<>();
-        imageName = MetermanUI.NO_IMAGE;
+        imageName = UIConstants.NO_IMAGE;
     }
 
     public boolean checkAttribute(int attribute) {

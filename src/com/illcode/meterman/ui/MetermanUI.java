@@ -13,13 +13,6 @@ import java.util.List;
  */
 public interface MetermanUI
 {
-    /** Parameter to {@link #setFrameImage(String)} to show the default frame image. */
-    public static final String DEFAULT_FRAME_IMAGE = "default";
-
-    /** Parameter to {@link #setFrameImage(String)} or {@link #setEntityImage(String)} to
-     *  show no image. */
-    public static final String NO_IMAGE = "empty";
-
     /**
      * Initializes the UI.
      */

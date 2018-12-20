@@ -2,6 +2,7 @@ package com.illcode.meterman.ui.swingui;
 
 import javax.swing.*;
 
+import com.illcode.meterman.ui.MetermanUI;
 import com.jformdesigner.model.FormModel;
 import com.jformdesigner.runtime.FormCreator;
 import com.jformdesigner.runtime.FormLoader;
@@ -51,6 +52,10 @@ public class ImageDialog implements ActionListener
         }
     }
 
+    /**
+     * Show the ImageDialog. If 'image' == null, no image is displayed.
+     * @see MetermanUI#showImageDialog(String, String, int, String, String)
+     */
     void show(String header, BufferedImage image, String text, String buttonLabel) {
         headerLabel.setText(header);
         imageIcon.setImage(image == null ? emptyImage : image);

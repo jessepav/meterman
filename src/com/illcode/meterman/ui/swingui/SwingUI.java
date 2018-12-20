@@ -56,8 +56,8 @@ public class SwingUI implements MetermanUI
         setStatusLabel(UIConstants.RIGHT_LABEL, "");
 
         defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForSystemAsset("default-frame-image.png"));
-        currentFrameImage = NO_IMAGE;
-        currentEntityImage = NO_IMAGE;
+        currentFrameImage = UIConstants.NO_IMAGE;
+        currentEntityImage = UIConstants.NO_IMAGE;
     }
 
     public void dispose() {
@@ -126,8 +126,9 @@ public class SwingUI implements MetermanUI
 
     public void unloadAllImages() {
         mainFrame.setFrameImage(null);
-        currentFrameImage = NO_IMAGE;
+        currentFrameImage = UIConstants.NO_IMAGE;
         mainFrame.setEntityImage(null);
+        currentEntityImage = UIConstants.NO_IMAGE;
         for (BufferedImage img : imageMap.values())
             img.flush();
         imageMap.clear();
@@ -138,9 +139,9 @@ public class SwingUI implements MetermanUI
             return;
         currentFrameImage = imageName;
         BufferedImage img;
-        if (imageName == DEFAULT_FRAME_IMAGE)
+        if (imageName == UIConstants.DEFAULT_FRAME_IMAGE)
             img = defaultFrameImage;
-        else if (imageName == NO_IMAGE)
+        else if (imageName == UIConstants.NO_IMAGE)
             img = null;
         else
             img = imageMap.get(imageName);
@@ -156,7 +157,7 @@ public class SwingUI implements MetermanUI
             return;
         currentEntityImage = imageName;
         BufferedImage img;
-        if (imageName == NO_IMAGE)
+        if (imageName == UIConstants.NO_IMAGE)
             img = null;
         else
             img = imageMap.get(imageName);
@@ -326,7 +327,7 @@ public class SwingUI implements MetermanUI
     }
 
     public void showImageDialog(String header, String imageName, int scale, String text, String buttonLabel) {
-        BufferedImage image = imageMap.get(imageName);
+        BufferedImage image = imageName == UIConstants.NO_IMAGE ? null : imageMap.get(imageName);
         if (image != null && scale > 1)
             image = GuiUtils.getScaledImage(image, scale);
         imageDialog.show(header, image, text, buttonLabel);

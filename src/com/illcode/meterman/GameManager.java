@@ -1,7 +1,6 @@
 package com.illcode.meterman;
 
 import com.illcode.meterman.event.*;
-import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import java.io.InputStream;
@@ -104,7 +103,7 @@ public final class GameManager
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
-        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
+        ui.setFrameImage(UIConstants.DEFAULT_FRAME_IMAGE);
         game.start(true);
         getCurrentRoom().entered(null);
         performLook();
@@ -143,7 +142,7 @@ public final class GameManager
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
-        ui.setFrameImage(MetermanUI.DEFAULT_FRAME_IMAGE);
+        ui.setFrameImage(UIConstants.DEFAULT_FRAME_IMAGE);
         game.start(false);
     }
 
@@ -572,7 +571,7 @@ public final class GameManager
             ui.clearActions();
             ui.setObjectName("(nothing selected)");
             ui.setObjectText("");
-            ui.setEntityImage(MetermanUI.NO_IMAGE);
+            ui.setEntityImage(UIConstants.NO_IMAGE);
         }
     }
 
