@@ -66,7 +66,6 @@ The Riverboat on the River Orange.
 [chest]
 
 {
-    "id" : "chest",
     "name" : "Doughty Chest",
     "indefiniteArticle" : "a",
     "listName" : "Chest",
@@ -80,7 +79,6 @@ The Riverboat on the River Orange.
 [shelf]
 
 {
-    "id" : "shelf",
     "name" : "IKEA Bookshelf",
     "indefiniteArticle" : "an",
     "listName" : "Bookshelf",
@@ -102,7 +100,6 @@ The Riverboat on the River Orange.
 [ten-ton-rock]
 
 {
-    "id" : "ten-ton-rock",
     "name" : "Ten Ton Rock",
     "description" : "A surprisingly small rock, for its ten-ton weight."
 }

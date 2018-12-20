@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The attribute constants used with the Entity and Room attribute methods
+ * The system attribute constants used with the Entity and Room attribute methods
  */
 public final class Attributes
 {
@@ -80,10 +80,10 @@ public final class Attributes
      */
     public static String roomAttributeToString(int attribute) {
         switch (attribute) {
-        case DARK:
-            return "dark";
         case VISITED:
             return "visited";
+        case DARK:
+            return "dark";
         default:
             return "unknown";
         }
@@ -133,5 +133,4 @@ public final class Attributes
             return -1;
         }
     }
-
 }

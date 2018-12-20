@@ -161,13 +161,15 @@ public class WorldBuilder
         }
      * }</pre>
      * <tt>id</tt> is optional; if not present, the name of the passage will be used.<br/>
-     * <tt>indefiniteArticle</tt> is optional.
-     * <tt>listName</tt> is optional, and if not present, the value of <tt>name</tt> will be used.<br/>
+     * <tt>indefiniteArticle</tt> is optional.<br/>
+     * <tt>listName</tt> is optional. If blank (null) <tt>BaseEntity</tt>
+     *      defaults to using the value of <tt>name</tt>.<br/>
+     * <tt>imageName</tt> is optional.<br/>
      * <tt>attributes</tt> is optional.
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
-     * @see #getAttributeVal(String)
+     * @see #getEntityAttributeVal(String)
      */
     public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
         String json = bundle.getPassage(passageName);
@@ -175,16 +177,14 @@ public class WorldBuilder
             JsonObject o = Json.parse(json).asObject();
             e.id = getJsonString(o.get("id"), passageName);
             e.name = getJsonString(o.get("name"));
-            JsonValue v = o.get("indefiniteArticle");
-            if (v != null)
-                e.indefiniteArticle = getJsonString(v, null);
-            e.listName = getJsonString(o.get("listName"), e.name);
+            e.indefiniteArticle = getJsonString(o.get("indefiniteArticle"), null);
+            e.listName = getJsonString(o.get("listName"), null);
             e.description = getJsonString(o.get("description"));
             e.imageName = jsonValueAsString(o.get("imageName"), MetermanUI.NO_IMAGE);
-            v = o.get("attributes");
+            JsonValue v = o.get("attributes");
             if (v != null) {
                 for (JsonValue attrVal : v.asArray().values()) {
-                    int attr = getAttributeVal(attrVal.asString());
+                    int attr = getEntityAttributeVal(attrVal.asString());
                     if (attr != -1)
                         e.setAttribute(attr);
                 }
@@ -483,25 +483,30 @@ public class WorldBuilder
            "attributes" : ["dark", "visited"]
        }
      * }</pre>
-     * <tt>exitName</tt> is optional, and if not present the value of <tt>name</tt> will be used.<br/>
+     * <tt>id</tt> is optional; if not present, the name of the passage will be used.<br/>
+     * <tt>exitName</tt> is optional. If blank (null) <tt>BaseRoom</tt>
+     *      defaults to using the value of <tt>name</tt>.<br/>
      * <tt>attributes</tt> is optional.
      * @param r BaseRoom into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
-     * @see Attributes#stringToRoomAttribute(java.lang.String)
+     * @see #getRoomAttributeVal(String)
      */
     public JsonObject readRoomDataFromBundle(BaseRoom r, String passageName) {
         String json = bundle.getPassage(passageName);
         try {
             JsonObject o = Json.parse(json).asObject();
-            r.id = getJsonString(o.get("id"));
+            r.id = getJsonString(o.get("id"), passageName);
             r.name = getJsonString(o.get("name"));
-            r.exitName = getJsonString(o.get("exitName"), r.name);
+            r.exitName = getJsonString(o.get("exitName"), null);
             r.description = getJsonString(o.get("description"));
             JsonValue v = o.get("attributes");
             if (v != null) {
-                for (JsonValue attrVal : v.asArray().values())
-                    r.setAttribute(Attributes.stringToRoomAttribute(attrVal.asString()));
+                for (JsonValue attrVal : v.asArray().values()) {
+                    int attr = getRoomAttributeVal(attrVal.asString());
+                    if (attr != -1)
+                        r.setAttribute(attr);
+                }
             }
             return o;
         } catch (ParseException|UnsupportedOperationException ex) {
@@ -905,16 +910,29 @@ public class WorldBuilder
     // entity and room types, and attribute values that are needed.
 
     /**
-     * Return the integer attribute value that corresponds to a given string.
+     * Return the integer Entity attribute value that corresponds to a given string.
      * For instance, "takeable" corresponds to {@link Attributes#TAKEABLE}.
      * <p/>
      * Subclasses of WorldBuilder should override this method (chaining up to the superclass implementation)
-     * to provide new attributes.
-     * @param attrStr string representation of an attribute
+     * to provide new entity attributes.
+     * @param attrStr string representation of an entity attribute
      * @return attribute value, or -1 if the string has no corresponding attribute
      */
-    protected int getAttributeVal(String attrStr) {
+    protected int getEntityAttributeVal(String attrStr) {
         return Attributes.stringToEntityAttribute(attrStr);
+    }
+
+    /**
+     * Return the integer Room attribute value that corresponds to a given string.
+     * For instance, "visited" corresponds to {@link Attributes#VISITED}.
+     * <p/>
+     * Subclasses of WorldBuilder should override this method (chaining up to the superclass implementation)
+     * to provide new room attributes.
+     * @param attrStr string representation of a room attribute
+     * @return attribute value, or -1 if the string has no corresponding attribute
+     */
+    protected int getRoomAttributeVal(String attrStr) {
+        return Attributes.stringToRoomAttribute(attrStr);
     }
 
     /**

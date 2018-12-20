@@ -39,7 +39,7 @@ public class BaseEntity implements Entity
         id = "(id)";
         name = "(name)";
         indefiniteArticle = null;
-        listName = "(list name)";
+        listName = null;
         description = "(description)";
         attributes = new BitSet(64);
         properties = new HashMap<>();
@@ -75,7 +75,7 @@ public class BaseEntity implements Entity
     }
 
     public String getListName() {
-        return listName;
+        return listName != null ? listName : name;
     }
 
     public String getDescription() {

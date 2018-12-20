@@ -34,7 +34,7 @@ public class BaseRoom implements Room
     public void init() {
         id = "(id)";
         name = "(name)";
-        exitName = "(exit name)";
+        exitName = null;
         description = "(description)";
         attributes = new BitSet(64);
         exits = new Room[UIConstants.NUM_EXIT_BUTTONS];
@@ -68,7 +68,7 @@ public class BaseRoom implements Room
     }
 
     public String getExitName() {
-        return exitName;
+        return exitName != null ? exitName : name;
     }
 
     public String getDescription() {
