@@ -1,5 +1,6 @@
 .idea
-assets
+assets\meterman
+assets-src\meterman
 config
 doc
 forms
