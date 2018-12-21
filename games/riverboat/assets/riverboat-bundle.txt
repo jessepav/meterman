@@ -51,9 +51,13 @@ The Riverboat on the River Orange.
 {
     "id" : "hillock",
     "name" : "Hillock",
-    "description" : "A grassy hillock is the last bastion of the East Sward \
-                     before it slopes down to the River Orange."
+    "description" : "[[hillock-description]]"
 }
+
+[ hillock-description (flowed) ]
+
+A grassy hillock is the last bastion of the East Sward
+before it slopes down to the River Orange.
 
 [game-room]
 
