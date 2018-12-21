@@ -172,7 +172,7 @@ public class WorldBuilder
      * <p/>
      * The JSON accepted by this method differs from the standard in one respect: if a line in
      * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
-     * to the next line. In this way we can have multi-line JSON strings.
+     * to the next line (with leading whitespace removed). In this way we can have multi-line JSON strings.
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -284,7 +284,7 @@ public class WorldBuilder
      * }</pre>
      * The JSON accepted by this method differs from the standard in one respect: if a line in
      * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
-     * to the next line. In this way we can have multi-line JSON strings.
+     * to the next line (with leading whitespace removed). In this way we can have multi-line JSON strings.
      * @param passageName name of the passage under which the JSON data is to be found
      * @return topic map
      */
@@ -500,7 +500,7 @@ public class WorldBuilder
      * <p/>
      * The JSON accepted by this method differs from the standard in one respect: if a line in
      * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
-     * to the next line. In this way we can have multi-line JSON strings.
+     * to the next line (with leading whitespace removed). In this way we can have multi-line JSON strings.
      * @param r BaseRoom into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
