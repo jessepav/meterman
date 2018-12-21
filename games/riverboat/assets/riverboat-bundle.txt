@@ -51,7 +51,8 @@ The Riverboat on the River Orange.
 {
     "id" : "hillock",
     "name" : "Hillock",
-    "description" : "A grassy hillock is the last bastion of the East Sward before it slopes down to the River Orange."
+    "description" : "A grassy hillock is the last bastion of the East Sward \
+                     before it slopes down to the River Orange."
 }
 
 [game-room]
@@ -60,7 +61,9 @@ The Riverboat on the River Orange.
     "id" : "game-room",
     "name" : "Awesome Game Room",
     "exitName" : "Game Room",
-    "description" : "A boss game room has been built in a little cave. To the south is a grassy hillock."
+    "description" : \
+        "A boss game room has been built in a little cave. \
+         To the south is a grassy hillock."
 }
 
 [chest]

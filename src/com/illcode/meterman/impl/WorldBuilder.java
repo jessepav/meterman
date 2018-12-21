@@ -6,6 +6,7 @@ import com.illcode.meterman.ui.UIConstants;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import static com.illcode.meterman.Utils.logger;
 
@@ -38,6 +39,9 @@ public class WorldBuilder
 
     // For use with retrieveMultiTextOrDefault()
     protected String[] retrievedMultiStrings;
+
+    private static Pattern escapedNewlinesPattern;  // see foldEscapedNewlines()
+
 
     // Zero-arg constructor for deserialization
     public WorldBuilder() {
@@ -165,13 +169,17 @@ public class WorldBuilder
      *      defaults to using the value of <tt>name</tt>.<br/>
      * <tt>imageName</tt> is optional.<br/>
      * <tt>attributes</tt> is optional.
+     * <p/>
+     * The JSON accepted by this method differs from the standard in one respect: if a line in
+     * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
+     * to the next line. In this way we can have multi-line JSON strings.
      * @param e BaseEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
      * @see #getEntityAttributeVal(String)
      */
     public JsonObject readEntityDataFromBundle(BaseEntity e, String passageName) {
-        String json = bundle.getPassage(passageName);
+        String json = foldEscapedNewlines(bundle.getPassage(passageName));
         try {
             JsonObject o = Json.parse(json).asObject();
             e.id = getJsonString(o.get("id"), passageName);
@@ -274,12 +282,15 @@ public class WorldBuilder
             }
         }
      * }</pre>
+     * The JSON accepted by this method differs from the standard in one respect: if a line in
+     * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
+     * to the next line. In this way we can have multi-line JSON strings.
      * @param passageName name of the passage under which the JSON data is to be found
      * @return topic map
      */
     public Map<String,TalkTopic> loadTopicMap(String passageName) {
         Map<String,TalkTopic> topicMap = new HashMap<>();
-        String json = bundle.getPassage(passageName);
+        String json = foldEscapedNewlines(bundle.getPassage(passageName));
         try {
             JsonObject topicMapObj = Json.parse(json).asObject();
             // On the first pass we just gather up the keys, labels, and text, and put
@@ -486,13 +497,17 @@ public class WorldBuilder
      * <tt>exitName</tt> is optional. If blank (null) <tt>BaseRoom</tt>
      *      defaults to using the value of <tt>name</tt>.<br/>
      * <tt>attributes</tt> is optional.
+     * <p/>
+     * The JSON accepted by this method differs from the standard in one respect: if a line in
+     * the input string ends with a backslash, <tt>'\'</tt>, it will be joined
+     * to the next line. In this way we can have multi-line JSON strings.
      * @param r BaseRoom into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
      * @see #getRoomAttributeVal(String)
      */
     public JsonObject readRoomDataFromBundle(BaseRoom r, String passageName) {
-        String json = bundle.getPassage(passageName);
+        String json = foldEscapedNewlines(bundle.getPassage(passageName));
         try {
             JsonObject o = Json.parse(json).asObject();
             r.id = getJsonString(o.get("id"), passageName);
@@ -976,6 +991,18 @@ public class WorldBuilder
             loadRoom(passageName);
             break;
         }
+    }
+
+    /**
+     * If a line in the input string ends with a backslash, <tt>'\'</tt>, it will be joined
+     * to the next line. In this way we can have multi-line JSON strings.
+     * @param s input text
+     * @return text with escaped newlines folded
+     */
+    protected String foldEscapedNewlines(String s) {
+        if (escapedNewlinesPattern == null)
+            escapedNewlinesPattern = Pattern.compile("\\\\\\n\\s*");
+        return escapedNewlinesPattern.matcher(s).replaceAll("");
     }
 
     /**
