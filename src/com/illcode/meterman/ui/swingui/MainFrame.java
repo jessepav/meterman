@@ -39,6 +39,7 @@ class MainFrame implements ActionListener, ListSelectionListener
     private SwingUI ui;
 
     JFrame frame;
+    JMenu gameMenu, settingsMenu, helpMenu;
     JMenuItem newMenuItem, saveMenuItem, saveAsMenuItem, loadMenuItem, undoMenuItem,
         quitMenuItem, aboutMenuItem, webSiteMenuItem, onlineManualMenuItem, scrollbackMenuItem;
     JCheckBoxMenuItem alwaysLookCheckBoxMenuItem, musicCheckBoxMenuItem, soundCheckBoxMenuItem,
@@ -71,6 +72,9 @@ class MainFrame implements ActionListener, ListSelectionListener
             FormCreator cr = new FormCreator(formModel);
 
             frame = (JFrame) cr.createWindow(null);
+            gameMenu = cr.getMenu("gameMenu");
+            settingsMenu = cr.getMenu("settingsMenu");
+            helpMenu = cr.getMenu("helpMenu");
             newMenuItem = cr.getMenuItem("newMenuItem");
             saveMenuItem = cr.getMenuItem("saveMenuItem");
             saveAsMenuItem = cr.getMenuItem("saveAsMenuItem");

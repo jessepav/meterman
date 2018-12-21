@@ -6,12 +6,14 @@ import com.illcode.meterman.Utils;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,63 +32,85 @@ public class SwingUI implements MetermanUI
 
     private List<Entity> roomEntities, inventoryEntities;
 
-    private boolean realized;  // true once the UI has been made visible on the EDT
-
     private Map<String,BufferedImage> imageMap;
     private BufferedImage defaultFrameImage;
     private String currentFrameImage, currentEntityImage;
 
     int maxBufferSize;
 
-    public void init() {
-        GuiUtils.initGraphics();
-
+    public SwingUI() {
         roomEntities = new ArrayList<>();
         inventoryEntities = new ArrayList<>();
         imageMap = new HashMap<>();
-        mainFrame = new MainFrame(this);
-        textDialog = new TextDialog(mainFrame.frame);
-        promptDialog = new PromptDialog(mainFrame.frame);
-        listDialog = new ListDialog(mainFrame.frame);
-        imageDialog = new ImageDialog(mainFrame.frame);
-        selectItemDialog = new SelectItemDialog(mainFrame.frame);
+    }
 
-        setStatusLabel(UIConstants.LEFT_LABEL, "");
-        setStatusLabel(UIConstants.CENTER_LABEL, "");
-        setStatusLabel(UIConstants.RIGHT_LABEL, "");
+    public void init() {
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    try {
+                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                    } catch (Exception ex) {
+                        Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
+                    }
+                    // This prevents JComboBox from firing an ActionEvent every time the selection
+                    // changes when using keyboard navigation.
+                    UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
 
-        defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForSystemAsset("default-frame-image.png"));
-        currentFrameImage = UIConstants.NO_IMAGE;
-        currentEntityImage = UIConstants.NO_IMAGE;
+                    GuiUtils.initGraphics();
+
+                    mainFrame = new MainFrame(SwingUI.this);
+                    textDialog = new TextDialog(mainFrame.frame);
+                    promptDialog = new PromptDialog(mainFrame.frame);
+                    listDialog = new ListDialog(mainFrame.frame);
+                    imageDialog = new ImageDialog(mainFrame.frame);
+                    selectItemDialog = new SelectItemDialog(mainFrame.frame);
+
+                    setStatusLabel(UIConstants.LEFT_LABEL, "");
+                    setStatusLabel(UIConstants.CENTER_LABEL, "");
+                    setStatusLabel(UIConstants.RIGHT_LABEL, "");
+
+                    defaultFrameImage = GuiUtils.loadBitmaskImage(Utils.pathForSystemAsset("default-frame-image.png"));
+                    currentFrameImage = UIConstants.NO_IMAGE;
+                    currentEntityImage = UIConstants.NO_IMAGE;
+                }
+            });
+        } catch (InterruptedException | InvocationTargetException e) {
+            Utils.logger.log(Level.WARNING, "SwingUI.init()", e);
+        }
     }
 
     public void dispose() {
-        unloadAllImages();
-        defaultFrameImage.flush();
-        defaultFrameImage = null;
-        selectItemDialog.dispose();
-        imageDialog.dispose();
-        listDialog.dispose();
-        promptDialog.dispose();
-        textDialog.dispose();
-        mainFrame.dispose();
+        Runnable doRun = new Runnable() {
+            public void run() {
+                unloadAllImages();
+                defaultFrameImage.flush();
+                defaultFrameImage = null;
+                selectItemDialog.dispose();
+                imageDialog.dispose();
+                listDialog.dispose();
+                promptDialog.dispose();
+                textDialog.dispose();
+                mainFrame.dispose();
+            }
+        };
+        if (SwingUtilities.isEventDispatchThread()) {
+            doRun.run();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(doRun);
+            } catch (InterruptedException | InvocationTargetException e) {
+                Utils.logger.log(Level.WARNING, "SwingUI.dispose()", e);
+            }
+        }
     }
 
     public boolean run() {
         maxBufferSize = Utils.intPref("max-text-buffer-size", 50000);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                } catch (Exception ex) {
-                    Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
-                }
-                // This prevents JComboBox from firing an ActionEvent every time the selection
-                // changes when using keyboard navigation.
-                UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
                 setGameName(null);
                 mainFrame.setVisible(true);
-                realized = true;
                 mainFrame.startup();
             }
         });
