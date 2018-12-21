@@ -115,7 +115,6 @@ public class CloakDelegate extends EntityDelegateAdapter implements RoomDelegate
         if (e == message) {
             gm.undoCheckpoint();
             // I use putSubstitution() and getPassageSplit() here just to show their operation.
-            Meterman.sound.loadSound("endgame-sfx", Utils.pathForGameAsset("endgame-sfx.wav"));
             Meterman.sound.playSound("endgame-sfx", 1.0);
             bundle.putSubstitution("wonlost",
                 bundle.getPassageSplit("win-lose", '|')[state.numDarkBarActions < 3 ? 0 : 1]);

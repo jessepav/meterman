@@ -179,6 +179,20 @@ second, even the periphery of your vision starts to go dark.
     "worn" : ["cloak"]
 }
 
+[ resources ]
+
+{
+    "images" : {
+        "cloak" : "cloak.png",
+        "phantom-frame-image" : "phantom-frame-image.png"
+    },
+    "music" : {
+        "intro-music" : "intro-music.ogg"
+    },
+    "sounds" : {
+        "endgame-sfx" : "endgame-sfx.wav"
+    }
+}
 
 [ no-go-patio (flowed) ]
 

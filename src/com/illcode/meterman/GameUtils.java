@@ -1,12 +1,20 @@
 package com.illcode.meterman;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.ParseException;
 import com.illcode.meterman.ui.MetermanUI;
 import static com.illcode.meterman.Attributes.*;
+import static com.illcode.meterman.Utils.logger;
 
+import com.illcode.meterman.ui.SoundManager;
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 
 /**
@@ -201,5 +209,57 @@ public final class GameUtils
     public static void getCurrentTakeableEntities(List<Entity> takeables) {
         filterByAttribute(Meterman.gm.getCurrentRoom().getRoomEntities(), TAKEABLE, true, takeables);
         filterByAttribute(Meterman.gm.getPlayer().inventory, TAKEABLE, true, takeables);
+    }
+
+    /**
+     * Reads a JSON resource definition in this format:
+     * <pre>{@code
+     * {
+     *     "sounds" : {
+     *         "soundName1" : "sound-asset-path1",
+     *         "soundName2" : "sound-asset-path2",
+     *         ...
+     *     },
+     *     "music" : {
+     *         "musicName1" : "music-asset-path1",
+     *         "musicName2" : "music-asset-path2",
+     *         ...
+     *     },
+     *     "images" : {
+     *         "imageName1" : "image-asset-path1",
+     *         "imageName2" : "image-asset-path2",
+     *         ...
+     *     }
+     * }
+     * }</pre>
+     * and loads the listed sounds and images via {@link SoundManager#loadSound(String, Path)},
+     * {@link SoundManager#loadMusic(String, Path)}, and {@link MetermanUI#loadImage(String, Path)},
+     * respectively.
+     * <p/>
+     * Normally, you would call this in {@link Game#init()}, if the resources are global, or {@link Game#start(boolean)},
+     * if the resources are specific to a particular map section or segment of the game.
+     * @param json JSON resource definition
+     */
+    public static void loadResources(String json) {
+        try {
+            JsonObject o = Json.parse(json).asObject();
+            JsonValue v = o.get("sounds");
+            if (v != null) {
+                for (JsonObject.Member m : v.asObject())
+                    Meterman.sound.loadSound(m.getName(), Utils.pathForGameAsset(m.getValue().asString()));
+            }
+            v = o.get("music");
+            if (v != null) {
+                for (JsonObject.Member m : v.asObject())
+                    Meterman.sound.loadMusic(m.getName(), Utils.pathForGameAsset(m.getValue().asString()));
+            }
+            v = o.get("images");
+            if (v != null) {
+                for (JsonObject.Member m : v.asObject())
+                    Meterman.ui.loadImage(m.getName(), Utils.pathForGameAsset(m.getValue().asString()));
+            }
+        } catch (ParseException | UnsupportedOperationException ex) {
+            logger.log(Level.WARNING, "JSON error, GameUtils.loadResources()", ex);
+        }
     }
 }

@@ -21,8 +21,6 @@ public class CloakGame implements Game
         Utils.installActionNameTranslations(Utils.pathForGameAsset("cloak-action-translations.json"));
         bundle = TextBundle.loadBundle(Utils.pathForGameAsset("cloak-bundle.txt"));
         Meterman.setGameBundle(bundle);  // which also sets the bundle's parent to the system bundle
-        Meterman.ui.loadImage("cloak", Utils.pathForGameAsset("cloak.png"));
-        Meterman.ui.loadImage("phantom-frame-image", Utils.pathForGameAsset("phantom-frame-image.png"));
     }
 
     public void about() {
@@ -63,11 +61,10 @@ public class CloakGame implements Game
     }
 
     public void start(boolean newGame) {
+        GameUtils.loadResources(bundle.getPassage("resources"));
         Meterman.ui.setFrameImage("phantom-frame-image");
-        if (newGame) {
-            Meterman.sound.loadMusic("intro-music", Utils.pathForGameAsset("intro-music.ogg"));
+        if (newGame)
             Meterman.sound.playMusic("intro-music", false, 1.0);
-        }
     }
 
     public void dispose() {
