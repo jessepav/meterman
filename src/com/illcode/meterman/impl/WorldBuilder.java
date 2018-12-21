@@ -165,7 +165,7 @@ public class WorldBuilder
      * }</pre>
      * <tt>id</tt> is optional; if not present, the name of the passage will be used.<br/>
      * <tt>indefiniteArticle</tt> is optional.<br/>
-     * <tt>listName</tt> is optional. If blank (null) <tt>BaseEntity</tt>
+     * <tt>listName</tt> is optional. If omitted (null) <tt>BaseEntity</tt>
      *      defaults to using the value of <tt>name</tt>.<br/>
      * <tt>imageName</tt> is optional.<br/>
      * <tt>attributes</tt> is optional.
@@ -494,7 +494,7 @@ public class WorldBuilder
        }
      * }</pre>
      * <tt>id</tt> is optional; if not present, the name of the passage will be used.<br/>
-     * <tt>exitName</tt> is optional. If blank (null) <tt>BaseRoom</tt>
+     * <tt>exitName</tt> is optional. If omitted (null) <tt>BaseRoom</tt>
      *      defaults to using the value of <tt>name</tt>.<br/>
      * <tt>attributes</tt> is optional.
      * <p/>

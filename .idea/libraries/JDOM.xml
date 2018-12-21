@@ -7,6 +7,8 @@
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../Common/docjars/jdom-2.0.6-javadoc.jar!/" />
     </JAVADOC>
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Common/srcjars/jdom-2.0.6-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
