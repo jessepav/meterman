@@ -29,6 +29,7 @@ public class SwingUI implements MetermanUI
     ListDialog listDialog;
     ImageDialog imageDialog;
     SelectItemDialog selectItemDialog;
+    WaitDialog waitDialog;
 
     private List<Entity> roomEntities, inventoryEntities;
 
@@ -65,6 +66,7 @@ public class SwingUI implements MetermanUI
                     listDialog = new ListDialog(mainFrame.frame);
                     imageDialog = new ImageDialog(mainFrame.frame);
                     selectItemDialog = new SelectItemDialog(mainFrame.frame);
+                    waitDialog = new WaitDialog(mainFrame.frame);
 
                     setStatusLabel(UIConstants.LEFT_LABEL, "");
                     setStatusLabel(UIConstants.CENTER_LABEL, "");
@@ -86,6 +88,7 @@ public class SwingUI implements MetermanUI
                 unloadAllImages();
                 defaultFrameImage.flush();
                 defaultFrameImage = null;
+                waitDialog.dispose();
                 selectItemDialog.dispose();
                 imageDialog.dispose();
                 listDialog.dispose();
@@ -355,6 +358,14 @@ public class SwingUI implements MetermanUI
         if (image != null && scale > 1)
             image = GuiUtils.getScaledImage(image, scale);
         imageDialog.show(header, image, text, buttonLabel);
+    }
+
+    public void showWaitDialog(String message) {
+        waitDialog.show(message);
+    }
+
+    public void hideWaitDialog() {
+        waitDialog.hide();
     }
 
     /** Called by MainFrame when an entity is selected from the room list. We translate

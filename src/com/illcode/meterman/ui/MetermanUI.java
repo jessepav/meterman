@@ -270,4 +270,16 @@ public interface MetermanUI
      * @param buttonLabel label of the button used to dismiss dialog
      */
     void showImageDialog(String header, String imageName, int scale, String text, String buttonLabel);
+
+    /**
+     * Displays an always-on-top dialog with a message, that stays visible until {@link #hideWaitDialog() hidden}. It is
+     * intended to inform the user when a potentially long-running operation is taking place.
+     * @param message message to show
+     */
+    void showWaitDialog(String message);
+
+    /**
+     * Hides the dialog previously shown by {@link #showWaitDialog(String)}.
+     */
+    void hideWaitDialog();
 }

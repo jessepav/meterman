@@ -5,6 +5,7 @@ import com.illcode.meterman.ui.UIConstants;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.illcode.meterman.Meterman.sound;
@@ -89,21 +90,23 @@ public final class GameManager
     public void newGame(Game game) {
         closeGame();
         this.game = game;
-        ui.setGameName(game.getName());
-        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getName()));
+        String gameName = game.getName();
+        ui.showWaitDialog("Starting " + gameName + "...");
+        ui.setGameName(gameName);
+        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(gameName));
         ui.clearText();
         game.init();
         worldState = game.getInitialWorldState();
         player = worldState.player;
         worldData = worldState.worldData;
         ensurePlayerInventoryConsistent();
-
         // We store our listener lists in the worldState so that they're persisted
         storeListenerListsInWorldData();
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
         ui.setFrameImage(UIConstants.DEFAULT_FRAME_IMAGE);
+        ui.hideWaitDialog();
         game.start(true);
         getCurrentRoom().entered(null);
         performLook();
@@ -132,17 +135,19 @@ public final class GameManager
         closeGame();
         this.worldState = worldState;
         game = GamesList.getGame(worldState.gameName);
-        ui.setGameName(game.getName());
-        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(game.getName()));
+        String gameName = game.getName();
+        ui.showWaitDialog("Loading " + gameName + "...");
+        ui.setGameName(gameName);
+        Utils.setGameAssetsPath(GamesList.getGameAssetsPath(gameName));
         game.init();
         player = worldState.player;
         worldData = worldState.worldData;
-
         restoreListenerListsFromWorldData();
         refreshRoomUI();
         refreshInventoryUI();
         entitySelected(null);
         ui.setFrameImage(UIConstants.DEFAULT_FRAME_IMAGE);
+        ui.hideWaitDialog();
         game.start(false);
     }
 
