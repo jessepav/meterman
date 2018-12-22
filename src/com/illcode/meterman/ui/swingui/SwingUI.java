@@ -6,10 +6,10 @@ import com.illcode.meterman.Utils;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.image.BufferedImage;
@@ -51,7 +51,8 @@ public class SwingUI implements MetermanUI
                 public void run() {
                     try {
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                    } catch (Exception ex) {
+                    } catch (ClassNotFoundException|UnsupportedLookAndFeelException|
+                             InstantiationException|IllegalAccessException|ClassCastException ex) {
                         Utils.logger.log(Level.WARNING, "UIManager.setLookAndFeel()", ex);
                     }
                     // This prevents JComboBox from firing an ActionEvent every time the selection
