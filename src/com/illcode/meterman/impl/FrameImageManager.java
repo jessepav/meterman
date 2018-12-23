@@ -2,6 +2,7 @@ package com.illcode.meterman.impl;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
 import com.illcode.meterman.Meterman;
 import com.illcode.meterman.Room;
@@ -14,6 +15,13 @@ import java.util.logging.Level;
 
 import static com.illcode.meterman.Utils.logger;
 
+/**
+ * FrameImageManager maintains a mapping from {@link BaseRoom#id BaseRoom IDs} to image names,
+ * and when the player moves rooms it will set the UI frame image accordingly.
+ * <p/>
+ * Particularly, with {@link #loadFromJson}, the entire setup of setting frame images can be
+ * kept in one JSON object in a text bundle.
+ */
 public class FrameImageManager implements PlayerMovementListener
 {
     private static final String FRAME_IMAGE_MANAGER_KEY = "com.illcode.meterman.impl.FrameImageManager";
@@ -45,38 +53,57 @@ public class FrameImageManager implements PlayerMovementListener
         Meterman.gm.removePlayerMovementListener(this);
     }
 
-    public void setDefaultImageName(String defaultImageName) {
-        this.defaultImageName = defaultImageName;
+
+    /**
+     * Set the image name associated with a given BaseRoom ID.
+     * @param roomId BaseRoom id. If equal to <tt>"default"</tt>, set the default image name that will be
+     *          used when the player moves to a room that doesn't have an explicitly entry in our map.
+     * @param imageName image name. If equal to <tt>"default"</tt>, the value of {@link UIConstants#DEFAULT_FRAME_IMAGE}
+     *          will be used.
+     */
+    public void setRoomImageName(String roomId, String imageName) {
+        if (imageName.equals("default"))
+            imageName = UIConstants.DEFAULT_FRAME_IMAGE;
+        if (roomId.equals("default"))
+            defaultImageName = imageName;
+        else
+            roomImageMap.put(roomId, imageName);
     }
 
-    public void setRoomImage(String roomId, String imageName) {
-        roomImageMap.put(roomId, imageName);
-    }
-
-    public String getRoomImage(String roomId) {
+    /** Get the image name associated with a given room ID. If the room doesn't have an entry
+     *  in the FrameImageManager's map, it will return the <tt>"default"</tt> image name. */
+    public String getRoomImageName(String roomId) {
         String name = roomImageMap.get(roomId);
         return name != null ? name : defaultImageName;
     }
 
+    /** Remove <tt>roomId</tt> from our image map. */
+    public void removeRoomImageName(String roomId) {
+        roomImageMap.remove(roomId);
+    }
+
+    /** Clear all {@code roomId->imageName} entries. The default image name is left unchanged. */
     public void clear() {
         roomImageMap.clear();
     }
 
+    /** Return the {@code roomId->imageName} map being used. */
     public Map<String,String> getRoomImageMap() {
         return roomImageMap;
     }
 
+    /** Set the {@code roomId->imageName} map used by this manager. */
     public void setRoomImageMap(Map<String,String> roomImageMap) {
         this.roomImageMap = roomImageMap;
     }
 
     /**
-     * Loads roomId->imageName mappings from JSON data of this form:
+     * Loads {@code roomId->imageName} mappings from JSON data of this form:
      * <pre>{@code
      * {
-     *     "default" : "defaultImageName",
-     *     "roomId1" : "imageName1",
-     *     "roomId2" : "imageName2",
+     *     "imageName1" : "default",
+     *     "imageName2" : "roomId1",
+     *     "imageName3" : ["roomId2", "roomId3", ...]
      *     ...
      * }
      * }</pre>
@@ -91,24 +118,26 @@ public class FrameImageManager implements PlayerMovementListener
         try {
             JsonObject o = Json.parse(json).asObject();
             for (JsonObject.Member m : o) {
-                String roomId = m.getName();
-                String imageName = m.getValue().asString();
-                if (roomId.equals("default"))
-                    defaultImageName = imageName;
-                else
-                    roomImageMap.put(roomId, imageName);
+                String imageName = m.getName();
+                JsonValue roomIdVal = m.getValue();
+                if (roomIdVal.isString()) {
+                    setRoomImageName(roomIdVal.asString(), imageName);
+                } else if (roomIdVal.isArray()) {
+                    for (JsonValue v : roomIdVal.asArray())
+                        setRoomImageName(v.asString(), imageName);
+                }
             }
         } catch (ParseException | UnsupportedOperationException ex) {
             logger.log(Level.WARNING, "JSON error, FrameImageManager.loadFromJson()", ex);
         }
-
     }
 
+    /** Implement PlayerMovementListener to change the frame image as the player moves rooms. */
     public boolean playerMove(Room from, Room to, boolean beforeMove) {
         if (beforeMove == false) {
             String imageName;
             if (to instanceof BaseRoom)
-                imageName = getRoomImage(((BaseRoom) to).id);
+                imageName = getRoomImageName(((BaseRoom) to).id);
             else
                 imageName = defaultImageName;
             Meterman.ui.setFrameImage(imageName);
