@@ -16,6 +16,8 @@ import static com.illcode.meterman.Utils.logger;
 
 public class FrameImageManager implements PlayerMovementListener
 {
+    private static final String FRAME_IMAGE_MANAGER_KEY = "com.illcode.meterman.impl.FrameImageManager";
+
     private Map<String,String> roomImageMap;
     private String defaultImageName;
 
@@ -27,7 +29,21 @@ public class FrameImageManager implements PlayerMovementListener
         defaultImageName = UIConstants.DEFAULT_FRAME_IMAGE;
     }
 
-    // TODO: write saveTo(), retrieveFrom(), register(), deregister()
+    public void saveTo(Map<String,Object> worldData) {
+        worldData.put(FRAME_IMAGE_MANAGER_KEY, this);
+    }
+
+    public static FrameImageManager retrieveFrom(Map<String,Object> worldData) {
+        return (FrameImageManager) worldData.get(FRAME_IMAGE_MANAGER_KEY);
+    }
+
+    public void register() {
+        Meterman.gm.addPlayerMovementListener(this);
+    }
+
+    public void deregister() {
+        Meterman.gm.removePlayerMovementListener(this);
+    }
 
     public void setDefaultImageName(String defaultImageName) {
         this.defaultImageName = defaultImageName;
