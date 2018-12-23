@@ -13,5 +13,7 @@ Add an option in the startup screen to download and install games from the web.
 
 "Special action manager", that allows the user to type an action name to send to the selected object.
 
+Add XML support to WorldBuilder (and remove JSON support?). Turn TextBundle into XML?
+
 == Things I won't do ==
 
