@@ -190,7 +190,7 @@ public class WorldBuilder
             e.imageName = jsonValueAsString(o.get("imageName"), UIConstants.NO_IMAGE);
             JsonValue v = o.get("attributes");
             if (v != null) {
-                for (JsonValue attrVal : v.asArray().values()) {
+                for (JsonValue attrVal : v.asArray()) {
                     int attr = getEntityAttributeVal(attrVal.asString());
                     if (attr != -1)
                         e.setAttribute(attr);
@@ -245,7 +245,7 @@ public class WorldBuilder
             te.topicMap = loadTopicMap(o.get("topicMap").asString());
             JsonValue v = o.get("currentTopics");
             if (v != null && v.isArray()) {
-                for (JsonValue topic : v.asArray().values())
+                for (JsonValue topic : v.asArray())
                     te.currentTopics.add(te.topicMap.get(topic.asString()));
             }
             return o;
@@ -312,7 +312,7 @@ public class WorldBuilder
                 if (v != null && v.isArray()) {
                     JsonArray arr = v.asArray();
                     tt.addTopics = new ArrayList<>(arr.size());
-                    for (JsonValue topicKey : arr.values())
+                    for (JsonValue topicKey : arr)
                         tt.addTopics.add(topicMap.get(topicKey.asString()));
                 } else {
                     tt.addTopics = Collections.emptyList();
@@ -321,7 +321,7 @@ public class WorldBuilder
                 if (v != null && v.isArray()) {
                     JsonArray arr = v.asArray();
                     tt.removeTopics = new ArrayList<>(arr.size());
-                    for (JsonValue topicKey : arr.values())
+                    for (JsonValue topicKey : arr)
                         tt.removeTopics.add(topicMap.get(topicKey.asString()));
                 } else {
                     tt.removeTopics = Collections.emptyList();
@@ -516,7 +516,7 @@ public class WorldBuilder
             r.description = getJsonString(o.get("description"));
             JsonValue v = o.get("attributes");
             if (v != null) {
-                for (JsonValue attrVal : v.asArray().values()) {
+                for (JsonValue attrVal : v.asArray()) {
                     int attr = getRoomAttributeVal(attrVal.asString());
                     if (attr != -1)
                         r.setAttribute(attr);
@@ -908,7 +908,7 @@ public class WorldBuilder
                 if (v != null) {
                     JsonArray arr = v.asArray();
                     List<Entity> l = playerLists.get(i);
-                    for (JsonValue itemVal : arr.values())
+                    for (JsonValue itemVal : arr)
                         l.add(getEntity(itemVal.asString()));
                 }
             }
