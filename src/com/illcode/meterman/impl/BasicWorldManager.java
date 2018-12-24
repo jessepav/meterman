@@ -40,7 +40,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
     }
 
     public void init() {
-
+        updateStatusBar = true;
     }
 
     /**
