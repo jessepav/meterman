@@ -114,7 +114,7 @@ new FormModel {
 					"background": sfield java.awt.Color darkGray
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label1"
-						"text": "In the Room:"
+						"text": "Room Contains:"
 						"foreground": #Color0
 					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 						"gridX": 1
@@ -334,7 +334,7 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 						"$columnSpecs": "default, relgap, max(default;49dlu), labelcompgap, max(default;49dlu), labelcompgap, max(default;49dlu)"
-						"$rowSpecs": "default, linegap, default, linegap, default"
+						"$rowSpecs": "max(default;15dlu), linegap, max(default;15dlu), linegap, max(default;15dlu)"
 					} ) {
 						name: "actionButtonPanel"
 						"opaque": false

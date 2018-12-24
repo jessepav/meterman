@@ -30,11 +30,11 @@ class MainFrame implements ActionListener, ListSelectionListener
     private static final KeyStroke DEBUG_KEYSTROKE =
         KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK | InputEvent.CTRL_MASK);
 
-    private static final KeyStroke SELECT_ROOM_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK);
-    private static final KeyStroke SELECT_INVENTORY_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK);
-    private static final KeyStroke SELECT_ACTION_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK);
-    private static final KeyStroke LOOK_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK);
-    private static final KeyStroke WAIT_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK);
+    private static final KeyStroke SELECT_ROOM_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_MASK);
+    private static final KeyStroke SELECT_INVENTORY_ENTITY_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_MASK);
+    private static final KeyStroke SELECT_ACTION_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_MASK);
+    private static final KeyStroke LOOK_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.SHIFT_MASK);
+    private static final KeyStroke WAIT_KEYSTROKE = KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_MASK);
 
     private SwingUI ui;
 
