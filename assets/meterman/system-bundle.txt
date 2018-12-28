@@ -108,3 +108,7 @@ What do you want to put ${inPrep} ${defName}?
 [ container-locked-message ]
 
 It is locked.
+
+[ max-inventory-reached ]
+
+You just can't tote any more items around with you.

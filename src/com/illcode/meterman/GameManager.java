@@ -620,12 +620,12 @@ public final class GameManager
      * Called when the player inventory changes in such a way that the UI needs to be refreshed.
      */
     private void refreshInventoryUI() {
-        HashSet<Entity> remainingItems = new HashSet<>(player.inventory);
+        LinkedList<Entity> remainingItems = new LinkedList<>(player.inventory);
         Entity savedSE = selectedEntity;
         ui.clearInventoryEntities();
         for (Entity item : player.equipped) {
-            if (remainingItems.remove(item))
-                ui.addInventoryEntity(item, "(e)");
+            ui.addInventoryEntity(item, "(e)");
+            remainingItems.remove(item);
         }
         for (Entity item : player.worn) {
             if (remainingItems.remove(item))

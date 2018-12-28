@@ -12,6 +12,7 @@ import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
 
 import static com.illcode.meterman.Meterman.gm;
+import static com.illcode.meterman.Meterman.ui;
 import static com.illcode.meterman.GameUtils.indefName;
 import static com.illcode.meterman.GameUtils.defName;
 import static com.illcode.meterman.Attributes.*;
@@ -33,14 +34,27 @@ import java.util.Map;
 public class BasicWorldManager implements GameActionListener, EntityActionsProcessor, TurnListener
 {
     public static final String BASIC_WORLD_MANAGER_KEY = "com.illcode.meterman.impl.BasicWorldManager";
+    public static final int DEFAULT_MAX_INVENTORY = 1024;
 
     private boolean updateStatusBar;
+    private int maxInventoryItems;
 
     public BasicWorldManager() {
     }
 
     public void init() {
         updateStatusBar = true;
+        maxInventoryItems = DEFAULT_MAX_INVENTORY;
+    }
+
+    /** Returns the maximum # of inventory items the player can carry. */
+    public int getMaxInventoryItems() {
+        return maxInventoryItems;
+    }
+
+    /** Sets the maximum # of inventory items the player can carry. */
+    public void setMaxInventoryItems(int maxInventoryItems) {
+        this.maxInventoryItems = maxInventoryItems;
     }
 
     /**
@@ -110,7 +124,10 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
             gm.moveEntity(e, e.getRoom());
             return true;
         } else if (action.equals(getTakeAction())) {
-            gm.takeEntity(e);
+            if (gm.getPlayer().inventory.size() < maxInventoryItems)
+                gm.takeEntity(e);
+            else
+                ui.appendTextLn(Meterman.getSystemBundle().getPassage("max-inventory-reached"));
             return true;
         } else if (action.equals(getTakeOffAction())) {
             gm.setWorn(e, false);
@@ -135,6 +152,6 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
 
     public void turn() {
         if (updateStatusBar)
-            Meterman.ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
+            ui.setStatusLabel(UIConstants.RIGHT_LABEL, "Turns: " + (gm.getNumTurns() + 1));
     }
 }
