@@ -37,19 +37,19 @@ Nothing much happens.
 
 A door stands here, perhaps forbiddingly.
 
-[ default-door-locked ]
+[ default-door-lockedMessage ]
 
 It is locked.
 
-[ default-door-unlocked ]
+[ default-door-unlockedMessage ]
 
 It is unlocked.
 
-[ default-door-nokey ]
+[ default-door-noKeyMessage ]
 
 You do not have the key.
 
-[ default-door-open ]
+[ default-door-openMessage ]
 
 It is open.
 

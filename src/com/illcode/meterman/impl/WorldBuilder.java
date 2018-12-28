@@ -382,6 +382,9 @@ public class WorldBuilder
      * <p/>
      * Since <tt>keyId</tt> will be looked up to resolve an actual Entity instance, the key must have
      * already been loaded prior to loading this door.
+     * <p/>
+     * "room #1" and "room #2" refer to the rooms connected via the door, either by setting them manually
+     * using {@link Door#setRooms} or with {@link #connectRoomsWithDoor}.
      * @param d Door into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -393,20 +396,24 @@ public class WorldBuilder
         try {
             retrieveMultiTextOrDefault(o, "descriptions", 2, "default-door-description");
             d.setDescriptions(retrievedMultiStrings[0], retrievedMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "lockedMessages", 2, "default-door-locked");
+            retrieveMultiTextOrDefault(o, "lockedMessages", 2, "default-door-lockedMessage");
             d.setLockedMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "unlockedMessages", 2, "default-door-unlocked");
+            retrieveMultiTextOrDefault(o, "unlockedMessages", 2, "default-door-unlockedMessage");
             d.setUnlockedMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-nokey");
+            retrieveMultiTextOrDefault(o, "noKeyMessages", 2, "default-door-noKeyMessage");
             d.setNoKeyMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
-            retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-open");
+            retrieveMultiTextOrDefault(o, "openMessages", 2, "default-door-openMessage");
             d.setOpenMessages(retrievedMultiStrings[0], retrievedMultiStrings[1]);
             JsonValue v = o.get("keyId");
-            if (v != null && !v.isNull()) {
-                d.setKey(getEntity(v.asString()));
-                v = o.get("locked");
-                if (v != null)
-                    d.setLocked(v.asBoolean());
+            if (v != null) {
+                if (v.isNull()) {
+                    d.setKey(null);
+                } else {
+                    d.setKey(getEntity(v.asString()));
+                    v = o.get("locked");
+                    if (v != null)
+                        d.setLocked(v.asBoolean());
+                }
             }
             v = o.get("open");
             if (v != null)
