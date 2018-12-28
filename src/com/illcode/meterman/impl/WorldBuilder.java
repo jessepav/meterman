@@ -447,10 +447,11 @@ public class WorldBuilder
      *      "outPrep" : preposition used when taking something out of the container,
      *      "keyId" : entity ID of the key needed to lock/unlock the container, or null for no key,
      *      "locked" : if key != null, then a boolean to indicate if the container is locked
-     *  }
-     * }</pre>
-     * Since <tt>keyId</tt> will be looked up to resolve an actual Entity instance, the key must have
-     * already been loaded prior to loading this container.
+     *  } }</pre>
+     * <tt>keyId</tt> is optional, though if it is present and not null, the key must have
+     * already been loaded prior to loading this container since <tt>keyId</tt> will be looked
+     * up to resolve an actual Entity instance.<br/>
+     * <tt>locked</tt> is optional.
      * @param c Container into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
@@ -463,11 +464,15 @@ public class WorldBuilder
             c.inPrep = getJsonString(o.get("inPrep"), "(in)");
             c.outPrep = getJsonString(o.get("outPrep"), "(out)");
             JsonValue v = o.get("keyId");
-            if (v != null && !v.isNull()) {
-                c.key = getEntity(v.asString());
-                v = o.get("locked");
-                if (v != null)
-                    c.locked = v.asBoolean();
+            if (v != null) {
+                if (v.isNull()) {
+                    c.key = null;
+                } else {
+                    c.key = getEntity(v.asString());
+                    v = o.get("locked");
+                    if (v != null)
+                        c.locked = v.asBoolean();
+                }
             }
             return o;
         } catch (UnsupportedOperationException ex) {
@@ -827,26 +832,35 @@ public class WorldBuilder
      * given in the defintion. A defintion entry looks like this:
      * <pre>{@code
      * [
-     *    [roomId1, pos1, roomId2, pos2],
-     *    [roomId1, pos1, roomId2],
-     *    [doorId, roomId1, pos1, roomId2, pos2],
+     *    {
+     *        "rooms" : ["roomId1", "roomId2"],
+     *        "positions" : ["pos1", "pos2"],
+     *        "exitLabels" : ["exitLabel1", "exitLabel2"],
+     *        "door" : "doorId"
+     *    },
      *    ...
-     * ]
-     * }</pre>
-     * The different lengths of arrays correspond to {@link #connectRooms(String, int, String, int)},
-     * {@link #connectRoomsOneWay(String, int, String)}, and
-     * {@link #connectRoomsWithDoor(String, String, int, String, int)},
-     * respectively.
-     * <p/>
-     * The "pos" parameters take one of these string values:
-     * <blockquote><tt>
-     *      "NW", "N", "NE", "X1",<br/>
-     *      "W", "MID", "E", "X2",<br/>
-     *      "SW", "S", "SE", "X3"
-     * </blockquote></tt>
+     * ]}</pre>
+     * <dl>
+     *     <dt><tt>rooms</tt></dt>
+     *     <dd>The IDs of the two rooms to connect.</dd>
+     *     <dt><tt>positions</tt></dt>
+     *     <dd>The exit positions in the first (required) and second (optional) room that lead to the other room.
+     *     If only one position is given, then the connection will be one-way (from the first to second room).
+     *     The "pos" parameters take one of these string values:
+     *     <blockquote><tt>
+     *          "NW", "N", "NE", "X1",<br/>
+     *          "W", "MID", "E", "X2",<br/>
+     *          "SW", "S", "SE", "X3"
+     *     </tt></blockquote></dd>
+     *     <dt><tt>exitLabels</tt></dt>
+     *     <dd>(optional) If present, will set the labels for the exits in each room.</dd>
+     *     <dt><tt>door</tt></dt>
+     *     <dd>(optional) If present, the rooms will be connected via a door. Note that rooms connected
+     *     with a door will ignore any <tt>exitLabels</tt> given.</dd>
+     * </dl>
      * No real input validation is performed, so write your JSON correctly!
      * <p/>
-     * All rooms referenced in the connection list must have already been loaded prior to
+     * All rooms and doors referenced in the connection list must have already been loaded prior to
      * calling this method.
      * @param passageName name of the passage under which the JSON definition is to be found
      */
@@ -854,30 +868,44 @@ public class WorldBuilder
         String json = bundle.getPassage(passageName);
         try {
             JsonArray connectionList = Json.parse(json).asArray();
-            for (JsonValue v : connectionList) {
-                JsonArray arr = v.asArray();
-                switch (arr.size()) {
-                case 4:
-                    String roomId1 = arr.get(0).asString();
-                    int pos1 = UIConstants.buttonTextToPosition(arr.get(1).asString());
-                    String roomId2 = arr.get(2).asString();
-                    int pos2 = UIConstants.buttonTextToPosition(arr.get(3).asString());
-                    connectRooms(roomId1, pos1, roomId2, pos2);
-                    break;
-                case 3:
-                    roomId1 = arr.get(0).asString();
-                    pos1 = UIConstants.buttonTextToPosition(arr.get(1).asString());
-                    roomId2 = arr.get(2).asString();
-                    connectRoomsOneWay(roomId1, pos1, roomId2);
-                    break;
-                case 5:
-                    String doorId = arr.get(0).asString();
-                    roomId1 = arr.get(1).asString();
-                    pos1 = UIConstants.buttonTextToPosition(arr.get(2).asString());
-                    roomId2 = arr.get(3).asString();
-                    pos2 = UIConstants.buttonTextToPosition(arr.get(4).asString());
-                    connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2);
-                    break;
+            for (JsonValue connectionVal : connectionList) {
+                String roomId1, roomId2;
+                int pos1 = -1, pos2 = -1;
+                String exitLabel1 = null, exitLabel2 = null;
+                String doorId = null;
+                boolean oneWay;
+
+                JsonObject connectionObj = connectionVal.asObject();
+                JsonValue v;
+                JsonArray arr;
+                arr = connectionObj.get("rooms").asArray();
+                roomId1 = arr.get(0).asString();
+                roomId2 = arr.get(1).asString();
+                arr = connectionObj.get("positions").asArray();
+                oneWay = arr.size() == 1;
+                pos1 = UIConstants.buttonTextToPosition(arr.get(0).asString());
+                if (!oneWay)
+                    pos2 = UIConstants.buttonTextToPosition(arr.get(1).asString());
+                v = connectionObj.get("exitLabels");
+                if (v != null) {
+                    arr = v.asArray();
+                    exitLabel1 = arr.get(0).asString();
+                    if (arr.size() == 2)
+                        exitLabel2 = arr.get(1).asString();
+                }
+                if (!oneWay) {
+                    v = connectionObj.get("door");
+                    if (v != null)
+                        doorId = v.asString();
+                }
+                // Now we do the actual connection.
+                if (oneWay) {
+                    connectRoomsOneWay(roomId1, pos1, exitLabel1, roomId2);
+                } else {
+                    if (doorId == null)
+                        connectRooms(roomId1, pos1, exitLabel1, roomId2, pos2, exitLabel2);
+                    else
+                        connectRoomsWithDoor(doorId, roomId1, pos1, roomId2, pos2);
                 }
             }
         } catch (ParseException|UnsupportedOperationException|IndexOutOfBoundsException ex) {

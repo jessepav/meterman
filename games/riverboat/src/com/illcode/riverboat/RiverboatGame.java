@@ -1,10 +1,7 @@
 package com.illcode.riverboat;
 
 import com.illcode.meterman.*;
-import com.illcode.meterman.impl.BaseEntity;
-import com.illcode.meterman.impl.BaseRoom;
-import com.illcode.meterman.impl.BasicWorldManager;
-import com.illcode.meterman.impl.WorldBuilder;
+import com.illcode.meterman.impl.*;
 
 import java.util.Map;
 
@@ -51,6 +48,12 @@ public class RiverboatGame implements Game
         bwm.register();
         bwm.saveTo(worldData);
 
+        FrameImageManager fim = new FrameImageManager();
+        fim.init();
+        fim.loadFromJson(bundle.getPassage("frame-images"));
+        fim.register();
+        fim.saveTo(worldData);
+
         RiverboatManagerPart1 rm1 = new RiverboatManagerPart1();
         rm1.init(wb, worldData);
         rm1.register();
@@ -64,6 +67,7 @@ public class RiverboatGame implements Game
     }
 
     public void start(boolean newGame) {
+        FrameImageManager.retrieveFrom(Meterman.gm.getWorldData()).update();
     }
 
     public void dispose() {

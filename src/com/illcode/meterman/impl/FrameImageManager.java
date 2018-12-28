@@ -132,16 +132,29 @@ public class FrameImageManager implements PlayerMovementListener
         }
     }
 
+    /**
+     * Sets the frame image based on the current player room.
+     * <p/>
+     * This method shouldn't be called until world-state has been properly set in the GameManager.
+     * A good place to use it is in {@code Game.start()}.
+     */
+    public void update() {
+        setImageForRoom(Meterman.gm.getCurrentRoom());
+    }
+
+    private void setImageForRoom(Room r) {
+        String imageName;
+        if (r instanceof BaseRoom)
+            imageName = getRoomImageName(((BaseRoom) r).id);
+        else
+            imageName = defaultImageName;
+        Meterman.ui.setFrameImage(imageName);
+    }
+
     /** Implement PlayerMovementListener to change the frame image as the player moves rooms. */
     public boolean playerMove(Room from, Room to, boolean beforeMove) {
-        if (beforeMove == false) {
-            String imageName;
-            if (to instanceof BaseRoom)
-                imageName = getRoomImageName(((BaseRoom) to).id);
-            else
-                imageName = defaultImageName;
-            Meterman.ui.setFrameImage(imageName);
-        }
+        if (beforeMove == false)
+            setImageForRoom(to);
         return false;
     }
 }

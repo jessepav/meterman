@@ -22,9 +22,9 @@ This is the Meterman implementation of the Cloak of Darkness specification
 [ room-connections ]
 
 [
-    ["foyer", "S", "bar", "N"],
-    ["foyer", "W", "cloakroom", "E"],
-    ["foyer", "N", "patio"]
+    { "rooms" : ["foyer", "bar"], "positions" : ["S", "N"] },
+    { "rooms" : ["foyer", "cloakroom"], "positions" : ["W", "E"] },
+    { "rooms" : ["foyer", "patio"], "positions" : ["N"] }
 ]
 
 [ entity-placements ]

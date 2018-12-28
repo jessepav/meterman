@@ -1,0 +1,4 @@
+2018-12-28
+- Added FrameImageManager.update()
+- Improved WorldBuilder handling of Container JSON
+- Changed JSON format used by WorldBuilder.loadRoomConnections()

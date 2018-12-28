@@ -16,7 +16,7 @@ import static com.illcode.meterman.impl.BasicActions.*;
  * contents. It supports being locked and opened with a key.
  * <p/>
  * Note that unlike Inform &amp; co., these containers do <em>not</em> propagate light, so if you
- * put your lamp in a chest or on a shelf, it will be dark.
+ * put your lamp in a chest or on a shelf, the room may go dark.
  */
 public class Container extends BaseEntity
 {

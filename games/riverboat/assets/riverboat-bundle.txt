@@ -8,6 +8,12 @@ This is the Riverboat game bundle.
 The Riverboat on the River Orange.
     Boat Away
 
+[ frame-images ]
+
+{
+
+}
+
 [ part1-rooms ]
 
 [
@@ -23,7 +29,7 @@ The Riverboat on the River Orange.
 [ part1-connections ]
 
 [
-    ["hillock", "N", "game-room", "S"]
+    { "rooms" : ["hillock", "game-room"], "positions" : ["N", "S"] }
 ]
 
 [ part1-entity-placements ]
