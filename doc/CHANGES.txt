@@ -4,3 +4,5 @@
 - Changed JSON format used by WorldBuilder.loadRoomConnections()
 (part 2)
 - Added maxInventoryItems to BasicWorldManager.
+(part 3)
+- Add BasicUtils and its endGame methods.

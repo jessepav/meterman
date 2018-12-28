@@ -211,6 +211,14 @@ public final class GameManager
         return game;
     }
 
+    public WorldState getWorldState() {
+        return worldState;
+    }
+
+    public Map<String,Object> getWorldData() {
+        return worldData;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -221,10 +229,6 @@ public final class GameManager
 
     public Entity getSelectedEntity() {
         return selectedEntity;
-    }
-
-    public Map<String,Object> getWorldData() {
-        return worldData;
     }
 
     public int getNumTurns() {

@@ -112,3 +112,12 @@ It is locked.
 [ max-inventory-reached ]
 
 You just can't tote any more items around with you.
+
+[ default-endgame-room ]
+
+{
+   "id" : "default-endgame-room",
+   "name" : "Timeout Room",
+   "description" : "This is the timeout room, where adventurers are sent when their games end.",
+   "attributes" : ["visited"]
+}
