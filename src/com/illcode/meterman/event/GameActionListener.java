@@ -28,7 +28,7 @@ public interface GameActionListener
      * @param action action name
      * @param e selected entity
      * @param actionHandled true if the action was processed (by a listener or the entity returning
-     *          true) at any point in the chain, or false otherwise.
+     * @return true to suppress the normal "Nothing much happened" message if actionHandled is false.
      */
-    void postAction(String action, Entity e, boolean actionHandled);
+    boolean postAction(String action, Entity e, boolean actionHandled);
 }

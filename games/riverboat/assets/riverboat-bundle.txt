@@ -123,5 +123,5 @@ before it slopes down to the River Orange.
     "id" : "leaf",
     "name" : "Leaf",
     "description" : "A rather ordinary maple leaf.",
-    "attributes" : ["takeable"]
+    "attributes" : ["takeable", "moveable"]
 }

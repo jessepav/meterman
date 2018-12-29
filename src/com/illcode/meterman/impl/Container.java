@@ -15,8 +15,10 @@ import static com.illcode.meterman.impl.BasicActions.*;
  * This class represents anything that can contain, support, or in a similar way hold a set of entities as
  * contents. It supports being locked and opened with a key.
  * <p/>
- * Note that unlike Inform &amp; co., these containers do <em>not</em> propagate light, so if you
- * put your lamp in a chest or on a shelf, the room may go dark.
+ * Thanks to special support in {@link DarkRoom}, unlocked containers in the room (as opposed to in the player's
+ * inventory) that contain light sources will propagate light, as it were, into the room. This only works
+ * one level deep--a light source in a container inside another container will not propagate light all the way
+ * into the room.
  */
 public class Container extends BaseEntity
 {

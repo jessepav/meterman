@@ -1,3 +1,8 @@
+2018-12-29
+- Add Attributes.MOVEABLE
+- Light sources inside unlocked containers will illuminate dark rooms.
+- GameActionListener.postAction() returns a boolean to indicate suppression of default !actionHandled message.
+
 2018-12-28
 - Added FrameImageManager.update()
 - Improved WorldBuilder handling of Container JSON

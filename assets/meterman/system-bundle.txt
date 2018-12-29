@@ -121,3 +121,11 @@ You just can't tote any more items around with you.
    "description" : "This is the timeout room, where adventurers are sent when their games end.",
    "attributes" : ["visited"]
 }
+
+[ push-action-no-effect ]
+
+Pushing ${defName} accompolished little.
+
+[ pull-action-no-effect ]
+
+Pulling ${defName} did not seem to do much.

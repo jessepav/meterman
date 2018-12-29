@@ -38,6 +38,9 @@ public final class Attributes
     /** This entity has a proper name and doesn't require the definite article. */
     public static final int PROPER_NAME = 5;
 
+    /** The entity is not quite small enough to be carried, but can be pushed or pulled along the floor. */
+    public static final int MOVEABLE = 6;
+
     //
     // Room attributes
     //
@@ -68,6 +71,8 @@ public final class Attributes
             return "lightsource";
         case PROPER_NAME:
             return "proper-name";
+        case MOVEABLE:
+            return "moveable";
         default:
             return "unknown";
         }
@@ -111,6 +116,8 @@ public final class Attributes
             return LIGHTSOURCE;
         case "proper-name":
             return PROPER_NAME;
+        case "moveable":
+            return MOVEABLE;
         default:
             return -1;
         }

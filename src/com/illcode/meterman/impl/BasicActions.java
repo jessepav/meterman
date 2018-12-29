@@ -30,6 +30,14 @@ public final class BasicActions
         return Utils.getActionName("Take Off");
     }
 
+    public static String getPullAction() {
+        return Utils.getActionName("Pull");
+    }
+
+    public static String getPushAction() {
+        return Utils.getActionName("Push");
+    }
+
     public static String getOpenAction() {
         return Utils.getActionName("Open");
     }

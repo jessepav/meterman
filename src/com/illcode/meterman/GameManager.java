@@ -5,7 +5,6 @@ import com.illcode.meterman.ui.UIConstants;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.util.*;
 
 import static com.illcode.meterman.Meterman.sound;
@@ -506,9 +505,9 @@ public final class GameManager
                 break actionChain;
             if (actionHandled = fireGameAction(action, selectedEntity, false))
                 break actionChain;
-            ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         }
-        firePostGameAction(action, selectedEntity, actionHandled);
+        if (firePostAction(action, selectedEntity, actionHandled) == false && !actionHandled)
+            ui.appendTextLn(Meterman.getSystemBundle().getPassage("action-not-handled"));
         nextTurn();
     }
 
@@ -725,11 +724,15 @@ public final class GameManager
 
     /**
      * Notifies all registered <tt>GameActionListener</tt>S that action-processing has finished.
+     * @return true if any GameActionListener indicated that the default "Nothing much happened" message
+     *          should be suppressed.
      * @see GameActionListener#postAction(String, Entity, boolean)
      */
-    private void firePostGameAction(String action, Entity e, boolean actionHandled) {
+    private boolean firePostAction(String action, Entity e, boolean actionHandled) {
+        boolean suppressMessage = false;
         for (GameActionListener l : gameActionListeners)
-            l.postAction(action, e, actionHandled);
+            suppressMessage = l.postAction(action, e, actionHandled) || suppressMessage;
+        return suppressMessage;
     }
 
     /**

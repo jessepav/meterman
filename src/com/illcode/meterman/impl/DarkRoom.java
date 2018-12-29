@@ -67,9 +67,18 @@ public class DarkRoom extends BaseRoom implements TurnListener
         if (!checkAttribute(DARK))
             return false;
         // Otherwise we'll see if something in the room or that the player is carrying is a light source
-        for (Entity e : entities)
-            if (e.checkAttribute(LIGHTSOURCE))
+        for (Entity e : entities) {
+            if (e.checkAttribute(LIGHTSOURCE)) {
                 return false;
+            } else if (e instanceof Container) {
+                // See Container class javadoc
+                Container c = (Container) e;
+                if (!c.isLocked())
+                    for (Entity ce : c.getContents())
+                        if (ce.checkAttribute(LIGHTSOURCE))
+                            return false;
+            }
+        }
         for (Entity e : Meterman.gm.getPlayer().inventory)
             if (e.checkAttribute(LIGHTSOURCE))
                 return false;

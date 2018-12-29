@@ -49,7 +49,7 @@ class RiverboatManagerPart1 implements GameActionListener
         return false;
     }
 
-    public void postAction(String action, Entity e, boolean actionHandled) {
+    public boolean postAction(String action, Entity e, boolean actionHandled) {
         if (e == chest) {
             if (action.equals(BasicActions.getUnlockAction())) {
                 leaf.listName = "Funky Leaf";
@@ -59,5 +59,6 @@ class RiverboatManagerPart1 implements GameActionListener
                 Meterman.gm.entityChanged(leaf);
             }
         }
+        return false;
     }
 }

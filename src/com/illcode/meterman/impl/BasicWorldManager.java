@@ -1,12 +1,8 @@
 package com.illcode.meterman.impl;
 
-import com.illcode.meterman.Entity;
-import com.illcode.meterman.Game;
-import com.illcode.meterman.Meterman;
-import com.illcode.meterman.Utils;
+import com.illcode.meterman.*;
 import com.illcode.meterman.event.EntityActionsProcessor;
 import com.illcode.meterman.event.GameActionListener;
-import com.illcode.meterman.event.ParserMessageProcessor;
 import com.illcode.meterman.event.TurnListener;
 import com.illcode.meterman.ui.MetermanUI;
 import com.illcode.meterman.ui.UIConstants;
@@ -95,6 +91,7 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         gm.removeTurnListener(this);
     }
 
+    // implement EntityActionsProcessor
     public void processEntityActions(Entity e, List<String> actions) {
         if (e.checkAttribute(TAKEABLE)) {
             if (gm.isInInventory(e))
@@ -114,8 +111,14 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
             else
                 actions.add(getEquipAction());
         }
+        if (e.checkAttribute(MOVEABLE)) {
+            actions.add(getPullAction());
+            actions.add(getPushAction());
+        }
     }
 
+
+    //region -- implement GameActionListener --
     public boolean processAction(String action, Entity e, boolean beforeAction) {
         if (beforeAction)
             return false;  // we don't want to block the entity from handling the action itself
@@ -146,9 +149,23 @@ public class BasicWorldManager implements GameActionListener, EntityActionsProce
         }
     }
 
-    public void postAction(String action, Entity e, boolean actionHandled) {
-        // empty
+    public boolean postAction(String action, Entity e, boolean actionHandled) {
+        boolean suppressMessage = false;
+        if (!actionHandled) {
+            TextBundle b = Meterman.getSystemBundle();
+            b.putSubstitution("defName", GameUtils.defName(e));
+            if (action.equals(getPushAction())) {
+                ui.appendTextLn(b.getPassage("push-action-no-effect"));
+                suppressMessage = true;
+            } else if (action.equals(getPullAction())) {
+                ui.appendTextLn(b.getPassage("pull-action-no-effect"));
+                suppressMessage = true;
+            }
+            b.removeSubstitution("defName");
+        }
+        return suppressMessage;
     }
+    //endregion GameActionListener
 
     public void turn() {
         if (updateStatusBar)
