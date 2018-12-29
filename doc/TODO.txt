@@ -1,7 +1,6 @@
+Write the Riverboat, modifying the engine as needed to enable required features.
 
 == And then... ==
-
-Write the Riverboat, modifying the engine as needed to enable required features.
 
 == Things to do in the future ==
 
@@ -17,3 +16,9 @@ Add XML support to WorldBuilder (and remove JSON support?). Turn TextBundle into
 
 == Things I won't do ==
 
+Add a "transcript" and "replay" feature that operates in terms of UI events: exit-selected,
+entity-selected, entity-action-performed. In the absence of randomness, this should bring a game to the
+same state at which the transcript ends. It will be saved in a serialized format. New menu in UI,
+Transcript; menu items "Begin recording...", "End Recording", "Replay", "View". Ay...this won't work,
+because of "extra-UI" actions like TalkingEntities, or custom list- or prompt-dialogs, etc. Nevermind.
+Maybe we could just make, eventually, a WorldState viewer/editor.
