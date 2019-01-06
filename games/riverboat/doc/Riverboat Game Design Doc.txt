@@ -1,0 +1,43 @@
+                    =================
+                      THE RIVERBOAT
+                    =================
+
+
+                       ** PART 1 **
+
+= Game Start Dialog Text =
+
+    The vast, dry ridgelands and spirit-possessed hollows are behind you now--indeed, you are come to the tree-lined banks of the River Effluvious, where the last departing riverboat prepares to cast off her moorings and ride out the approaching flood. With this great and rare confluence of moons, surely much will be swept away, though much may yet abide.
+
+
+= Knoll =
+
+Description:
+
+    In the twilight you are standing on a knoll overlooking the grassy slope of land that descends to the water's edge. The woods are thick here, though to the east you can see a [if Malibu light is on]glade illumined with a faint blue glow [otherwise] darkened glade [endif] and north, upon the deep channel of the Effluvious, you see globes of light that mark the deck of the riverboat. A staunch iron grating lies on the ground, secured by a padlock; through its bars you see a flickering ruddy light.
+
+= Glade =
+
+Entities:
+
+    Crocodile, Honeybee Hive, Fat Bird, Ants, Tree, Stick, Grating Key, Malibu Light
+
+Interaction Synopsis:
+
+    Climb the tree; on the way down you'll break a branch and get the stick. Use the stick to get honey, honey to get ants, ants to feed bird, the bird leaves, dropping the grating key, the crocodile leaves, the ants finish gathering, the bees sleep for the night, and then the clearing is silent. The player can take the Malibu light, but without electricity it goes dark.
+
+Room Description:
+
+    A small glade opens in the verge of the woods. Beyond the tops of the enclosing hemlock and cypress you see the first faded yellow stars of the night sky. A lone tree stands in the center of the clearing, apart from its fellows.
+        
+    [if the animals are still here] In the clearing are a crocodile with his tail wrapped around the stem of a blue Malibu light; he's staring hungrily up at a fat white bird perched in the branches of an evergreen, who in turn is staring hungrily at a troop of ants gathering ant-treasures on the ground. Just in the shadows at the edge of the woods you can make out a honeybee hive, whose occupants, at their work, suffuse the glade with a faint murmur. [otherwise] The glade is empty now, the only sound a distant sigh of wind through the high branches of the trees. [endif]
+
+= Tree Top =
+
+Description:
+
+    From your perch atop the tree in the clearing you can see the dark, undulating waters of the Effluvious and the march of the woods along its banks. In the distance to the east the air grows hazy, as though from wind-blown dust in the Ridgelands. Below you, through the branches, shines the faint blue of the Malibu light, like a beacon.
+
+# --------------------------------------------------------------------------- #
+# :autoIndent=simple:maxLineLen=80:mode=text:noTabs=true:tabSize=4:wrap=soft: #
+# --------------------------------------------------------------------------- #
