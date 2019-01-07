@@ -220,17 +220,16 @@ public class WorldBuilder
      * Loads a talking entity from a bundle passage that contains JSON data in the format of this example:
      * <pre>{@code
     {
-        "id" : "underground-hermit",
-        "name" : "Bearded Hermit",
-        "listName" : "Hermit",
-        "description" : "[[underground-hermit-description]]",
-        "imageName" : "underground-hermit",
-        "dialogText" : "The hermit waits for you to say something.",
-        "noTopicsText" : "The hermit has nothing to say to you.",
-        "topicMap" : "underground-hermit-topics",
-        "currentTopics" : ["hello"]
+        <standard entity members>
+        "dialogText" : "The text to display at the top of the topic-list dialog.",
+        "noTopicsText" : "The message to print if there are no current topics.",
+        "topicMap" : "name-of-topic-map-passage",
+        "currentTopics" : ["topic1", "topic2", ...]
     }
      * }</pre>
+     * <tt>dialogText</tt> and <tt>noTopicsText</tt> are optional&mdash;if omitted, defaults
+     * from the system bundle will be used. <tt>currentTopics</tt> can be omitted, but then
+     * we'll have nothing to talk about.
      * @param te TalkingEntity into which to store the data
      * @param passageName name of the bundle passage
      * @return the JsonObject parsed from <tt>passageName</tt>
