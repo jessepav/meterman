@@ -227,7 +227,7 @@ public class WorldBuilder
         "currentTopics" : ["topic1", "topic2", ...]
     }
      * }</pre>
-     * <tt>dialogText</tt> and <tt>noTopicsText</tt> are optional&mdash;if omitted, defaults
+     * <tt>dialogText</tt> and <tt>noTopicsText</tt> are optional -- if omitted, defaults
      * from the system bundle will be used. <tt>currentTopics</tt> can be omitted, but then
      * we'll have nothing to talk about.
      * @param te TalkingEntity into which to store the data
@@ -327,7 +327,7 @@ public class WorldBuilder
                 }
             }
         } catch (ParseException|UnsupportedOperationException ex) {
-            logger.log(Level.WARNING, "JSON error, loadDoor()", ex);
+            logger.log(Level.WARNING, "JSON error, loadTopicMap()", ex);
         }
         return topicMap;
     }
