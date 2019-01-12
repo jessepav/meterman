@@ -32,7 +32,7 @@ public class RiverboatGame implements Game
         wb.saveTo(worldData);
 
         // Install the state object for part 1
-        RiverboatStatePart1 statePart1 = new RiverboatStatePart1();
+        RiverboatState statePart1 = new RiverboatState();
         statePart1.init();
         statePart1.saveTo(worldData);
 

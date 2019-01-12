@@ -9,8 +9,6 @@ import com.illcode.meterman.ui.UIConstants;
 
 import static com.illcode.meterman.Meterman.gm;
 import static com.illcode.meterman.Meterman.ui;
-import static com.illcode.meterman.GameUtils.indefName;
-import static com.illcode.meterman.GameUtils.defName;
 import static com.illcode.meterman.Attributes.*;
 import static com.illcode.meterman.impl.BasicActions.*;
 
