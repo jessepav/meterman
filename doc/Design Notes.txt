@@ -135,6 +135,18 @@ When I finish setting up the game "plugin" system, I'll migrate the current game
 Meterman source tree into a separate directory (and separate IDEA module), so I can work on
 each one individually.
 
+== BeanShell Scripted Delegates ==
+
+I can have BeanShell scripts that implement the EntityDelegate and RoomDelegate interfaces
+without actually implementing all the methods. After eval'ing the script, I can use the
+NameSpace#getMethodNames method to find which delegate methods are actually implemented,
+and only call the proxy for those methods, using the default BaseEntity implementations
+for the others.
+
+WorldBuilder additional methods: loadScriptedEntity, loadScriptedRoom (we don't have the
+readScriptedXXXDataFromBundle methods because the whole point is to script the object
+without subclassing).
+
 
 ------------------------------------------------------------
 :maxLineLen=90:noTabs=true:
