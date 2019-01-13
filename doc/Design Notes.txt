@@ -147,6 +147,10 @@ WorldBuilder additional methods: loadScriptedEntity, loadScriptedRoom (we don't 
 readScriptedXXXDataFromBundle methods because the whole point is to script the object
 without subclassing).
 
+Scripted objects should *not* depend on any persistent state, but should only use the
+state in the "game global" object pulled from world-data, because they'll be persisted
+using a custom serializer that just reloads the script from which they were sourced.
+
 
 ------------------------------------------------------------
 :maxLineLen=90:noTabs=true:
