@@ -10,7 +10,11 @@ public class RiverboatState
 {
     public static final String RIVERBOAT_STATE_KEY = "RiverboatState";
 
+    // PART 1
+    public boolean animalsInGlade;  // are the animals still in the glade?
+    public boolean malibuLightOn;  // is the malibu light in the glade on?
     public boolean monsterSeen; // has the player encountered the monster in the dark?
+    public int monsterCounter;  // the # of turns the monster has remaining in this dimension (0 = no monster)
 
     public void init() {
         monsterSeen = false;
