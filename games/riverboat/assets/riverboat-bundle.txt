@@ -5,7 +5,10 @@ This is the Riverboat game bundle.
 [ about-riverboat ]
 
     Riverboat
-The Riverboat on the River Orange.
+The Riverboat on the River Effluvious.
+
+             Includes music and sound by Eric Matyas (www.soundimage.org)
+
     Boat Away
 
 [ frame-images ]
@@ -17,111 +20,30 @@ The Riverboat on the River Orange.
 [ part1-rooms ]
 
 [
-    "hillock", "game-room"
 ]
 
 [ part1-entities ]
 
 [
-    "iron-key", "chest:container", "ten-ton-rock", "leaf", "shelf:container"
 ]
 
 [ part1-connections ]
 
 [
-    { "rooms" : ["hillock", "game-room"], "positions" : ["N", "S"] }
 ]
 
 [ part1-entity-placements ]
 
 [
-    ["hillock", "chest", "leaf"],
-    ["game-room", "shelf"]
 ]
 
 [ part1-container-contents ]
 
 [
-    ["chest", "ten-ton-rock"]
 ]
 
 [ player-state ]
 
 {
-    "currentRoom" : "hillock",
-    "inventory" : ["iron-key"]
 }
 
-[ hillock ]
-
-{
-    "id" : "hillock",
-    "name" : "Hillock",
-    "description" : "[[hillock-description]]"
-}
-
-[ hillock-description (flowed) ]
-
-A grassy hillock is the last bastion of the East Sward
-before it slopes down to the River Orange.
-
-[game-room]
-
-{
-    "id" : "game-room",
-    "name" : "Awesome Game Room",
-    "exitName" : "Game Room",
-    "description" : \
-        "A boss game room has been built in a little cave. \
-         To the south is a grassy hillock."
-}
-
-[chest]
-
-{
-    "name" : "Doughty Chest",
-    "indefiniteArticle" : "a",
-    "listName" : "Chest",
-    "description" : "A fierce iron-chest that cannot be battered into submission.",
-    "inPrep" : "in",
-    "outPrep" : "from",
-    "keyId" : "iron-key",
-    "locked" : true
-}
-
-[shelf]
-
-{
-    "name" : "IKEA Bookshelf",
-    "indefiniteArticle" : "an",
-    "listName" : "Bookshelf",
-    "description" : "It's an IKEA bookshelf named Kvööörtil.",
-    "inPrep" : "on",
-    "outPrep" : "off of"
-}
-
-[iron-key]
-
-{
-    "id" : "iron-key",
-    "name" : "Iron Key",
-    "indefiniteArticle" : "an",
-    "description" : "This iron key is engraved with the blazion of the House of Goop.",
-    "attributes" : ["takeable"]
-}
-
-[ten-ton-rock]
-
-{
-    "name" : "Ten Ton Rock",
-    "description" : "A surprisingly small rock, for its ten-ton weight."
-}
-
-[leaf]
-
-{
-    "id" : "leaf",
-    "name" : "Leaf",
-    "description" : "A rather ordinary maple leaf.",
-    "attributes" : ["takeable", "moveable"]
-}

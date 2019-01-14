@@ -16,17 +16,12 @@ class RiverboatManagerPart1 implements GameActionListener
     private WorldBuilder worldBuilder;
     private Map<String,Object> worldData;
 
-    private BaseEntity leaf, chest;
-
     RiverboatManagerPart1() {
     }
 
     void init(WorldBuilder wb, Map<String,Object> worldData) {
         this.worldBuilder = wb;
         this.worldData = worldData;
-
-        leaf = wb.getEntity("leaf");
-        chest = wb.getEntity("chest");
     }
 
     void saveTo(Map<String,Object> worldData) {
@@ -50,15 +45,6 @@ class RiverboatManagerPart1 implements GameActionListener
     }
 
     public boolean postAction(String action, Entity e, boolean actionHandled) {
-        if (e == chest) {
-            if (action.equals(BasicActions.getUnlockAction())) {
-                leaf.listName = "Funky Leaf";
-                Meterman.gm.entityChanged(leaf);
-            } else if (action.equals(BasicActions.getLockAction())) {
-                leaf.listName = "Normal Leaf";
-                Meterman.gm.entityChanged(leaf);
-            }
-        }
         return false;
     }
 }
