@@ -91,8 +91,8 @@ public class TalkingEntity extends BaseEntity
                         currentTopics.add(topic);
                 for (TalkTopic topic : tt.removeTopics)
                     currentTopics.remove(topic);
-                lastTopicDiscussed = tt;
             }
+            lastTopicDiscussed = tt;
             return tt;
         }
     }

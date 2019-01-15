@@ -1,3 +1,6 @@
+2019-01-15
+- TalkingEntity: lastTopicDiscussed will be null if the user didn't discuss anything
+
 2018-12-29
 - Add Attributes.MOVEABLE
 - Light sources inside unlocked containers will illuminate dark rooms.
