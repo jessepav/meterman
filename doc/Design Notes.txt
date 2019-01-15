@@ -15,17 +15,6 @@ components without mucking with String world-data keys and type casts.
 "Winning" and "losing" can be implemented by creating special rooms that display appropriate messages and
 have no exits. Unless one wants to implement an afterlife, of course.
 
-To jump to later parts of a game during development, I don't need to have a "replay" feature or use
-compatible serialization for save data, but can write a routine that will set up the world state properly
-for the later part of the game, including listeners and such, and then teleport the player to the
-correct room. Such "god mode" routines can be invoked with a special keystroke that will pop up a prompt
-dialog, which then accepts different god mode commands.
-
-   A corollary to this: try to keep all state for the game in the "state objects" that were described
-   earlier (like RiverboatStatePart1) rather than distributed haphazardly among several classes -- in
-   this way we can define the state object appropriately and the game world will spring to life
-   consistently.
-
 I periodically entertain the idea of ripping out all the interface abstraction (and the possibility of
 porting Meterman to other interfaces) and just writing the game directly in Swing, making an artifact
 rather than a system, as it were. Borrowing the idea from Undertale of a single battle mechanic to
@@ -151,6 +140,36 @@ Scripted objects should *not* depend on any persistent state, but should only us
 state in the "game global" object pulled from world-data, because they'll be persisted
 using a custom serializer that just reloads the script from which they were sourced.
 
+== Transcripts/Replay/Jumping through Game ==
+
+- Transcripts & Replay -
+
+  Add a "transcript" and "replay" feature that operates in terms of UI events:
+  exit-selected, entity-selected, entity-action-performed. In the absence of randomness,
+  this should bring a game to the same state at which the transcript ends. It will be
+  saved in a serialized format. New menu in UI, Transcript; menu items "Begin
+  recording...", "End Recording", "Replay", "View". Ay...this won't work, because of
+  "extra-UI" actions like TalkingEntities, or custom list- or prompt-dialogs, etc.
+  Nevermind. Maybe we could just make, eventually, a WorldState viewer/editor.
+
+  Actually, this could work after all, since there are a limited no. of ways the game can
+  get user input: the main UI + dialogs. We could record the return value of each dialog
+  call and return it to the game code on each invocation, in order.
+
+- Manually Setting State -
+
+  To jump to later parts of a game during development, I don't need to have a "replay"
+  feature or use compatible serialization for save data, but can write a routine that will
+  set up the world state properly for the later part of the game, including listeners and
+  such, and then teleport the player to the correct room. Such "god mode" routines can be
+  invoked with a special keystroke that will pop up a prompt dialog, which then accepts
+  different god mode commands.
+
+  A corollary to this: try to keep all state for the game in the "state objects" that were
+  described earlier (like RiverboatStatePart1) rather than distributed haphazardly among
+  several classes -- in this way we can define the state object appropriately and the game
+  world will spring to life consistently.
+
 
 ------------------------------------------------------------
-:maxLineLen=90:noTabs=true:
+:maxLineLen=90:noTabs=true:indentSize=2:
