@@ -1,0 +1,28 @@
+                                METERMAN 2 NOTES
+
+I'm going to do some heavy revisions of the Meterman engine in preparation for writing Riverboat: I realized that to implement suitably interactive object behavior would require a lot of tortuous coupling of game logic in Java classes to multiple passages in a TextBundle, just to effect variable text for, say, a room description.
+
+And so, I need an intuitive way to put simple logic into the text itself. There are two main ways one can approach doing this:
+
+1. Inline control directives
+
+  This style is like Inform 7's "Text with variations" substitutions [I7-Text], where delimited control directives are intermixed into the text, and determine which portions are included based on a conditional expression over state variables. Come to think of it, this is the method of a host of templating systems, like JSP.
+  
+  To implement this in Meterman I'd perform simple parsing to find the conditional blocks, and then evaluate the conditions themselves using either BeanShell or a simple expression language like Apache JEXL [JEXL].
+
+2. Scripts that return text
+
+  This is the style of Inform 6 in that if a property is a routine (as opposed to a plain string), then all the text that it emits is concatenated into the return value of the routine.
+  
+  I'd implement this using BeanShell, with special routines with short names--perhaps emit() or out(), and passage()--that would add literal text or bundle passages to the string return value.
+
+
+                                == References ==
+
+[I7-Text]   http://inform7.com/learn/man/WI_5_6.html
+[JEXL]      http://commons.apache.org/jexl/
+
+# --------------------------------------------------------------------------- #
+# :autoIndent=simple:maxLineLen=80:mode=text:noTabs=true:tabSize=4:wrap=soft: #
+# :indentSize=2:                                                              #
+# --------------------------------------------------------------------------- #
