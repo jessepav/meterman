@@ -26,6 +26,14 @@ And so, I need an intuitive way to put simple logic into the text itself. There 
 
   In this style, passages are converted to scripts before being evaluated to yield a string. Segments of plain text are converted to emit() calls, and you can embed little "scriptlets" directly in the text to perform whatever logic you'd like.
 
+I think I'm going to go with the JSP style, and actually borrow its syntax for scriplets and expressions.
+
+  <%  %>  demarcates a scriptlet that will be included in the generated BeanShell script verbatim, and can be used to set variables, perform branching, etc.
+
+  <%= %>  demarcates an expression whose resulting value will be converted to a string and emitted inline.
+
+Anything outside of these delimiters is treated as plain text, and will be converted to calls to emit().
+
 == TextSource ==
 
 Nearly all instances of String in the current API should be replaced with a TextSource interface that can return a string. Its implementations:
