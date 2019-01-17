@@ -15,13 +15,6 @@ components without mucking with String world-data keys and type casts.
 "Winning" and "losing" can be implemented by creating special rooms that display appropriate messages and
 have no exits. Unless one wants to implement an afterlife, of course.
 
-I periodically entertain the idea of ripping out all the interface abstraction (and the possibility of
-porting Meterman to other interfaces) and just writing the game directly in Swing, making an artifact
-rather than a system, as it were. Borrowing the idea from Undertale of a single battle mechanic to
-represent challenges, I thought of having a "typing shooter" system where multicolored words would
-descend and you need to type them to shoot them from the air before they reach the bottom. With variable
-speeds and difficulties, this could be fun.
-
 == On the Engine and Games ==
 
 Given that I wrote Meterman inspired by the unified structure of mainframe Zork--which was
