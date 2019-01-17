@@ -1,6 +1,10 @@
                                 METERMAN 2 NOTES
 
-== TextBundles and Scripting ==
+== TextBundle Changes ==
+
+There will be only one game TextBundle, installed via Meterman.setGameBundle(). With this in place, game objects will store only bundle passage names, which will be sent back to the system via BundleSource objects (see below). This makes loading objects easier, and also allows changing object text even after they've been loaded. Instances of TextBundle no longer need to be passed around to anyone who needs them. The game bundle can chain to another bundle, to make organizing game text among multiple files possible.
+
+== Scripting ==
 
 I'm going to do some heavy revisions of the Meterman engine in preparation for writing Riverboat: I realized that to implement suitably interactive object behavior would require a lot of tortuous coupling of game logic in Java classes to multiple passages in a TextBundle, just to effect variable text for, say, a room description.
 
@@ -22,6 +26,16 @@ And so, I need an intuitive way to put simple logic into the text itself. There 
 
   In this style, passages are converted to scripts before being evaluated to yield a string. Segments of plain text are converted to emit() calls, and you can embed little "scriptlets" directly in the text to perform whatever logic you'd like.
 
+== TextSource ==
+
+Nearly all instances of String in the current API should be replaced with a TextSource interface that can return a string. Its implementations:
+
+  StringSource
+    Constructed with a String parameter, and simply passes back that string.
+    
+  BundleSource
+    Keeps a bundle passage name as state, and returns the respective passage text.
+
 == Automatically Imported/Bound Objects ==
 
 Regardless of which style of TextBundle scripting we end up choosing, there will be certain objects available in the namespace:
@@ -42,13 +56,13 @@ Regardless of which style of TextBundle scripting we end up choosing, there will
         the worldState's worldData map
 
   selectedEntity
-        currently selected Entity, or null if none
+        currently selected Entity, or null if none. During the processing of entity actions, this will necessarily be set.
 
   currentRoom
         current Room
 
   <state>
-        a "game global" state object set on the bundle itself. The name of the state object--and potentially multiple state objects--can be set by calling bundle methods.
+        a "game global" state object set on the bundle itself. The name of the state object--and potentially multiple state objects--can be set via bundle methods.
 
 Furthermore, there will be a variant of TextBundle.getPassage() that lets the caller add bindings to the scripting namespace for that particular call.
 
@@ -69,6 +83,6 @@ For certain battles, the appearance of letters could be synchronized to music th
 [JEXL]      http://commons.apache.org/jexl/
 
 # --------------------------------------------------------------------------- #
-# :autoIndent=simple:maxLineLen=80:mode=text:noTabs=true:tabSize=4:wrap=soft: #
+# :autoIndent=simple:maxLineLen=84:mode=text:noTabs=true:tabSize=4:wrap=soft: #
 # :indentSize=2:                                                              #
 # --------------------------------------------------------------------------- #
