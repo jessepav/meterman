@@ -4,6 +4,8 @@
 
 There will be only one game TextBundle, installed via Meterman.setGameBundle(). With this in place, game objects will store only bundle passage names, which will be sent back to the system via BundleSource objects (see below). This makes loading objects easier, and also allows changing object text even after they've been loaded. Instances of TextBundle no longer need to be passed around to anyone who needs them. The game bundle can chain to another bundle, to make organizing game text among multiple files possible.
 
+With the scripting features described below, we can remove the StrSubstitutor infrastructure and just use inline scripting expressions.
+
 == Scripting ==
 
 I'm going to do some heavy revisions of the Meterman engine in preparation for writing Riverboat: I realized that to implement suitably interactive object behavior would require a lot of tortuous coupling of game logic in Java classes to multiple passages in a TextBundle, just to effect variable text for, say, a room description.
@@ -26,6 +28,8 @@ And so, I need an intuitive way to put simple logic into the text itself. There 
 
   In this style, passages are converted to scripts before being evaluated to yield a string. Segments of plain text are converted to emit() calls, and you can embed little "scriptlets" directly in the text to perform whatever logic you'd like.
 
+- Conclusion -
+
 I think I'm going to go with the JSP style, and actually borrow its syntax for scriplets and expressions.
 
   <%  %>  demarcates a scriptlet that will be included in the generated BeanShell script verbatim, and can be used to set variables, perform branching, etc.
@@ -33,6 +37,8 @@ I think I'm going to go with the JSP style, and actually borrow its syntax for s
   <%= %>  demarcates an expression whose resulting value will be converted to a string and emitted inline.
 
 Anything outside of these delimiters is treated as plain text, and will be converted to calls to emit().
+
+If there are no script delimeters in the passage, then it's plain text and won't be converted to a script.
 
 == TextSource ==
 
