@@ -15,18 +15,18 @@ And so, I need an intuitive way to put simple logic into the text itself. There 
 1. Inline control directives
 
   This style is like Inform 7's "Text with variations" substitutions [I7-Text], where delimited control directives are intermixed into the text, and determine which portions are included based on a conditional expression over state variables.
-  
+
   To implement this in Meterman I'd perform simple parsing to find the conditional blocks, and then evaluate the conditions themselves using either BeanShell or a simple expression language like Apache JEXL [JEXL].
 
 2. Scripts that return text
 
-  This is the style of Inform 6 in that if a property is a routine (as opposed to a plain string), then all the text that it emits is concatenated into the return value of the routine.
-  
-  I'd implement this using BeanShell, with special routines with short names--perhaps emit() or out(), and passage()--that would add literal text or bundle passages to the string return value.
+  This is the style of Inform 6 in that if a property is a routine (as opposed to a plain string), then all the text that it outputs is concatenated into the return value of the routine.
+
+  I'd implement this using BeanShell, with special routines with short names--perhaps out() and passage()--that would add literal text or bundle passages to the string return value.
 
 3. JSP Style
 
-  In this style, passages are converted to scripts before being evaluated to yield a string. Segments of plain text are converted to emit() calls, and you can embed little "scriptlets" directly in the text to perform whatever logic you'd like.
+  In this style, passages are converted to scripts before being evaluated to yield a string. Segments of plain text are converted to out() calls, and you can embed little "scriptlets" directly in the text to perform whatever logic you'd like.
 
 - Conclusion -
 
@@ -34,11 +34,13 @@ I think I'm going to go with the JSP style, and actually borrow its syntax for s
 
   <%  %>  demarcates a scriptlet that will be included in the generated BeanShell script verbatim, and can be used to set variables, perform branching, etc.
 
-  <%= %>  demarcates an expression whose resulting value will be converted to a string and emitted inline.
+  <%= %>  demarcates an expression whose resulting value will be converted to a string and output inline.
 
-Anything outside of these delimiters is treated as plain text, and will be converted to calls to emit().
+Anything outside of these delimiters is treated as plain text, and will be sent directly to the output buffer.
 
-If there are no script delimeters in the passage, then it's plain text and won't be converted to a script.
+If there are no script delimeters in the passage, then it's plain text and no scripting machinery will be invoked.
+
+To parse passages into plain text and scripts, I'm going to use simple String.indexOf(String str, int fromIndex) calls instead of a more rigorous parser.
 
 == TextSource ==
 
@@ -46,9 +48,9 @@ Nearly all instances of String in the current API should be replaced with a Text
 
   StringSource
     Constructed with a String parameter, and simply passes back that string.
-    
+
   BundleSource
-    Keeps a bundle passage name as state, and returns the respective passage text.
+    Keeps a bundle passage name as state, and returns the respective passage text. The TextBundle itself will decide how to process the given passage, either as a plain string, or some form of script.
 
 == Automatically Imported/Bound Objects ==
 
