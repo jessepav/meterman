@@ -40,7 +40,7 @@ Anything outside of these delimiters is treated as plain text, and will be sent 
 
 If there are no script delimeters in the passage, then it's plain text and no scripting machinery will be invoked.
 
-To parse passages into plain text and scripts, I'm going to use simple String.indexOf(String str, int fromIndex) calls instead of a more rigorous parser.
+To parse passages into plain text and scripts, I'm going to use simple String.indexOf(String str, int fromIndex) calls instead of a more rigorous parser. ...or you know, actually I may implement a parser in ANTLR for bundle passages, both for practice and so that I can robustly add new features down the road.
 
 == TextSource ==
 
