@@ -42,6 +42,12 @@ If there are no script delimeters in the passage, then it's plain text and no sc
 
 To parse passages into plain text and scripts, I'm going to use simple String.indexOf(String str, int fromIndex) calls instead of a more rigorous parser. ...or you know, actually I may implement a parser in ANTLR for bundle passages, both for practice and so that I can robustly add new features down the road.
 
+== Java Reflection Considerations ==
+
+[This is incorrect, see below] Reflection causes class creation after 15 accesses...so don't use BeanShell (or other Reflection-based) scripting in text bundles to access arbitrary objects. It's better to just create more Java classes.
+
+...A c t u a l l y, inflation only kicks in for repeated invocation of a reflected method, so I can access an objects fields without it occurring!
+
 == TextSource ==
 
 Nearly all instances of String in the current API should be replaced with a TextSource interface that can return a string. Its implementations:
