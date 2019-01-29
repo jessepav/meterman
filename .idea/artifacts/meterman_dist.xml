@@ -10,7 +10,7 @@
         <element id="file-copy" path="$PROJECT_DIR$/config/meterman-dist.properties" output-file-name="meterman.properties" />
       </element>
       <element id="directory" name="lib">
-        <element id="library" level="project" name="BeanShell" />
+        <element id="library" level="project" name="BeanShell2" />
         <element id="library" level="project" name="commons-codec" />
         <element id="library" level="project" name="commons-lang3" />
         <element id="library" level="project" name="JDOM" />

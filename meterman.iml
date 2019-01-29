@@ -19,7 +19,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="BeanShell" level="project" />
+    <orderEntry type="library" exported="" name="BeanShell2" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3" level="project" />
     <orderEntry type="library" exported="" name="JDOM" level="project" />
     <orderEntry type="library" name="jfd-loader" level="project" />
