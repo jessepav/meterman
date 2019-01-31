@@ -6,6 +6,8 @@
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../Common/docjars/commons-codec-1.11-javadoc.jar!/" />
     </JAVADOC>
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Common/srcjars/commons-codec-1.11-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

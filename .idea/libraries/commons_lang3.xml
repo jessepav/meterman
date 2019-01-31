@@ -6,6 +6,8 @@
     <JAVADOC>
       <root url="file://$PROJECT_DIR$/../treehouse/trunk/Extras/javadoc/commons-lang3-3.4-javadoc" />
     </JAVADOC>
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Common/srcjars/commons-lang3-3.4-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

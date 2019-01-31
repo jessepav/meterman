@@ -20,5 +20,8 @@
       </profile>
     </annotationProcessing>
   </component>
+  <component name="JavacSettings">
+    <option name="DEPRECATION" value="false" />
+  </component>
 </project>
 
