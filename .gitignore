@@ -1,0 +1,12 @@
+/build
+/Extras
+/meterman-src.7z
+/logs
+/saves
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/dictionaries
+/scripts/backup-source.bat
+/scripts/mirror-source.bat
+/scripts/upload.bat
+/scripts/install4jc-build-installers.cmd
