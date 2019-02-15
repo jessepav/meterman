@@ -217,7 +217,7 @@ class MainFrame implements ActionListener, ListSelectionListener
         Game g = Meterman.gm.getGame();
         if (g != null) {
             String command = ui.showPromptDialog("Debug Command",
-                "What is your debug command, oh Implementor?", "Command", "");
+                "What is your debug command, oh Implementer?", "Command", "");
             g.debugCommand(command);
         }
     }
