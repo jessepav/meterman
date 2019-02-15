@@ -4,7 +4,7 @@
       <root url="jar://$PROJECT_DIR$/lib/jfd-loader.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="file://$PROJECT_DIR$/../treehouse/trunk/Extras/javadoc/jfd-loader-javadoc" />
+      <root url="file://$PROJECT_DIR$/../Common/expanded-javadoc/jfd-loader-javadoc" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../Common/srcjars/jfd-loader-src.zip!/" />

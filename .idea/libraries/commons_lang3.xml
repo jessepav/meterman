@@ -4,7 +4,7 @@
       <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.4.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="file://$PROJECT_DIR$/../treehouse/trunk/Extras/javadoc/commons-lang3-3.4-javadoc" />
+      <root url="file://$PROJECT_DIR$/../Common/expanded-javadoc/commons-lang3-3.4-javadoc" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../Common/srcjars/commons-lang3-3.4-sources.jar!/" />
