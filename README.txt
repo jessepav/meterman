@@ -5,3 +5,5 @@
 \/    \/\___|\__\___|_|  |_| |_| |_|\__,_|_| |_|
 
               Text Games
+			  
+   (but you should be using Meterman2)
