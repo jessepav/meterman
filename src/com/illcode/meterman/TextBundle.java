@@ -323,6 +323,11 @@ public final class TextBundle
             String line;
             while ((line = r.readLine()) != null) {
                 String newName = getPassageName(line);
+
+                /*
+                 * This has a bug: headings that start with '#' won't terminate the current passage!
+                 */
+                
                 if (newName != null && !newName.startsWith("#")) {   // we've encountered a new, non-comment heading
                     if (name != null) {  // we need to save the current passage
                         savePassage(b.passageMap, name, gatherPassage(passageLines));
